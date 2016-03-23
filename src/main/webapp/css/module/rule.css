@@ -1,0 +1,43 @@
+.prefix, .length, .start {
+	display: inline-block;
+	color: #33f;
+	text-align: center;
+	font-weight: 600;
+}
+
+.prefix {
+	width: 50px;
+}
+
+.length {
+	width: 20px;
+}
+
+.start {
+	width: 40px;
+}
+
+.switch, .update, .del {
+	margin: 0 15px;
+}
+
+#editor>div {
+	padding: 10px 5px;
+}
+
+#prefix, #length, #start {
+	height: 28px;
+	margin: 0 4px;
+}
+
+#prefix {
+	width: 70px;
+}
+
+#length {
+	width: 50px;
+}
+
+#start {
+	width: 50px;
+}

@@ -1,0 +1,14 @@
+nav>div+div {
+	margin-top: 8px;
+}
+
+#percent+span {
+	padding: 0 8px;
+	font-size: 16px;
+	font-weight: 500;
+	color: #03f;
+}
+
+#percent {
+	width: 145px;
+}
