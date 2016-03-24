@@ -44,6 +44,7 @@ public class CommonsAction extends ActionSupport implements RequestAware, Sessio
 	protected Integer loginId = 1;// 登录账户 TODO
 
 	protected Map<String, Object> jsonData = new HashMap<>();
+	protected String result = "result";// jsonData-key
 
 	public int getPageNo() {
 		return pageNo;
@@ -99,6 +100,14 @@ public class CommonsAction extends ActionSupport implements RequestAware, Sessio
 
 	public void setJsonData(Map<String, Object> jsonData) {
 		this.jsonData = jsonData;
+	}
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
 	}
 
 	public Map<String, Object> getRequest() {

@@ -40,10 +40,7 @@ public class ConfigServiceImpl implements ConfigService {
 	@Override
 	public Config findCurrent() {
 		List<Config> list = configDao.findList();
-		if (CollectionUtils.isEmpty(list)) {
-			return null;
-		}
-		return list.get(0);
+		return CollectionUtils.isEmpty(list) ? null : list.get(0);
 	}
 
 }

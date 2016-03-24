@@ -362,7 +362,7 @@ public class TerminalServiceImpl implements TerminalService {
 
 	@Override
 	public void mergeTemplate(TerminalTemplate terminalTemplate) {
-		terminalTemplateDao.update(terminalTemplate);
+		terminalTemplateDao.merge(terminalTemplate);
 	}
 
 	@Override
@@ -422,9 +422,6 @@ public class TerminalServiceImpl implements TerminalService {
 		TerminalTemplate current = terminalTemplateDao.find(terminalId, templateId);
 		if (current == null || current.isUsed() || current.getStatus() != TemplateDownEnum.HASDOWN) {
 			return;
-		} else {
-			current.setUsed(true);
-			terminalTemplateDao.update(current);
 		}
 
 		TerminalTemplate original = terminalTemplateDao.findUsed(terminalId);
@@ -432,6 +429,8 @@ public class TerminalServiceImpl implements TerminalService {
 			original.setUsed(false);
 			terminalTemplateDao.update(original);
 		}
+		current.setUsed(true);
+		terminalTemplateDao.update(current);
 	}
 
 	@Override

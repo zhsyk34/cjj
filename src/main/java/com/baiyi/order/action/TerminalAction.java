@@ -79,7 +79,7 @@ public class TerminalAction extends CommonsAction {
 	public String query() {
 		TerminalTypeEnum typeEnum = FormatUtil.getEnum(TerminalTypeEnum.class, type);
 		List<TerminalVO> list = terminalService.findVOList(terminalNo, typeEnum, null, sort, order, pageNo, pageSize);
-		int count = terminalService.count(terminalNo, typeEnum, userId);
+		int count = terminalService.count(terminalNo, typeEnum, null);
 		jsonData.put("list", list);
 		jsonData.put("count", count);
 		jsonData.put("pageNo", pageNo);
@@ -158,7 +158,7 @@ public class TerminalAction extends CommonsAction {
 
 	// 模板列表
 	public String findTemplate() {
-		List<TemplateStatusVO> list = terminalService.findTemplateList(id, templateName, pageNo, pageSize);
+		List<TemplateStatusVO> list = terminalService.findTemplateList(terminalId, templateName, pageNo, pageSize);
 		int count = terminalService.countTemplate(terminalId, templateName);
 		jsonData.put("list", list);
 		jsonData.put("count", count);
@@ -199,40 +199,41 @@ public class TerminalAction extends CommonsAction {
 	}
 
 	// 下载进度
-	public String progress() {
-		if (!ValidateUtil.isPK(terminalId) && !ValidateUtil.isPK(templateId)) {
-			jsonData.put("result", Feedback.ERROR.toString());
-			return SUCCESS;
-		}
-		TerminalTemplate terminalTemplate = terminalService.findTemplate(terminalId, templateId);
-		if (terminalTemplate == null) {
-			jsonData.put("status", TemplateDownEnum.CANCELDOWN);
-			return SUCCESS;
-		}
-		TemplateDownEnum status = terminalTemplate.getStatus();
-		jsonData.put("status", status.toString());
-
-		if (status == TemplateDownEnum.HASDOWN) {
-			jsonData.put("progress", 100);
-		}
-
-		if (status == TemplateDownEnum.WAITDOWN) {
-			int percent = terminalTemplate.getTotal() > 0 ? (int) (terminalTemplate.getDown() * 100 / terminalTemplate.getTotal()) : 0;
-			percent = Math.max(0, Math.min(100, percent));
-			jsonData.put("progress", percent);
-		}
-		return SUCCESS;
-	}
+	// public String progress() {
+	// if (!ValidateUtil.isPK(terminalId) && !ValidateUtil.isPK(templateId)) {
+	// jsonData.put("result", Feedback.ERROR.toString());
+	// return SUCCESS;
+	// }
+	// TerminalTemplate terminalTemplate =
+	// terminalService.findTemplate(terminalId, templateId);
+	// if (terminalTemplate == null) {
+	// jsonData.put("status", TemplateDownEnum.CANCELDOWN);
+	// return SUCCESS;
+	// }
+	// TemplateDownEnum status = terminalTemplate.getStatus();
+	// jsonData.put("status", status.toString());
+	//
+	// if (status == TemplateDownEnum.HASDOWN) {
+	// jsonData.put("progress", 100);
+	// }
+	//
+	// if (status == TemplateDownEnum.WAITDOWN) {
+	// int percent = terminalTemplate.getTotal() > 0 ? (int)
+	// (terminalTemplate.getDown() * 100 / terminalTemplate.getTotal()) : 0;
+	// percent = Math.max(0, Math.min(100, percent));
+	// jsonData.put("progress", percent);
+	// }
+	// return SUCCESS;
+	// }
 
 	//
 	public String remote() {
 		RemoteEnum remoteEnum = FormatUtil.getEnum(RemoteEnum.class, status);
-		if (remoteEnum == null) {
+		if (ValidateUtil.isEmpty(ids) || remoteEnum == null) {
 			jsonData.put("result", Feedback.ERROR.toString());
 			return SUCCESS;
 		}
 
-		System.out.println(remoteEnum);
 		Map<String, Boolean> map = null;
 		switch (remoteEnum) {
 		case BOOT:
@@ -251,7 +252,14 @@ public class TerminalAction extends CommonsAction {
 			map = WebContext.closeTeamViewer;
 			break;
 		}
-		map.put(terminalNo, true);
+
+		for (Integer id : ids) {
+			Terminal terminal = terminalService.find(id);
+			if (terminal != null) {
+				map.put(terminal.getTerminalNo(), true);
+			}
+		}
+
 		jsonData.put("result", Feedback.SUCCESS.toString());
 		return SUCCESS;
 	}

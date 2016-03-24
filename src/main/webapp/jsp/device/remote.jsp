@@ -58,10 +58,10 @@
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th width="25%">模板</th>
-						<th width="25%">状态</th>
+						<th width="30%">模板</th>
+						<th width="30%">状态</th>
 						<th width="20%">启用</th>
-						<th width="30%">操作</th>
+						<th width="20%">操作</th>
 					</tr>
 				</thead>
 				<tbody id="template-data"></tbody>

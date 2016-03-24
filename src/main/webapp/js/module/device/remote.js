@@ -1,9 +1,10 @@
 require([ "jquery", "modal", "page", "progress", "checkctrl", "crud", "intercept", "validate" ], function($, modal, page, progress, checkctrl, crud, intercept, validate) {
 	checkctrl.table($(".main table"));
 	crud.page(null, find);
-	dialog();
+	template();
 	find();
 	remote();
+	var timer = null;// TODO
 
 	function remote() {
 		var url = "json/Terminal_remote";
@@ -27,7 +28,7 @@ require([ "jquery", "modal", "page", "progress", "checkctrl", "crud", "intercept
 				traditional : true,
 				data : params,
 				success : function(data) {
-					if (data.result) {
+					if (data.result == "success") {
 						$.alert("已发送");
 					}
 				}
@@ -35,12 +36,12 @@ require([ "jquery", "modal", "page", "progress", "checkctrl", "crud", "intercept
 		});
 	}
 
-	function dialog() {
+	function template() {
 		$("#template").modal({
 			width : 650,
 			top : 100,
 			title : "终端模板管理",
-			buttons : [ "cancel" ]
+			buttons : null
 		});
 
 		$("#data").on("click", ".update", function() {
@@ -82,25 +83,28 @@ require([ "jquery", "modal", "page", "progress", "checkctrl", "crud", "intercept
 			crud.merge(url, params, loadTemplate);
 		});
 
-		$("#template").on("click", "button", function() {
-		});
-
 		function loadTemplate() {
-			var id = $("#template").data("id");
+			clearInterval(timer);
+			loadProgress();
+			timer = setInterval(loadProgress, 5 * 1000);
+		}
+
+		function loadProgress() {
+			var terminalId = $("#template").data("id");
 			var templateName = $.trim($("#template-name").val());
 			var options = $("#template-page").page("options");
 
-			var tbody = $("#template-data");
 			$.ajax({
 				url : "json/Terminal_findTemplate",
 				data : {
-					id : id,
+					terminalId : terminalId,
 					templateName : templateName,
 					pageNo : options.pageNo,
 					pageSize : options.pageSize
 				},
 				async : false,
 				success : function(data) {
+					var tbody = $("#template-data");
 					tbody.empty();
 
 					var str = "<tr>";
@@ -117,8 +121,7 @@ require([ "jquery", "modal", "page", "progress", "checkctrl", "crud", "intercept
 
 					$.each(data.list || [], function(index, row) {
 						var tr = $(str).data("row", row);
-						// tr.find(".name").text(row.templateName);
-						tr.find(".name").text(row.templateName + ", " + row.status);
+						tr.find(".name").text(row.templateName);
 
 						switch (row.status) {
 						case null:
@@ -132,18 +135,18 @@ require([ "jquery", "modal", "page", "progress", "checkctrl", "crud", "intercept
 							break;
 						case "canceldown":
 							tr.find(".status").text("正在撤销...");
-							// tr.find(".operation").html(down);
 							break;
 						case "waitdown":
 							var div = $("<div class='show'></div>");
 							tr.find(".status").html(div);
 							tr.find(".operation").html(cancel);
 
-							updateProgress(tr, row);
+							var percent = row.total > 0 ? parseInt(row.down * 100 / row.total) : 0;
 							div.progress({
 								width : 120,
 								height : 14,
-								tip : false
+								tip : false,
+								value : Math.min(100, percent)
 							});
 							break;
 						case "hasdelete":
@@ -156,41 +159,11 @@ require([ "jquery", "modal", "page", "progress", "checkctrl", "crud", "intercept
 						}
 						tbody.append(tr);
 					});
-
 					crud.page(data, loadTemplate, $("#template-page"));
 				}
 			});
 		}
 
-		function updateProgress(target, params) {
-			readProgress();
-			var timer = null;
-			timer = setInterval(readProgress, 1000);
-
-			function readProgress() {
-				$.ajax({
-					url : "json/Terminal_progress",
-					data : {
-						terminalId : params.terminalId,
-						templateId : params.templateId
-					},
-					async : false,
-					success : function(data) {
-						console.log(data);
-						var percent = data.progress;
-						var div = $(target).find(".show");
-						div.progress({
-							value : percent
-						});
-						if (data.status != "WAITDOWN") {
-							loadTemplate(params.terminalId);
-							clearInterval(timer);
-							timer = null;
-						}
-					}
-				});
-			}
-		}
 	}
 
 	function find() {
