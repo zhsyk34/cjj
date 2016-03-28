@@ -15,6 +15,8 @@ public interface ActivityService {
 
 	public Activity find(Integer id);
 
+	public Activity find(Integer kitchenId, Integer foodId);
+
 	public List<Activity> findList();
 
 	public List<Activity> findList(Integer kitchenId, Integer foodId, ActivityTypeEnum type, Boolean used);

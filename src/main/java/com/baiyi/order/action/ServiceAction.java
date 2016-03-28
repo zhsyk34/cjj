@@ -33,20 +33,20 @@ import com.baiyi.order.vo.TemplateVO;
 @SuppressWarnings("serial")
 public class ServiceAction extends CommonsAction {
 
-	// 更新终端版本号
-	public String terminalVersion() {
+	// TODO
+	public String a() {
+		jsonData.put(result, Feedback.SUCCESS.toString());
+		return SUCCESS;
+	}
+
+	// 下载模板:terminalNo TODO
+	public String downTemplate() {
 		Terminal terminal = terminalService.find(terminalNo);
 		if (terminal == null) {
 			jsonData.put(result, Feedback.ERROR.toString());
 			return SUCCESS;
 		}
-		terminal.setVersion(version);
-		terminalService.update(terminal);
-		return SUCCESS;
-	}
-
-	// 下载模板
-	public String downTemplate() {// TODO
+		Integer terminalId = terminal.getId();
 		List<TerminalTemplate> terminalTemplates = terminalService.findTemplateList(terminalId, null, TemplateDownEnum.WAITDOWN, null, null);
 		if (CollectionUtils.isEmpty(terminalTemplates)) {
 			jsonData.put(result, "not need");
@@ -60,191 +60,7 @@ public class ServiceAction extends CommonsAction {
 			}
 			list.add(templateVO);
 		}
-		jsonData.put("list", list);
-		return SUCCESS;
-	}
-
-	private String status;
-
-	// 更新模板状态:terminalNo,status
-	public String templateStatus() {
-		TemplateDownEnum downEnum = FormatUtil.getEnum(TemplateDownEnum.class, status);
-		if (StringUtils.isBlank(terminalNo) || downEnum == null) {
-			jsonData.put(result, Feedback.ERROR.toString());
-			return SUCCESS;
-		}
-
-		Terminal terminal = terminalService.find(terminalNo);
-		if (terminal == null) {
-			jsonData.put(result, Feedback.ERROR.toString());
-			return SUCCESS;
-		}
-
-		TerminalTemplate terminalTemplate = terminalService.findTemplate(terminal.getId(), templateId);
-		if (terminalTemplate == null) {
-			jsonData.put(result, "已取消下载...");
-			return SUCCESS;
-		}
-
-		terminalTemplate.setStatus(downEnum);
-		terminalTemplate.setTotal(0);
-		terminalTemplate.setDown(0);
-		terminalService.mergeTemplate(terminalTemplate);
-		jsonData.put(result, Feedback.SUCCESS.toString());
-		return SUCCESS;
-	}
-
-	// 更新模板下载进度:terminalNo,total,down
-	public String templateProgress() {
-		if (StringUtils.isBlank(terminalNo)) {
-			jsonData.put(result, "终端编号错误");
-			return SUCCESS;
-		}
-		Terminal terminal = terminalService.find(terminalNo);
-		if (terminal == null) {
-			jsonData.put(result, "终端不存在");
-			return SUCCESS;
-		}
-
-		TerminalTemplate terminalTemplate = terminalService.findTemplate(terminal.getId(), templateId);
-
-		if (terminalTemplate == null) {
-			jsonData.put(result, "已取消下载...");
-			return SUCCESS;
-		}
-		TemplateDownEnum status = terminalTemplate.getStatus();
-		if (status == TemplateDownEnum.HASDOWN) {
-			jsonData.put(result, "已下载...");
-		} else if (status == TemplateDownEnum.WAITDOWN) {
-			if (total > 0) {
-				terminalTemplate.setTotal(total);
-			}
-			terminalTemplate.setDown(terminalTemplate.getDown() + down);
-			jsonData.put(result, "已更新下载进度...");
-			terminalService.mergeTemplate(terminalTemplate);
-		} else {
-			jsonData.put(result, "已取消下载...");
-		}
-
-		return SUCCESS;
-	}
-
-	// 终端开关机时间:terminalNo
-	public String terminalTime() {
-		Terminal terminal = terminalService.find(terminalNo);
-		if (terminal == null) {
-			jsonData.put(result, Feedback.ERROR.toString());
-			return SUCCESS;
-		}
-		List<TerminalTime> terminalTimes = terminalService.findTime(terminal.getId());
-		List<String> boots = new ArrayList<>();
-		List<String> shuts = new ArrayList<>();
-		if (CollectionUtils.isNotEmpty(terminalTimes)) {
-			for (TerminalTime terminalTime : terminalTimes) {
-				String date = FormatUtil.dateToString(terminalTime.getTime(), "HH:mm:ss");
-				switch (terminalTime.getType()) {
-				case BOOT:
-					boots.add(date);
-					break;
-				case SHUT:
-					shuts.add(date);
-					break;
-				}
-			}
-		}
-		jsonData.put("boots", boots);
-		jsonData.put("shuts", shuts);
-		jsonData.put(result, Feedback.SUCCESS.toString());
-		return SUCCESS;
-	}
-
-	// 使用的订单规则
-	public String usedOrdrRule() {
-		OrderRule orderRule = orderRuleService.findUsed();
-		jsonData.put(result, orderRule);
-		return SUCCESS;
-	}
-
-	// 服务器时间
-	public String serverTime() {
-		String date = FormatUtil.dateToString(new Date(), null);
-		jsonData.put(result, date);
-		return SUCCESS;
-	}
-
-	// 获取使用模板:terminalNo
-	public String getUsedTemplate() {
-		Terminal terminal = terminalService.find(terminalNo);
-		if (terminal == null) {
-			jsonData.put(result, Feedback.ERROR.toString());
-			return SUCCESS;
-		}
-		Template template = terminalService.findUsedTemplate(terminal.getId());
-		jsonData.put(result, template == null ? null : template.getId());
-		return SUCCESS;
-	}
-
-	// TODO
-	public String a() {
-		jsonData.put(result, Feedback.SUCCESS.toString());
-		return SUCCESS;
-	}
-
-	// 更新现金数量:terminalNo
-	public String updateCashbox() {
-		Terminal terminal = terminalService.find(terminalNo);
-		if (terminal == null) {
-			jsonData.put(result, Feedback.ERROR.toString());
-			return SUCCESS;
-		}
-
-		Integer terminalId = terminal.getId();
-
-		Cashbox cashbox = cashboxService.findByTerminal(terminalId);
-		// if (cashbox == null) {
-		// cashbox = new Cashbox();
-		// cashbox.setTerminalId(terminalId);
-		// }
-
-		cashbox.setNd100tw100(nd100tw100);
-		cashbox.setNd100cn10(nd100cn10);
-
-		cashbox.setNv9tw100(nv9tw100);
-		cashbox.setNv9tw500(nv9tw500);
-		cashbox.setNv9tw1000(nv9tw1000);
-		cashbox.setNv9cn1(nv9cn1);
-		cashbox.setNv9cn5(nv9cn5);
-		cashbox.setNv9cn10(nv9cn10);
-		cashbox.setNv9cn20(nv9cn20);
-		cashbox.setNv9cn50(nv9cn50);
-		cashbox.setNv9cn100(nv9cn100);
-
-		cashbox.setHoppertw1(hoppertw1);
-		cashbox.setHoppertw5(hoppertw5);
-		cashbox.setHoppertw10(hoppertw10);
-		cashbox.setHoppertw50(hoppertw50);
-		cashbox.setHoppercn01(hoppercn01);
-		cashbox.setHoppercn05(hoppercn05);
-		cashbox.setHoppercn1(hoppercn1);
-
-		cashboxService.merge(cashbox);
-		jsonData.put("result", Feedback.SUCCESS.toString());
-		return SUCCESS;
-	}
-
-	// 上传退币异常
-	public String saveRefund() {
-		Refund refund = new Refund();
-		refund.setAuthenticode(authenticode);
-		refund.setOrderNo(orderNo);
-		refund.setTerminalNo(terminalNo);
-		refund.setReason(FormatUtil.getEnum(RefundReasonEnum.class, reason));
-		refund.setType(FormatUtil.getEnum(RefundTypeEnum.class, type));
-		refund.setAmount(amount);
-		refund.setHappentime(FormatUtil.stringToDate(happentime, null));
-		refund.setOver(false);
-
-		jsonData.put("result", Feedback.SUCCESS.toString());
+		jsonData.put(result, list);
 		return SUCCESS;
 	}
 
@@ -254,47 +70,51 @@ public class ServiceAction extends CommonsAction {
 		return SUCCESS;
 	}
 
-	// 上传订单 TODO
-	public String saveOrder() {
-		OrderInfo orderInfo = new OrderInfo();
-		orderInfo.setShop(shop);
-		orderInfo.setKitchen(kitchen);
-		orderInfo.setTotal(total);
-		orderInfo.setIncome(income);
-		orderInfo.setExpense(expense);
-		orderInfo.setCreatetime(new Date());
-		orderInfo.setUpdatetime(null);
-		orderInfo.setUserId(loginId);
-		orderInfo.setStatus(OrderStatus.NORMAL);
-
-		if (CollectionUtils.isEmpty(foods)) {
-			jsonData.put("result", Feedback.ERROR.toString());
+	// 分类读取餐点活动数据:terminalNo
+	public String getActivity() {
+		Terminal terminal = terminalService.find(terminalNo);
+		if (terminal == null) {
+			jsonData.put(result, Feedback.ERROR.toString());
 			return SUCCESS;
 		}
+		Integer terminalId = terminal.getId();
 
-		List<OrderDetailVO> orderDetails = new ArrayList<>();
-		for (int i = 0; i < foods.size(); i++) {
-			OrderDetailVO orderDetailVO = new OrderDetailVO();
-			orderDetailVO.setFood(foods.get(i));
-			orderDetailVO.setPrice(prices.get(i));
-			orderDetailVO.setCount(counts.get(i));
+		List<Activity> stopList = activityService.findList(terminalId, null, ActivityTypeEnum.STOP, true);
+		List<Activity> giftList = activityService.findList(terminalId, null, ActivityTypeEnum.GIFT, true);
+		List<Activity> discountList = activityService.findList(terminalId, null, ActivityTypeEnum.DISCOUNT, true);
 
-			List<String> tasteList = null;
-			String tasteString = tastes.get(i);
-			if (StringUtils.isNotBlank(tasteString)) {
-				String[] tasteArr = tasteString.split("\\s*,\\s*");
-				tasteList = Arrays.asList(tasteArr);
-			}
-			orderDetailVO.setTasteList(tasteList);
-
-			orderDetails.add(orderDetailVO);
-		}
-		orderService.save(orderInfo, orderDetails);
-		jsonData.put("result", Feedback.SUCCESS.toString());
+		jsonData.put("stopList", stopList);
+		jsonData.put("giftList", giftList);
+		jsonData.put("discountList", discountList);
 		return SUCCESS;
 	}
 
-	// TODO
+	// 获取系统配置信息
+	public String getSystemConfig() {
+		Config config = configService.findCurrent();
+
+		// 钱箱最小最大存量
+		Cashbox min = cashboxService.findByTerminal(-1);
+		Cashbox max = cashboxService.findByTerminal(0);
+
+		// 座位
+		List<String> seats = new ArrayList<>();
+		List<Seat> seatList = seatService.findList();
+		if (CollectionUtils.isNotEmpty(seatList)) {
+			for (Seat seat : seatList) {
+				seats.add(seat.getName());
+			}
+		}
+
+		jsonData.put("config", config);
+		jsonData.put("min", min);
+		jsonData.put("max", max);
+		jsonData.put("seats", seats);
+		jsonData.put(result, Feedback.SUCCESS.toString());
+		return SUCCESS;
+	}
+
+	// 暂不启用 TODO
 	public String getTerminalInfo() {
 		Terminal terminal = terminalService.find(terminalNo);
 		if (terminal == null) {
@@ -354,167 +174,245 @@ public class ServiceAction extends CommonsAction {
 		return SUCCESS;
 	}
 
-	// 获取系统配置信息 TODO
-	public String getSystemConfig() {
-		Config config = configService.findCurrent();
-		jsonData.put("config", config);
-		jsonData.put(result, Feedback.SUCCESS.toString());
+	// 获取使用模板:terminalNo
+	public String getUsedTemplate() {
+		Terminal terminal = terminalService.find(terminalNo);
+		if (terminal == null) {
+			jsonData.put(result, Feedback.ERROR.toString());
+			return SUCCESS;
+		}
+		Template template = terminalService.findUsedTemplate(terminal.getId());
+		jsonData.put(result, template == null ? null : template.getId());
 		return SUCCESS;
 	}
 
-	// TODO
-	public String A() {
+	// 上传订单 TODO json??
+	public String saveOrder() {
+		OrderInfo orderInfo = new OrderInfo();
+		orderInfo.setShop(shop);
+		orderInfo.setKitchen(kitchen);
+		orderInfo.setTotal(total);
+		orderInfo.setIncome(income);
+		orderInfo.setExpense(expense);
+		orderInfo.setCreatetime(new Date());
+		orderInfo.setUpdatetime(null);
+		orderInfo.setUserId(null);
+		orderInfo.setStatus(OrderStatus.NORMAL);
+
+		if (CollectionUtils.isEmpty(foods)) {
+			jsonData.put("result", Feedback.ERROR.toString());
+			return SUCCESS;
+		}
+
+		List<OrderDetailVO> orderDetails = new ArrayList<>();
+		for (int i = 0; i < foods.size(); i++) {
+			OrderDetailVO orderDetailVO = new OrderDetailVO();
+			orderDetailVO.setFood(foods.get(i));
+			orderDetailVO.setPrice(prices.get(i));
+			orderDetailVO.setCount(counts.get(i));
+
+			List<String> tasteList = null;
+			String tasteString = tastes.get(i);
+			if (StringUtils.isNotBlank(tasteString)) {
+				String[] tasteArr = tasteString.split("\\s*,\\s*");
+				tasteList = Arrays.asList(tasteArr);
+			}
+			orderDetailVO.setTasteList(tasteList);
+
+			orderDetails.add(orderDetailVO);
+		}
+		orderService.save(orderInfo, orderDetails);
 		jsonData.put("result", Feedback.SUCCESS.toString());
 		return SUCCESS;
 	}
 
-	// 更新餐点活动送出数量
+	// 上传退币异常:authenticode,orderNo,terminalNo,reason,type,amount,happentime
+	public String saveRefund() {
+		Refund refund = new Refund();
+		refund.setAuthenticode(authenticode);
+		refund.setOrderNo(orderNo);
+		refund.setTerminalNo(terminalNo);
+		refund.setReason(FormatUtil.getEnum(RefundReasonEnum.class, reason));
+		refund.setType(FormatUtil.getEnum(RefundTypeEnum.class, type));
+		refund.setAmount(amount);
+		refund.setHappentime(FormatUtil.stringToDate(happentime, null));
+		refund.setOver(false);
+
+		jsonData.put("result", Feedback.SUCCESS.toString());
+		return SUCCESS;
+	}
+
+	// 服务器时间
+	public String getServerTime() {
+		String date = FormatUtil.dateToString(new Date(), null);
+		jsonData.put(result, date);
+		return SUCCESS;
+	}
+
+	// 更新模板下载进度:terminalNo,templateId,total,down
+	public String updateTemplateProgress() {
+		Terminal terminal = terminalService.find(terminalNo);
+		if (terminal == null) {
+			jsonData.put(result, "终端不存在");
+			return SUCCESS;
+		}
+
+		TerminalTemplate terminalTemplate = terminalService.findTemplate(terminal.getId(), templateId);
+		if (terminalTemplate == null) {
+			jsonData.put(result, "已取消下载...");
+			return SUCCESS;
+		}
+		TemplateDownEnum status = terminalTemplate.getStatus();
+		if (status == TemplateDownEnum.HASDOWN) {
+			jsonData.put(result, "已完成下载...");
+		} else if (status == TemplateDownEnum.WAITDOWN) {
+			if (total > 0) {
+				terminalTemplate.setTotal(total);
+			}
+			terminalTemplate.setDown(terminalTemplate.getDown() + down);
+			jsonData.put(result, "已更新下载进度...");
+			terminalService.mergeTemplate(terminalTemplate);
+		} else {
+			jsonData.put(result, "已取消下载...");
+		}
+
+		return SUCCESS;
+	}
+
+	// 更新模板状态:terminalNo,templateId,status
+	public String updateTemplateStatus() {
+		TemplateDownEnum downEnum = FormatUtil.getEnum(TemplateDownEnum.class, status);
+		if (StringUtils.isBlank(terminalNo) || downEnum == null) {
+			jsonData.put(result, Feedback.ERROR.toString());
+			return SUCCESS;
+		}
+
+		Terminal terminal = terminalService.find(terminalNo);
+		if (terminal == null) {
+			jsonData.put(result, Feedback.ERROR.toString());
+			return SUCCESS;
+		}
+
+		TerminalTemplate terminalTemplate = terminalService.findTemplate(terminal.getId(), templateId);
+		if (terminalTemplate == null) {
+			jsonData.put(result, "已取消下载...");
+			return SUCCESS;
+		}
+		if (terminalTemplate.isUsed()) {
+			jsonData.put(result, "模板正在使用中...不能修改...");
+			return SUCCESS;
+		}
+		terminalTemplate.setStatus(downEnum);
+		terminalTemplate.setTotal(0);
+		terminalTemplate.setDown(0);
+		terminalService.mergeTemplate(terminalTemplate);
+		jsonData.put(result, Feedback.SUCCESS.toString());
+		return SUCCESS;
+	}
+
+	// 终端开关机时间:terminalNo
+	public String getTerminalSwitchTime() {
+		Terminal terminal = terminalService.find(terminalNo);
+		if (terminal == null) {
+			jsonData.put(result, Feedback.ERROR.toString());
+			return SUCCESS;
+		}
+		List<TerminalTime> terminalTimes = terminalService.findTime(terminal.getId());
+		List<String> boots = new ArrayList<>();
+		List<String> shuts = new ArrayList<>();
+		if (CollectionUtils.isNotEmpty(terminalTimes)) {
+			for (TerminalTime terminalTime : terminalTimes) {
+				String date = FormatUtil.dateToString(terminalTime.getTime(), "HH:mm:ss");
+				switch (terminalTime.getType()) {
+				case BOOT:
+					boots.add(date);
+					break;
+				case SHUT:
+					shuts.add(date);
+					break;
+				}
+			}
+		}
+		jsonData.put("boots", boots);
+		jsonData.put("shuts", shuts);
+		jsonData.put(result, Feedback.SUCCESS.toString());
+		return SUCCESS;
+	}
+
+	// 更新餐点活动送出数量:terminalNo,foodId,send
 	public String updateActivitySend() {
-		Activity activity = activityService.find(id);// TODO
-		// Activity activity = activityService.find(terminalId,foodId);// TODO
+		Terminal terminal = terminalService.find(terminalNo);
+		if (terminal == null) {
+			jsonData.put(result, Feedback.ERROR.toString());
+			return SUCCESS;
+		}
+		Integer terminalId = terminal.getId();
+		Activity activity = activityService.find(terminalId, foodId);
 		activity.setSend(send);
 		activityService.update(activity);
 		jsonData.put("result", Feedback.SUCCESS.toString());
 		return SUCCESS;
 	}
 
-	// 分类读取餐点活动数据
-	public String getActivity() {
-		List<Activity> stopList = activityService.findList(terminalId, null, ActivityTypeEnum.STOP, true);
-		List<Activity> giftList = activityService.findList(terminalId, null, ActivityTypeEnum.GIFT, true);
-		List<Activity> discountList = activityService.findList(terminalId, null, ActivityTypeEnum.DISCOUNT, true);
+	// 更新现金数量:terminalNo,nd100tw100...
+	public String updateCashbox() {
+		Terminal terminal = terminalService.find(terminalNo);
+		if (terminal == null) {
+			jsonData.put(result, Feedback.ERROR.toString());
+			return SUCCESS;
+		}
 
-		jsonData.put("stopList", stopList);
-		jsonData.put("giftList", giftList);
-		jsonData.put("discountList", discountList);
+		Integer terminalId = terminal.getId();
+		Cashbox cashbox = cashboxService.findByTerminal(terminalId);
+		if (cashbox == null) {
+			jsonData.put(result, Feedback.ERROR.toString());
+			return SUCCESS;
+		}
+
+		cashbox.setNd100tw100(nd100tw100);
+		cashbox.setNd100cn10(nd100cn10);
+
+		cashbox.setNv9tw100(nv9tw100);
+		cashbox.setNv9tw500(nv9tw500);
+		cashbox.setNv9tw1000(nv9tw1000);
+		cashbox.setNv9cn1(nv9cn1);
+		cashbox.setNv9cn5(nv9cn5);
+		cashbox.setNv9cn10(nv9cn10);
+		cashbox.setNv9cn20(nv9cn20);
+		cashbox.setNv9cn50(nv9cn50);
+		cashbox.setNv9cn100(nv9cn100);
+
+		cashbox.setHoppertw1(hoppertw1);
+		cashbox.setHoppertw5(hoppertw5);
+		cashbox.setHoppertw10(hoppertw10);
+		cashbox.setHoppertw50(hoppertw50);
+		cashbox.setHoppercn01(hoppercn01);
+		cashbox.setHoppercn05(hoppercn05);
+		cashbox.setHoppercn1(hoppercn1);
+
+		cashboxService.merge(cashbox);
+		jsonData.put("result", Feedback.SUCCESS.toString());
 		return SUCCESS;
 	}
 
-	private Integer id;
-
-	private int send;
-
-	private Integer terminalId;
-
-	private String terminalNo;
-
-	private String version;
-
-	private long down;
-	private long total;
-	private Integer templateId;
-
-	public Integer getId() {
-		return id;
+	// 更新终端版本号:termianlNo,version
+	public String updateTerminalVersion() {
+		Terminal terminal = terminalService.find(terminalNo);
+		if (terminal == null) {
+			jsonData.put(result, Feedback.ERROR.toString());
+			return SUCCESS;
+		}
+		terminal.setVersion(version);
+		terminalService.update(terminal);
+		jsonData.put(result, Feedback.SUCCESS.toString());
+		return SUCCESS;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	// 使用的订单规则
+	public String getUsedOrdrRule() {
+		OrderRule orderRule = orderRuleService.findUsed();
+		jsonData.put(result, orderRule);
+		return SUCCESS;
 	}
-
-	public int getSend() {
-		return send;
-	}
-
-	public void setSend(int send) {
-		this.send = send;
-	}
-
-	public Integer getTerminalId() {
-		return terminalId;
-	}
-
-	public void setTerminalId(Integer terminalId) {
-		this.terminalId = terminalId;
-	}
-
-	public String getTerminalNo() {
-		return terminalNo;
-	}
-
-	public void setTerminalNo(String terminalNo) {
-		this.terminalNo = terminalNo;
-	}
-
-	public String getVersion() {
-		return version;
-	}
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
-	public long getDown() {
-		return down;
-	}
-
-	public void setDown(long down) {
-		this.down = down;
-	}
-
-	public long getTotal() {
-		return total;
-	}
-
-	public void setTotal(long total) {
-		this.total = total;
-	}
-
-	public Integer getTemplateId() {
-		return templateId;
-	}
-
-	public void setTemplateId(Integer templateId) {
-		this.templateId = templateId;
-	}
-
-	/* ====================== */
-	/* 找钞 */
-	private int nd100tw100;
-	private int nd100cn10;
-	/* 收钞 */
-	private int nv9tw100;
-	private int nv9tw500;
-	private int nv9tw1000;
-	private int nv9cn1;
-	private int nv9cn5;
-	private int nv9cn10;
-	private int nv9cn20;
-	private int nv9cn50;
-	private int nv9cn100;
-	/* 硬币 */
-	private int hoppertw1;
-	private int hoppertw5;
-	private int hoppertw10;
-	private int hoppertw50;
-	private int hoppercn01;
-	private int hoppercn05;
-	private int hoppercn1;
-
-	/* ================== */
-	private String authenticode;
-
-	private String orderNo;
-
-	private String reason;
-
-	private String type;
-
-	private double amount;
-
-	private String happentime;
-
-	/**/
-	private String shop;
-
-	private String kitchen;
-
-	private double income;
-
-	private double expense;
-	private List<String> foods;
-	private List<Double> prices;
-	private List<Integer> counts;
-	private List<String> tastes;
 
 }

@@ -43,6 +43,11 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
+	public Activity find(Integer kitchenId, Integer foodId) {
+		return activityDao.find(kitchenId, foodId);
+	}
+
+	@Override
 	public List<Activity> findList() {
 		return activityDao.findList();
 	}

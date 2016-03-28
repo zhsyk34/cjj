@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -22,6 +23,14 @@ public class ActivityDaoImpl extends CommonsDaoImpl<Activity> implements Activit
 	@Override
 	public void delete(List<Activity> activitys) {
 		super.delete(activitys);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Activity find(Integer kitchenId, Integer foodId) {
+		String queryString = "from Activity as activity where activity.kitchenId = ? and activity.foodId = ?";
+		List<Activity> list = (List<Activity>) hibernateTemplate.find(queryString, kitchenId, foodId);
+		return CollectionUtils.isEmpty(list) ? null : list.get(0);
 	}
 
 	@Override

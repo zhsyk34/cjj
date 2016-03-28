@@ -60,7 +60,7 @@ public class ServerSockThread extends Thread {
 			System.out.println("服务端正在启动中...");
 			while (true) {
 				Socket client = server.accept();
-				executorService.execute(new ServerThread(client));
+				executorService.execute(new Handler(client));
 
 				String hostname = client.getInetAddress().getHostName();
 				hostSet.add(hostname);
@@ -75,7 +75,7 @@ public class ServerSockThread extends Thread {
 	}
 }
 
-class ServerThread implements Runnable {
+class Handler implements Runnable {
 	private TerminalService terminalService;
 
 	private Socket socket = null;
@@ -85,7 +85,7 @@ class ServerThread implements Runnable {
 	private ObjectInputStream ois = null;
 	private ObjectOutputStream oos = null;
 
-	public ServerThread(Socket socket) {
+	public Handler(Socket socket) {
 		// terminalConnectService = WebContext.terminalConnectService;
 		try {
 			this.socket = socket;
