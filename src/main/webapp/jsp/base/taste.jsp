@@ -35,8 +35,9 @@
 				<tr>
 					<th width="10%"><input id="check-parent" type="checkbox"></th>
 					<th width="10%">序号</th>
-					<th width="25%">名称</th>
-					<th width="25%">类型</th>
+					<th width="20%">名称</th>
+					<th width="15%">费用</th>
+					<th width="15%">类型</th>
 					<th width="30%">编辑</th>
 				</tr>
 			</thead>
@@ -54,6 +55,10 @@
 			<tr>
 				<th>名称</th>
 				<td><input type="hidden" id="id"> <input class="text" id="name"></td>
+			</tr>
+			<tr>
+				<th>费用</th>
+				<td><input class="text" id="price"></td>
 			</tr>
 			<tr>
 				<th>类型</th>

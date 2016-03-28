@@ -13,6 +13,10 @@ public class Food {
 
 	private String name;
 
+	private String abbreviation;// 简称
+
+	private String nickname;// 别名
+
 	private double price;
 
 	private Integer typeId;// 所属类型
@@ -43,6 +47,22 @@ public class Food {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getAbbreviation() {
+		return abbreviation;
+	}
+
+	public void setAbbreviation(String abbreviation) {
+		this.abbreviation = abbreviation;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public double getPrice() {

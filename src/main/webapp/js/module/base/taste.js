@@ -35,6 +35,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			if (row) {
 				$("#id").val(row.id);
 				$("#name").val(row.name);
+				$("#price").val(row.price);
 				$("#style").val(row.styleId);
 			} else {
 				$("#editor").modal("clear");
@@ -45,7 +46,9 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 	function merge() {
 		var id = parseInt($("#id").val()) || null;
 		var name = $.trim($("#name").val());
+		var price = parseFloat($("#price").val());
 		var styleId = $("#style").val();
+
 		var url = id ? "json/Taste_update" : "json/Taste_save";
 
 		if (validate.isEmpty(name)) {
@@ -53,9 +56,15 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			return false;
 		}
 
+		if (!validate.isPositive(price)) {
+			$.alert("请填写正确的费用");
+			return false;
+		}
+
 		var params = {
 			id : id,
 			name : name,
+			price : price,
 			styleId : styleId
 		};
 
@@ -141,6 +150,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			str += "<td><input type='checkbox'></td>";
 			str += "<td class='index'></td>";
 			str += "<td class='name'></td>";
+			str += "<td class='price'></td>";
 			str += "<td class='style'></td>";
 			str += "<td><button class='btn btn-warning btn-small update'>修改</button><button class='btn btn-danger btn-small del'>删除</button></td>";
 			str += "</tr>";
@@ -150,6 +160,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 				tr.find(":checkbox").val(row.id);
 				tr.find(".index").text(index + 1);
 				tr.find(".name").text(row.name);
+				tr.find(".price").text(row.price);
 				tr.find(".style").text(row.styleName);
 				$("#data").append(tr);
 			});

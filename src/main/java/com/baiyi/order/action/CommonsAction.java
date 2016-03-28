@@ -17,6 +17,7 @@ import com.baiyi.order.service.MarqueeService;
 import com.baiyi.order.service.MaterialService;
 import com.baiyi.order.service.OrderRuleService;
 import com.baiyi.order.service.OrderService;
+import com.baiyi.order.service.PaySettingService;
 import com.baiyi.order.service.RefundService;
 import com.baiyi.order.service.SeatService;
 import com.baiyi.order.service.StyleService;
@@ -170,4 +171,6 @@ public class CommonsAction extends ActionSupport implements RequestAware, Sessio
 	protected CashboxService cashboxService;
 	@Resource
 	protected ConfigService configService;
+	@Resource
+	protected PaySettingService paySettingService;
 }

@@ -25,6 +25,8 @@ public class FoodAction extends CommonsAction {
 		}
 		Food food = new Food();
 		food.setName(name);
+		food.setAbbreviation(abbreviation);
+		food.setNickname(nickname);
 		food.setPrice(price);
 		food.setTypeId(typeId);
 		food.setMaterialId(materialId);
@@ -60,6 +62,8 @@ public class FoodAction extends CommonsAction {
 			return null;
 		}
 		food.setName(name);
+		food.setAbbreviation(abbreviation);
+		food.setNickname(nickname);
 		food.setPrice(price);
 		food.setTypeId(typeId);
 		food.setMaterialId(materialId);
@@ -107,6 +111,8 @@ public class FoodAction extends CommonsAction {
 	private Integer[] tasteIds;
 
 	private String name;
+	private String abbreviation;
+	private String nickname;
 
 	private double price;
 
@@ -146,6 +152,22 @@ public class FoodAction extends CommonsAction {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getAbbreviation() {
+		return abbreviation;
+	}
+
+	public void setAbbreviation(String abbreviation) {
+		this.abbreviation = abbreviation;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public double getPrice() {

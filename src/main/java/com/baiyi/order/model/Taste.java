@@ -13,6 +13,8 @@ public class Taste {
 
 	private String name;
 
+	private double price;
+
 	private Integer styleId;// 调味类型
 
 	private Integer userId;
@@ -37,6 +39,14 @@ public class Taste {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	public Integer getStyleId() {

@@ -87,6 +87,14 @@
 									<td><input id="id" type="hidden"><input class="text" id="name"></td>
 								</tr>
 								<tr>
+									<th>简称</th>
+									<td><input class="text" id="abbreviation"></td>
+								</tr>
+								<tr>
+									<th>别名</th>
+									<td><input class="text" id="nickname"></td>
+								</tr>
+								<tr>
 									<th>类型</th>
 									<td><select class="text" id="typeId">
 									</select></td>

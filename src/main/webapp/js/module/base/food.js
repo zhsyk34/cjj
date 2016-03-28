@@ -83,6 +83,8 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			if (row) {
 				$("#id").val(row.id);
 				$("#name").val(row.name);
+				$("#abbreviation").val(row.abbreviation);
+				$("#nickname").val(row.nickname);
 				$("#typeId").val(row.typeId);
 				$("#price").val(row.price);
 				$("#materialId").val(row.materialId);
@@ -113,6 +115,8 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 	function merge() {
 		var id = parseInt($("#id").val()) || null;
 		var name = $.trim($("#name").val());
+		var abbreviation = $.trim($("#abbreviation").val());
+		var nickname = $.trim($("#nickname").val());
 		var typeId = parseInt($("#typeId").val());
 		var price = parseFloat($("#price").val());
 		var materialId = parseInt($("#materialId").val());
@@ -140,6 +144,8 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 		var params = {
 			id : id,
 			name : name,
+			abbreviation : abbreviation,
+			nickname : nickname,
 			typeId : typeId,
 			price : price,
 			materialId : materialId,

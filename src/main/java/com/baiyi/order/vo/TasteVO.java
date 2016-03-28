@@ -8,6 +8,8 @@ public class TasteVO {
 
 	private String name;
 
+	private double price;
+
 	private Integer styleId;
 
 	private Integer userId;
@@ -32,6 +34,14 @@ public class TasteVO {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	public Integer getStyleId() {

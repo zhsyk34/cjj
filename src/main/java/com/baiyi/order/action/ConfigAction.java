@@ -1,7 +1,12 @@
 package com.baiyi.order.action;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.baiyi.order.model.Config;
+import com.baiyi.order.model.PaySetting;
 import com.baiyi.order.util.Feedback;
+import com.baiyi.order.util.FormatUtil;
+import com.baiyi.order.util.EnumList.PaymentEnum;
 
 @SuppressWarnings("serial")
 public class ConfigAction extends CommonsAction {
@@ -52,6 +57,46 @@ public class ConfigAction extends CommonsAction {
 		return SUCCESS;
 	}
 
+	public String payFind() {
+		PaymentEnum payEnum = FormatUtil.getEnum(PaymentEnum.class, name);
+		PaySetting paySetting = paySettingService.find(payEnum);
+		jsonData.put("pay", paySetting);
+		return SUCCESS;
+	}
+
+	public String paySet() {
+		PaymentEnum payEnum = FormatUtil.getEnum(PaymentEnum.class, name);
+		if (payEnum == null) {
+			jsonData.put(result, Feedback.ERROR.toString());
+			return SUCCESS;
+		}
+		PaySetting paySetting = paySettingService.find(payEnum);
+		if (paySetting == null) {
+			if (StringUtils.isBlank(privateKey) || (payEnum == PaymentEnum.ALIPAY && StringUtils.isBlank(publicKey))) {
+				jsonData.put(result, Feedback.ERROR.toString());
+				return SUCCESS;
+			}
+			paySetting = new PaySetting();
+			paySetting.setName(payEnum);
+
+		}
+
+		paySetting.setTitle(title);
+		paySetting.setAppId(appId);
+		paySetting.setPartner(partner);
+
+		if (StringUtils.isNotBlank(privateKey)) {
+			paySetting.setPrivateKey(privateKey);
+		}
+		if (StringUtils.isNotBlank(publicKey)) {
+			paySetting.setPrivateKey(publicKey);
+		}
+
+		paySettingService.merge(paySetting);
+		jsonData.put(result, Feedback.UPDATE.toString());
+		return SUCCESS;
+	}
+
 	/* 取餐方式(是否外带) */
 	private boolean takeShow;
 	private boolean takeAway;
@@ -77,6 +122,14 @@ public class ConfigAction extends CommonsAction {
 	private boolean accessory;
 	private String accessoryName;
 	private int accessoryPercent;
+
+	/* 支付设置 */
+	private String name;
+	private String title;
+	private String appId;
+	private String partner;// 合伙人
+	private String publicKey;// 公钥
+	private String privateKey;// 密钥
 
 	public boolean isTakeShow() {
 		return takeShow;
@@ -204,6 +257,54 @@ public class ConfigAction extends CommonsAction {
 
 	public void setAccessoryPercent(int accessoryPercent) {
 		this.accessoryPercent = accessoryPercent;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+
+	public String getPartner() {
+		return partner;
+	}
+
+	public void setPartner(String partner) {
+		this.partner = partner;
+	}
+
+	public String getPublicKey() {
+		return publicKey;
+	}
+
+	public void setPublicKey(String publicKey) {
+		this.publicKey = publicKey;
+	}
+
+	public String getPrivateKey() {
+		return privateKey;
+	}
+
+	public void setPrivateKey(String privateKey) {
+		this.privateKey = privateKey;
 	}
 
 }

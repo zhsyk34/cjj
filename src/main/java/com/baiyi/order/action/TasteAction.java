@@ -18,6 +18,7 @@ public class TasteAction extends CommonsAction {
 		}
 		Taste taste = new Taste();
 		taste.setName(name);
+		taste.setPrice(price);
 		taste.setStyleId(styleId);
 		taste.setCreatetime(new Date());
 		taste.setUserId(userId);
@@ -44,6 +45,7 @@ public class TasteAction extends CommonsAction {
 		}
 		Taste taste = tasteService.find(id);
 		taste.setName(name);
+		taste.setPrice(price);
 		taste.setStyleId(styleId);
 		taste.setUpdatetime(new Date());
 		taste.setUserId(userId);
@@ -81,6 +83,8 @@ public class TasteAction extends CommonsAction {
 
 	private String name;
 
+	private double price;
+
 	private Integer styleId;
 
 	public Integer getId() {
@@ -105,6 +109,14 @@ public class TasteAction extends CommonsAction {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	public Integer getStyleId() {

@@ -49,6 +49,7 @@
 				<ul>
 					<li><a href="jsp/system/config.jsp">系统设置</a></li>
 					<li><a href="jsp/system/cashbox.jsp">钱箱设置</a></li>
+					<li><a href="jsp/system/payset.jsp">支付设置</a></li>
 					<li><a href="jsp/system/user.jsp">用户管理</a></li>
 					<li><a href="jsp/system/password.jsp">密码修改</a></li>
 					<li id="logout">安全退出</li>
