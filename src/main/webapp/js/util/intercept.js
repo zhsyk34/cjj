@@ -3,8 +3,14 @@ $.ajaxSetup({
 	traditional : true,
 	type : "POST",
 	complete : function(XMLHttpRequest, textStatus) {
-		// console.log(XMLHttpRequest.responseText);
-		var data = eval("(" + XMLHttpRequest.responseText + ")");
+		var data = XMLHttpRequest.responseText;
+		if (/^{/.test(data)) {
+			data = eval("(" + data + ")");
+			// console.log("json", data);
+		} else {
+			// console.log("normal", data);
+		}
+
 		if (data.result == "offline") {// TODO
 			// window.location.href = "login.jsp";
 		}

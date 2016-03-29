@@ -49,15 +49,15 @@
 			<thead>
 				<tr>
 					<th width="6%">序号</th>
-					<th width="10%">订单编号</th>
+					<th width="10%">编号</th>
 					<th width="10%">客户端</th>
 					<th width="10%">厨房端</th>
-					<th width="10%">订单明细</th>
 					<th width="8%">总价</th>
 					<th width="8%">收取</th>
 					<th width="8%">找零</th>
 					<th width="15%">时间</th>
-					<th width="15%">编辑</th>
+					<th width="10%">明细</th>
+					<!-- <th width="15%">编辑</th> -->
 				</tr>
 			</thead>
 			<tbody id="data">
@@ -71,7 +71,7 @@
 	</footer>
 
 	<div id="editor">
-		<div class="inline order-header">
+		<nav>
 			<div>
 				<div class="inline group">
 					<label class="addon">订单编号</label>
@@ -99,7 +99,7 @@
 				</div>
 				<button class="btn btn-success btn-small" id="add">添加</button>
 			</div>
-		</div>
+		</nav>
 
 		<div class="main">
 			<table class="table table-edit table-hover">

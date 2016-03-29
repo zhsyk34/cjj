@@ -46,6 +46,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 		$("#editor").modal({
 			width : 800,
 			top : 80,
+			zIndex : 2019,
 			before : function() {
 				return merge();
 			},
@@ -198,7 +199,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			});
 			find();
 		});
-		$("header :radio").on("change", function() {
+		$("#search-type").on("change", function() {
 			$("#page").page({
 				pageNo : 1
 			});
@@ -218,6 +219,8 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			pageNo : options.pageNo,
 			pageSize : options.pageSize
 		};
+
+		console.log(params);
 
 		$.ajax({
 			url : "json/Food_find",

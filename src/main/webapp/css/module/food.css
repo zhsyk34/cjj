@@ -63,15 +63,6 @@
 	padding: 2px 5px;
 	margin-right: 20px;
 }
-/*edit*/
-#editor {
-	z-index: 6666;
-}
-
-#editor .modal-dialog {
-	width: 80%;
-	overflow: auto;
-}
 
 /*material*/
 #material td {
@@ -84,10 +75,9 @@
 	cursor: pointer;
 }
 
-/*edit*/
+/*editor*/
 #show {
 	vertical-align: top;
-	width: 260px;
 }
 
 #taste dl {

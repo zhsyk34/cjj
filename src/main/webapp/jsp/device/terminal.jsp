@@ -40,7 +40,7 @@
 					<th width="15%">类型</th>
 					<th width="20%">位置</th>
 					<th width="15%">版本</th>
-					<th width="30%">编辑</th>
+					<!-- <th width="30%">编辑</th> -->
 				</tr>
 			</thead>
 			<tbody id="data"></tbody>

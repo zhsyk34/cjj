@@ -7,11 +7,13 @@ var require = {
 		"progress" : [ "jquery" ],
 		"slider" : [ "jquery" ],
 
+		"i18n" : [ "jquery" ],
 		"form" : [ "jquery" ],
 		"spectrum" : [ "jquery" ],
 		"datePicker" : [ "jquery" ],
 
 		"intercept" : [ "jquery" ],
+		"message" : [ "jquery", "i18n" ],
 		"tool" : [ "jquery" ],
 		"validate" : [ "jquery" ],
 
@@ -26,6 +28,7 @@ var require = {
 		"progress" : "lib/zhsy/js/progress",
 		"slider" : "lib/zhsy/js/slider",
 
+		"i18n" : "lib/jquery.i18n",
 		"form" : "lib/jquery.form",
 		"spectrum" : "lib/spectrum/spectrum",
 		"datePicker" : "lib/datePicker/WdatePicker",
@@ -33,6 +36,7 @@ var require = {
 		"checkctrl" : "util/checkctrl",
 		"crud" : "util/crud",
 		"intercept" : "util/intercept",
+		"message" : "util/message",
 		"tool" : "util/tool",
 		"validate" : "util/validate"
 	}

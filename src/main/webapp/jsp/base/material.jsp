@@ -13,29 +13,31 @@
 	<header>
 		<h3>素材</h3>
 		<nav>
-			<div class="inline group">
-				<label class="addon" for="search-name">名称</label><input id="search-name" class="text">
-			</div>
-			<div class="inline group">
-				<label class="addon">类型</label>
-				<div class="text" id="search-type">
-					<label><input type="radio" name="search-type" value="" checked>全部</label> 
-					<label><input type="radio" name="search-type" value="image">图片</label> 
-					<label><input type="radio" name="search-type" value="video">视频</label>
+			<div>
+				<div class="inline group">
+					<label class="addon" for="search-name">名称</label><input id="search-name" class="text">
+				</div>
+				<div class="inline group">
+					<label class="addon">类型</label>
+					<div class="text" id="search-type">
+						<label><input type="radio" name="search-type" value="" checked>全部</label> <label><input type="radio" name="search-type" value="image">图片</label> <label><input type="radio" name="search-type" value="video">视频</label>
+					</div>
+				</div>
+				<div class="inline">
+					<button class="btn btn-primary btn-small" id="find">查询</button>
+				</div>
+				<div class="inline">
+					<button class="btn btn-success btn-small" id="add">上传</button>
 				</div>
 			</div>
-			<div class="inline">
-				<button class="btn btn-primary btn-small" id="find">查询</button>
+			<div>
+				<ul class="inline" id="check-ctrl">
+					<li class="inline"><button class="btn btn-info btn-small" id="check-all">全选</button></li>
+					<li class="inline"><button class="btn btn-info btn-small" id="check-inverse">反选</button></li>
+					<li class="inline"><button class="btn btn-info btn-small" id="check-cancel">取消选择</button></li>
+					<li class="inline"><button class="btn btn-danger btn-small" id="del-all">删除所选</button></li>
+				</ul>
 			</div>
-			<div class="inline">
-				<button class="btn btn-success btn-small" id="add">上传</button>
-			</div>
-			<ul class="inline" id="check-ctrl">
-				<li class="inline"><button class="btn btn-info btn-small" id="check-all">全选</button></li>
-				<li class="inline"><button class="btn btn-info btn-small" id="check-inverse">反选</button></li>
-				<li class="inline"><button class="btn btn-info btn-small" id="check-cancel">取消选择</button></li>
-				<li class="inline"><button class="btn btn-danger btn-small" id="del-all">删除所选</button></li>
-			</ul>
 		</nav>
 	</header>
 

@@ -23,7 +23,7 @@
 					<button class="btn btn-primary btn-small" id="find">查询</button>
 				</div>
 				<div class="inline">
-					<button class="btn btn-success btn-small" id="export">导出</button>
+					<!-- <button class="btn btn-success btn-small" id="export">导出</button> -->
 				</div>
 			</div>
 			<div>

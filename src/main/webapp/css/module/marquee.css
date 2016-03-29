@@ -1,3 +1,7 @@
+#check-ctrl {
+	margin: 0;
+}
+
 .color div, .background div {
 	width: 25px;
 	height: 25px;

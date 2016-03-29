@@ -41,7 +41,6 @@ public class OauthInterceptor extends AbstractInterceptor {
 		if (user != null) {
 			return invocation.invoke();
 		}
-
 		System.out.println("未登录");
 
 		// check type
@@ -55,23 +54,6 @@ public class OauthInterceptor extends AbstractInterceptor {
 			System.out.println("action redirect");
 			return "login";
 		}
-
-		// exception
-
-		// ActionProxy proxy = invocation.getProxy();
-		// System.out.println(proxy.getClass());
-		// System.out.println(proxy.getAction());
-		// System.out.println(proxy.getActionName());
-		// System.out.println(proxy.getMethod());
-		// System.out.println(proxy.getNamespace());
-		//
-		// Class<?> actionClass = proxy.getAction().getClass();
-		// System.out.println(actionClass.getName());
-		// Field[] fields = actionClass.getDeclaredFields();
-		// for (Field field : fields) {
-		// System.out.println(field.getName());
-		// }
-
 	}
 
 }

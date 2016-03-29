@@ -135,7 +135,9 @@ require([ "jquery", "modal", "page", "crud", "intercept", "validate" ], function
 			str += "<td class='type'></td>";
 			str += "<td class='location'></td>";
 			str += "<td class='version'></td>";
-			str += "<td class='process'><button class='btn btn-warning btn-small update'>修改</button><button class='btn btn-danger btn-small del'>删除</button></td>";
+			// str += "<td class='process'><button class='btn btn-warning
+			// btn-small update'>修改</button><button class='btn btn-danger
+			// btn-small del'>删除</button></td>";
 			str += "</tr>";
 
 			$.each(data.list || [], function(index, row) {

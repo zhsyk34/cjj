@@ -7,9 +7,9 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -25,30 +25,23 @@ import com.baiyi.order.vo.Record;
 
 public class ServerSockThread extends Thread {
 
-	/* service */
-	private TerminalService terminalService = null;
 	/* ServerSocket */
 	private ServerSocket server = null;
 	private final static int SERVERPORT = 5199;
 	private final static int POOLSIZE = 10;
 
-	private final Set<String> hostSet = new HashSet<>();
+	private final Map<String, String> hostMap = new HashMap<>();
 
 	// 初始化终端连线信息
 	public ServerSockThread() {
-		// terminalService = WebContext.terminalService;
-		// terminalConnectService = WebContext.terminalConnectService;
-
-		List<Terminal> terminals = terminalService.findList();
-		if (CollectionUtils.isEmpty(terminals)) {
-			return;
-		}
-
-		for (Terminal terminal : terminals) {
-			String terminalNo = terminal.getTerminalNo();
-			Record record = terminalService.findLastRecord(terminal.getId());
-			WebContext.ConnectMap.put(terminalNo, record);
-		}
+		// private TerminalService terminalService = null;
+		// List<Terminal> terminals = terminalService.findList();
+		// if (CollectionUtils.isNotEmpty(terminals)) {
+		// for (Terminal terminal : terminals) {
+		// Record record = terminalService.findLastRecord(terminal.getId());
+		// WebContext.ConnectMap.put(terminal.getTerminalNo(), record);
+		// }
+		// }
 	}
 
 	@Override
@@ -63,7 +56,7 @@ public class ServerSockThread extends Thread {
 				executorService.execute(new Handler(client));
 
 				String hostname = client.getInetAddress().getHostName();
-				hostSet.add(hostname);
+				hostMap.put(hostname, null);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -76,7 +69,7 @@ public class ServerSockThread extends Thread {
 }
 
 class Handler implements Runnable {
-	private TerminalService terminalService;
+	TerminalService terminalService = null;
 
 	private Socket socket = null;
 	private final static int BUFFERSIZE = 999999;
@@ -86,10 +79,11 @@ class Handler implements Runnable {
 	private ObjectOutputStream oos = null;
 
 	public Handler(Socket socket) {
-		// terminalConnectService = WebContext.terminalConnectService;
+		this.terminalService = null;
 		try {
 			this.socket = socket;
 			socket.setReceiveBufferSize(BUFFERSIZE);
+			socket.setKeepAlive(true);
 			oos = new ObjectOutputStream(socket.getOutputStream());
 			ois = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
 		} catch (IOException e) {
@@ -113,13 +107,7 @@ class Handler implements Runnable {
 				checknew = !(info instanceof TerminalConnect);
 				if (checknew) {
 					terminalConnect = (TerminalConnect) info;
-
 					terminalService.saveConnect(terminalConnect);
-
-					Record record = new Record();
-
-					terminalNo = record.getTerminalNo();
-
 				} else {
 					oos.writeObject("1||" + FREQUENCY);
 					oos.flush();

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import com.baiyi.order.model.User;
 
+//jsp过滤器
 public class LogonFilter implements Filter {
 
 	private final static String passuri = "/jsp/(logon|error|)\\.jsp.*";

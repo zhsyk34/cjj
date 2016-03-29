@@ -69,21 +69,24 @@
 
 	<!-- editor dialog -->
 	<div id="editor">
-		<table class="table table-edit">
+		<table class="table">
 			<tbody>
 				<tr>
-					<td id="show"><div class="info">
+					<td id="show">
+						<div class="info">
 							<div class="wrap">
 								<img src="" alt="">
 								<div class="desc">
 									<label class="name"></label> <label class="price"></label>
 								</div>
 							</div>
-						</div></td>
-					<td><table class="table table-edit table-hover">
+						</div>
+					</td>
+					<td>
+						<table class="table table-edit table-hover">
 							<tbody>
 								<tr>
-									<th>名称</th>
+									<th width="15%">名称</th>
 									<td><input id="id" type="hidden"><input class="text" id="name"></td>
 								</tr>
 								<tr>
@@ -110,14 +113,15 @@
 								</tr>
 								<tr>
 									<th>介绍</th>
-									<td><textarea class="text" id="introduction" rows="5" cols="50"></textarea></td>
+									<td><textarea class="text" id="introduction" rows="5" cols="30"></textarea></td>
 								</tr>
 								<tr>
 									<th>调味</th>
 									<td><div id="taste"></div></td>
 								</tr>
 							</tbody>
-						</table></td>
+						</table>
+					</td>
 				</tr>
 			</tbody>
 		</table>

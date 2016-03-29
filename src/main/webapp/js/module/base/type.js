@@ -1,9 +1,12 @@
-require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate" ], function($, modal, page, checkctrl, crud, intercept, validate) {
+require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "message", "validate" ], function($, modal, page, checkctrl, crud, intercept, message, validate) {
 	checkctrl.table($(".main table"));
 	dialog();
 	search();
 	find();
 	remove();
+
+	var aaa = $.prop("name");
+	console.log(aaa)
 
 	function dialog() {
 		$("#editor").modal({

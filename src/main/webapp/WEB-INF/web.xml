@@ -13,7 +13,15 @@
 	</listener>
 
 	<!-- logon filter -->
-	<!-- <filter> <filter-name>logon</filter-name> <filter-class>com.baiyi.order.web.LogonFilter</filter-class> </filter> <filter-mapping> <filter-name>logon</filter-name> <url-pattern>/jsp/*</url-pattern> </filter-mapping> -->
+	<filter>
+		<filter-name>logon</filter-name>
+		<filter-class>com.baiyi.order.web.LogonFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>logon</filter-name>
+		<url-pattern>/jsp/*</url-pattern>
+	</filter-mapping>
+	
 	<!-- struts filter -->
 	<filter>
 		<filter-name>struts2</filter-name>

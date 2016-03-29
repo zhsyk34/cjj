@@ -14,24 +14,28 @@
 	<header>
 		<h3>跑马灯</h3>
 		<nav>
-			<div class="inline group">
-				<label class="addon" for="search-title">标题</label><input id="search-title" class="text">
+			<div>
+				<div class="inline group">
+					<label class="addon" for="search-title">标题</label><input id="search-title" class="text">
+				</div>
+				<div class="inline group">
+					<label class="addon" for="search-content">内容</label><input id="search-content" class="text">
+				</div>
+				<div class="inline">
+					<button class="btn btn-primary btn-small" id="find">查询</button>
+				</div>
+				<div class="inline">
+					<button class="btn btn-success btn-small" id="add">增加</button>
+				</div>
 			</div>
-			<div class="inline group">
-				<label class="addon" for="search-content">内容</label><input id="search-content" class="text">
+			<div>
+				<ul class="inline" id="check-ctrl">
+					<li class="inline"><button class="btn btn-info btn-small" id="check-all">全选</button></li>
+					<li class="inline"><button class="btn btn-info btn-small" id="check-inverse">反选</button></li>
+					<li class="inline"><button class="btn btn-info btn-small" id="check-cancel">取消选择</button></li>
+					<li class="inline"><button class="btn btn-danger btn-small" id="del-all">删除所选</button></li>
+				</ul>
 			</div>
-			<div class="inline">
-				<button class="btn btn-primary btn-small" id="find">查询</button>
-			</div>
-			<div class="inline">
-				<button class="btn btn-success btn-small" id="add">增加</button>
-			</div>
-			<ul class="inline" id="check-ctrl">
-				<li class="inline"><button class="btn btn-info btn-small" id="check-all">全选</button></li>
-				<li class="inline"><button class="btn btn-info btn-small" id="check-inverse">反选</button></li>
-				<li class="inline"><button class="btn btn-info btn-small" id="check-cancel">取消选择</button></li>
-				<li class="inline"><button class="btn btn-danger btn-small" id="del-all">删除所选</button></li>
-			</ul>
 		</nav>
 	</header>
 

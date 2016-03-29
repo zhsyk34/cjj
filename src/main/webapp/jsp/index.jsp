@@ -3,7 +3,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <html>
 <head>
-<title>首页</title>
+<title><s:text name="index-title" /></title>
 <link rel="stylesheet" href="css/lib/init.css">
 <link rel="stylesheet" href="css/module/index.css">
 </head>
@@ -12,7 +12,9 @@
 		<nav id="nav">
 			<div id="logo"></div>
 			<div id="welcome">
-				欢迎<span><s:property value="#session.user.name" /> </span>登录
+				<s:text name="index-welcome" />
+				<span><s:property value="#session.user.name" /></span>
+				<s:text name="index-logon" />
 			</div>
 			<div class="accordion">
 				<p>数据管理</p>

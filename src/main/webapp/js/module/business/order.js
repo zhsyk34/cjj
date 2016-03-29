@@ -287,11 +287,11 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			str += "<td class='orderNo'></td>";
 			str += "<td class='shop'></td>";
 			str += "<td class='kitchen'></td>";
-			str += "<td class='content'><button class='btn btn-success btn-small show'>查看</button></td>";
 			str += "<td class='total'></td>";
 			str += "<td class='income'></td>";
 			str += "<td class='expense'></td>";
 			str += "<td class='createtime'></td>";
+			str += "<td class='content'><button class='btn btn-success btn-small show'>查看</button></td>";
 			str += "<td class='edit'><button class='btn btn-warning btn-small update'>修改</button><button class='btn btn-danger btn-small del'>撤销</button></td>";
 			str += "</tr>";
 
@@ -310,6 +310,8 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 
 				$("#data").append(tr);
 			});
+			// TODO
+			$(".edit").hide();
 		}
 	}
 });

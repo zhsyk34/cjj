@@ -10,6 +10,7 @@ import javax.servlet.ServletContext;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
 
 import com.baiyi.order.model.User;
@@ -17,7 +18,7 @@ import com.baiyi.order.service.TerminalService;
 import com.baiyi.order.service.UserService;
 import com.baiyi.order.vo.Record;
 
-//@Component
+@Component
 public class WebContext implements ServletContextAware, InitializingBean {
 
 	/* 系统配置 */
