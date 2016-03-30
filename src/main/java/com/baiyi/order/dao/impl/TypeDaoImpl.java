@@ -23,11 +23,8 @@ public class TypeDaoImpl extends CommonsDaoImpl<Type> implements TypeDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Type find(String name) {
-		List<Type> typeList = (List<Type>) hibernateTemplate.find("from Type as type where type.name = ?", name);
-		if (CollectionUtils.isEmpty(typeList)) {
-			return null;
-		}
-		return typeList.get(0);
+		List<Type> list = (List<Type>) hibernateTemplate.find("from Type as type where type.name = ?", name);
+		return CollectionUtils.isEmpty(list) ? null : list.get(0);
 	}
 
 	@Override

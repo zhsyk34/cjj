@@ -1,14 +1,3 @@
-require.config({
-	baseUrl : "js",
-	shim : {
-		"modal" : [ "jquery" ]
-	},
-	paths : {
-		"jquery" : "lib/jquery",
-		"modal" : "lib/zhsy/js/modal"
-	}
-});
-
 require([ "jquery", "modal" ], function($, modal) {
 	$("#login").on("click", function() {
 		var name = $("#name").val();
@@ -26,7 +15,7 @@ require([ "jquery", "modal" ], function($, modal) {
 		}
 
 		$.ajax({
-			url : "json/User_login",// TODO
+			url : "json/User_login",
 			traditional : true,
 			async : false,
 			data : {
@@ -35,7 +24,8 @@ require([ "jquery", "modal" ], function($, modal) {
 			},
 			success : function(data) {
 				if (data.result == "success") {
-					window.location.href = "jsp/index.jsp";
+					var basePath = location.protocol + "//" + location.host + "/" + location.pathname.split(/\//)[1];
+					window.location.href = basePath + "/jsp/index.jsp";
 				}
 				if (data.result == "fail") {
 					alert("用户名密码不正确,请重新登录");
@@ -43,4 +33,5 @@ require([ "jquery", "modal" ], function($, modal) {
 			}
 		});
 	});
+
 });

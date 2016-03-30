@@ -21,7 +21,8 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "tool", "
 	function logout() {
 		$("#logout").on("click", function() {
 			$.post("json/User_logout");
-			window.location.href = "jsp/logon.jsp";
+			var basePath = location.protocol + "//" + location.host + "/" + location.pathname.split(/\//)[1];
+			location.href = basePath + "/jsp/logon.jsp";
 		});
 	}
 

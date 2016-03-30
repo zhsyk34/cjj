@@ -33,7 +33,7 @@ public class Template {
 	/* 模板内容 */
 	private TemplateContentEnum content;
 	private int interlude;// content == picture 轮播时间
-	private Effect effect;// content == picture 效果
+	private Effect effect;// content == picture 轮播效果
 
 	private Integer userId;
 
@@ -84,7 +84,7 @@ public class Template {
 		this.colcount = colcount;
 	}
 
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	public TemplateContentEnum getContent() {
 		return content;
 	}

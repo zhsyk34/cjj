@@ -16,10 +16,17 @@ public interface TemplateFoodDao {
 
 	public void delete(List<TemplateFood> templateFoods);
 
+	public void update(TemplateFood templateFood);
+
+	public void merge(TemplateFood templateFood);
+
+	public TemplateFood find(Integer id);
+
 	public List<TemplateFood> findList();
 
 	public List<TemplateFood> findList(Integer templateId, Integer foodId);
 
+	/**/
 	public void deleteByTemplateId(Integer templateId);
 
 }

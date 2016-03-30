@@ -22,13 +22,13 @@ public class TemplateMaterialDaoImpl extends CommonsDaoImpl<TemplateMaterial> im
 	}
 
 	@Override
-	public List<TemplateMaterial> findList(Integer type, Integer templateId, Integer materialId) {
+	public List<TemplateMaterial> findList(TemplateMaterialEnum type, Integer templateId, Integer materialId) {
 		StringBuffer queryString = new StringBuffer("from TemplateMaterial as templateMaterial where 1 = 1");
 		Map<String, Object> map = new HashMap<>();
 
-		if (ValidateUtil.isPK(type)) {
+		if (type != null) {
 			queryString.append(" and templateMaterial.type = :type");
-			map.put("type", TemplateMaterialEnum.values()[type - 1]);
+			map.put("type", type);
 		}
 		if (ValidateUtil.isPK(templateId)) {
 			queryString.append(" and templateMaterial.templateId = :templateId");

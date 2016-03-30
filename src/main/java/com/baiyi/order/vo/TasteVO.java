@@ -12,13 +12,13 @@ public class TasteVO {
 
 	private Integer styleId;
 
+	private String styleName;// VO
+
 	private Integer userId;
 
 	private Date createtime;
 
 	private Date updatetime;
-
-	private String styleName;
 
 	public Integer getId() {
 		return id;
@@ -52,6 +52,14 @@ public class TasteVO {
 		this.styleId = styleId;
 	}
 
+	public String getStyleName() {
+		return styleName;
+	}
+
+	public void setStyleName(String styleName) {
+		this.styleName = styleName;
+	}
+
 	public Integer getUserId() {
 		return userId;
 	}
@@ -75,13 +83,4 @@ public class TasteVO {
 	public void setUpdatetime(Date updatetime) {
 		this.updatetime = updatetime;
 	}
-
-	public String getStyleName() {
-		return styleName;
-	}
-
-	public void setStyleName(String styleName) {
-		this.styleName = styleName;
-	}
-
 }

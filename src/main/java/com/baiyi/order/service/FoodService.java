@@ -7,7 +7,9 @@ import com.baiyi.order.vo.FoodVO;
 
 public interface FoodService {
 
-	public void save(Food food, Integer[] tasteIds);
+	public void save(Food food);
+
+	public void save(Food food, Integer[] tasteIds, Integer[] styleIds);
 
 	public void delete(Integer id);
 
@@ -17,9 +19,13 @@ public interface FoodService {
 
 	public void delete(List<Food> foods);
 
-	public void update(Food food, Integer[] tasteIds);
+	public void update(Food food);
 
-	public void merge(Food food, Integer[] tasteIds);
+	public void update(Food food, Integer[] tasteIds, Integer[] styleIds);
+
+	public void merge(Food food);
+
+	public void merge(Food food, Integer[] tasteIds, Integer[] styleIds);
 
 	public Food find(Integer id);
 

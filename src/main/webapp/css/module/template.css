@@ -44,7 +44,9 @@
 
 #marqueeList .thumbnail>div {
 	display: block;
-	width: auto;
+	border: 1px solid #eee;
+	width: 80px;
+	height: 40px;
 	margin: 5px 0;
 }
 

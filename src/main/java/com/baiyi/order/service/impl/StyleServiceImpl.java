@@ -7,21 +7,23 @@ import javax.annotation.Resource;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
+import com.baiyi.order.dao.FoodStyleDao;
 import com.baiyi.order.dao.StyleDao;
 import com.baiyi.order.dao.TasteDao;
+import com.baiyi.order.model.FoodStyle;
 import com.baiyi.order.model.Style;
 import com.baiyi.order.model.Taste;
 import com.baiyi.order.service.StyleService;
-import com.baiyi.order.util.ValidateUtil;
 
 @Service
 public class StyleServiceImpl implements StyleService {
 
 	@Resource
 	private StyleDao styleDao;
-
 	@Resource
 	private TasteDao tasteDao;
+	@Resource
+	private FoodStyleDao foodStyleDao;
 
 	@Override
 	public void save(Style style) {
@@ -91,22 +93,14 @@ public class StyleServiceImpl implements StyleService {
 	@Override
 	public boolean exist(Integer id, String name) {
 		Style style = this.find(name);
-		if (style == null) {
-			return false;
-		}
-		if (!ValidateUtil.isPK(id)) {
-			return true;
-		}
-		return !style.getId().equals(id);
+		return style == null ? false : !style.getId().equals(id);
 	}
 
 	@Override
 	public boolean relate(Integer id) {
-		List<Taste> tasteList = tasteDao.findList(null, id, null);
-		if (CollectionUtils.isNotEmpty(tasteList)) {
-			return true;
-		}
-		return false;
+		List<Taste> tastes = tasteDao.findList(null, id, null);
+		List<FoodStyle> foodStyles = foodStyleDao.findList(null, id);
+		return CollectionUtils.isNotEmpty(tastes) || CollectionUtils.isNotEmpty(foodStyles);
 	}
 
 	@Override

@@ -12,7 +12,6 @@ import com.baiyi.order.dao.TasteDao;
 import com.baiyi.order.model.FoodTaste;
 import com.baiyi.order.model.Taste;
 import com.baiyi.order.service.TasteService;
-import com.baiyi.order.util.ValidateUtil;
 import com.baiyi.order.vo.TasteVO;
 
 @Service
@@ -20,7 +19,6 @@ public class TasteServiceImpl implements TasteService {
 
 	@Resource
 	private TasteDao tasteDao;
-
 	@Resource
 	private FoodTasteDao foodTasteDao;
 
@@ -102,22 +100,13 @@ public class TasteServiceImpl implements TasteService {
 	@Override
 	public boolean exist(Integer id, String name) {
 		Taste taste = this.find(name);
-		if (taste == null) {
-			return false;
-		}
-		if (!ValidateUtil.isPK(id)) {
-			return true;
-		}
-		return !taste.getId().equals(id);
+		return taste == null ? false : !taste.getId().equals(id);
 	}
 
 	@Override
 	public boolean relate(Integer id) {
-		List<FoodTaste> foodTasteList = foodTasteDao.findList(null, id);
-		if (CollectionUtils.isNotEmpty(foodTasteList)) {
-			return true;
-		}
-		return false;
+		List<FoodTaste> list = foodTasteDao.findList(null, id);
+		return CollectionUtils.isNotEmpty(list);
 	}
 
 	@Override

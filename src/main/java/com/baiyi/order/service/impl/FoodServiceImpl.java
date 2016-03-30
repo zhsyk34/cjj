@@ -9,17 +9,15 @@ import org.springframework.stereotype.Service;
 
 import com.baiyi.order.dao.ActivityDao;
 import com.baiyi.order.dao.FoodDao;
+import com.baiyi.order.dao.FoodStyleDao;
 import com.baiyi.order.dao.FoodTasteDao;
 import com.baiyi.order.dao.TemplateFoodDao;
-import com.baiyi.order.dao.TerminalDao;
 import com.baiyi.order.model.Activity;
 import com.baiyi.order.model.Food;
+import com.baiyi.order.model.FoodStyle;
 import com.baiyi.order.model.FoodTaste;
 import com.baiyi.order.model.TemplateFood;
-import com.baiyi.order.model.Terminal;
 import com.baiyi.order.service.FoodService;
-import com.baiyi.order.util.EnumList.ActivityTypeEnum;
-import com.baiyi.order.util.EnumList.TerminalTypeEnum;
 import com.baiyi.order.util.ValidateUtil;
 import com.baiyi.order.vo.FoodVO;
 
@@ -31,14 +29,19 @@ public class FoodServiceImpl implements FoodService {
 	@Resource
 	private FoodTasteDao foodTasteDao;
 	@Resource
+	private FoodStyleDao foodStyleDao;
+	@Resource
 	private TemplateFoodDao templateFoodDao;
 	@Resource
 	private ActivityDao activityDao;
-	@Resource
-	private TerminalDao terminalDao;
 
 	@Override
-	public void save(Food food, Integer[] tasteIds) {
+	public void save(Food food) {
+		foodDao.save(food);
+	}
+
+	@Override
+	public void save(Food food, Integer[] tasteIds, Integer[] styleIds) {
 		foodDao.save(food);
 		Integer foodId = food.getId();
 
@@ -50,28 +53,28 @@ public class FoodServiceImpl implements FoodService {
 				foodTasteDao.save(foodTaste);
 			}
 		}
-
-		List<Terminal> terminals = terminalDao.findList(null, TerminalTypeEnum.KITCHEN, null);
-		if (CollectionUtils.isNotEmpty(terminals)) {
-			for (Terminal terminal : terminals) {
-				Activity activity = new Activity();
-				activity.setKitchenId(terminal.getId());
-				activity.setFoodId(foodId);
-				activity.setType(ActivityTypeEnum.NORMAL);
-				activityDao.save(activity);
+		if (ValidateUtil.isNotEmpty(styleIds)) {
+			for (Integer styleId : styleIds) {
+				FoodStyle foodStyle = new FoodStyle();
+				foodStyle.setFoodId(foodId);
+				foodStyle.setStyleId(styleId);
+				foodStyleDao.save(foodStyle);
 			}
 		}
 	}
 
 	@Override
 	public void delete(Integer id) {
-		foodDao.delete(id);
-
 		List<FoodTaste> foodTastes = foodTasteDao.findList(id, null);
 		foodTasteDao.delete(foodTastes);
 
+		List<FoodStyle> foodStyles = foodStyleDao.findList(id, null);
+		foodStyleDao.delete(foodStyles);
+
 		List<Activity> activities = activityDao.findList(null, id, null, null);
 		activityDao.delete(activities);
+
+		foodDao.delete(id);
 	}
 
 	@Override
@@ -98,12 +101,19 @@ public class FoodServiceImpl implements FoodService {
 	}
 
 	@Override
-	public void update(Food food, Integer[] tasteIds) {
+	public void update(Food food) {
 		foodDao.update(food);
+	}
 
+	@Override
+	public void update(Food food, Integer[] tasteIds, Integer[] styleIds) {
+		foodDao.update(food);
 		Integer foodId = food.getId();
+
 		List<FoodTaste> foodTastes = foodTasteDao.findList(foodId, null);
 		foodTasteDao.delete(foodTastes);
+		List<FoodStyle> foodStyles = foodStyleDao.findList(foodId, null);
+		foodStyleDao.delete(foodStyles);
 
 		if (ValidateUtil.isNotEmpty(tasteIds)) {
 			for (Integer tasteId : tasteIds) {
@@ -113,15 +123,27 @@ public class FoodServiceImpl implements FoodService {
 				foodTasteDao.save(foodTaste);
 			}
 		}
+		if (ValidateUtil.isNotEmpty(styleIds)) {
+			for (Integer styleId : styleIds) {
+				FoodStyle foodStyle = new FoodStyle();
+				foodStyle.setFoodId(foodId);
+				foodStyle.setStyleId(styleId);
+				foodStyleDao.save(foodStyle);
+			}
+		}
 	}
 
 	@Override
-	public void merge(Food food, Integer[] tasteIds) {
-		Integer foodId = food.getId();
-		if (ValidateUtil.isPK(foodId)) {
-			this.update(food, tasteIds);
+	public void merge(Food food) {
+		foodDao.merge(food);
+	}
+
+	@Override
+	public void merge(Food food, Integer[] tasteIds, Integer[] styleIds) {
+		if (ValidateUtil.isPK(food.getId())) {
+			this.update(food, tasteIds, styleIds);
 		} else {
-			this.save(food, tasteIds);
+			this.save(food, tasteIds, styleIds);
 		}
 	}
 
@@ -177,20 +199,14 @@ public class FoodServiceImpl implements FoodService {
 
 	@Override
 	public boolean exist(Integer id, String name) {
-		Food food = this.find(name);
-		if (food == null) {
-			return false;
-		}
-		if (!ValidateUtil.isPK(id)) {
-			return true;
-		}
-		return !food.getId().equals(id);
+		Food food = foodDao.find(name);
+		return food == null ? false : !food.getId().equals(id);
 	}
 
 	@Override
 	public boolean relate(Integer id) {
-		List<TemplateFood> templateFoodList = templateFoodDao.findList(null, id);
-		return CollectionUtils.isNotEmpty(templateFoodList);
+		List<TemplateFood> list = templateFoodDao.findList(null, id);
+		return CollectionUtils.isNotEmpty(list);
 	}
 
 	@Override

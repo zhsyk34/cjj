@@ -34,7 +34,7 @@ public class FoodAction extends CommonsAction {
 		food.setUserId(userId);
 		food.setCreatetime(new Date());
 
-		foodService.save(food, tasteIds);
+		foodService.save(food, tasteIds, styleIds);
 		jsonData.put("result", Feedback.CREATE.toString());
 		return SUCCESS;
 	}
@@ -71,7 +71,7 @@ public class FoodAction extends CommonsAction {
 		food.setUserId(userId);
 		food.setUpdatetime(new Date());
 
-		foodService.update(food, tasteIds);
+		foodService.update(food, tasteIds, styleIds);
 		jsonData.put("result", Feedback.UPDATE.toString());
 		return SUCCESS;
 	}
@@ -105,22 +105,17 @@ public class FoodAction extends CommonsAction {
 
 	/**/
 	private Integer id;
-
 	private Integer[] ids;
-
-	private Integer[] tasteIds;
-
 	private String name;
 	private String abbreviation;
 	private String nickname;
-
 	private double price;
-
 	private Integer typeId;
-
 	private Integer materialId;
-
 	private String introduction;
+
+	private Integer[] tasteIds;
+	private Integer[] styleIds;
 
 	public Integer getId() {
 		return id;
@@ -136,14 +131,6 @@ public class FoodAction extends CommonsAction {
 
 	public void setIds(Integer[] ids) {
 		this.ids = ids;
-	}
-
-	public Integer[] getTasteIds() {
-		return tasteIds;
-	}
-
-	public void setTasteIds(Integer[] tasteIds) {
-		this.tasteIds = tasteIds;
 	}
 
 	public String getName() {
@@ -200,6 +187,22 @@ public class FoodAction extends CommonsAction {
 
 	public void setIntroduction(String introduction) {
 		this.introduction = introduction;
+	}
+
+	public Integer[] getTasteIds() {
+		return tasteIds;
+	}
+
+	public void setTasteIds(Integer[] tasteIds) {
+		this.tasteIds = tasteIds;
+	}
+
+	public Integer[] getStyleIds() {
+		return styleIds;
+	}
+
+	public void setStyleIds(Integer[] styleIds) {
+		this.styleIds = styleIds;
 	}
 
 }

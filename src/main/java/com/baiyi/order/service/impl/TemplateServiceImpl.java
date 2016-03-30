@@ -27,13 +27,10 @@ public class TemplateServiceImpl implements TemplateService {
 
 	@Resource
 	private TemplateDao templateDao;
-
 	@Resource
 	private TemplateFoodDao templateFoodDao;
-
 	@Resource
 	private TemplateMaterialDao templateMaterialDao;
-
 	@Resource
 	private TemplateMarqueeDao templateMarqueeDao;
 

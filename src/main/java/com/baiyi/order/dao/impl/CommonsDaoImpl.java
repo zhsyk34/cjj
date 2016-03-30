@@ -15,6 +15,7 @@ import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 
 import com.baiyi.order.dao.CommonsDao;
+import com.baiyi.order.util.ValidateUtil;
 
 public class CommonsDaoImpl<Entity> implements CommonsDao<Entity> {
 
@@ -45,13 +46,15 @@ public class CommonsDaoImpl<Entity> implements CommonsDao<Entity> {
 
 	@Override
 	public void delete(Integer[] ids) {
-		hibernateTemplate.execute(new HibernateCallback<Integer>() {
-			@Override
-			public Integer doInHibernate(Session session) throws HibernateException {
-				String queryString = "delete from " + entityClass.getSimpleName() + " where id in (:ids)";
-				return session.createQuery(queryString).setParameterList("ids", ids).executeUpdate();
-			}
-		});
+		if (ValidateUtil.isNotEmpty(ids)) {
+			hibernateTemplate.execute(new HibernateCallback<Integer>() {
+				@Override
+				public Integer doInHibernate(Session session) throws HibernateException {
+					String queryString = "delete from " + entityClass.getSimpleName() + " where id in (:ids)";
+					return session.createQuery(queryString).setParameterList("ids", ids).executeUpdate();
+				}
+			});
+		}
 	}
 
 	@Override

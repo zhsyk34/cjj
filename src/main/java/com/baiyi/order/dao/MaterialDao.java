@@ -2,7 +2,6 @@ package com.baiyi.order.dao;
 
 import java.util.List;
 
-import com.baiyi.order.model.Food;
 import com.baiyi.order.model.Material;
 import com.baiyi.order.util.EnumList.MaterialTypeEnum;
 
@@ -34,6 +33,4 @@ public interface MaterialDao {
 
 	public int count(String name, MaterialTypeEnum type, Integer userId);
 
-	/**/
-	public Food findFood(Integer id);
 }

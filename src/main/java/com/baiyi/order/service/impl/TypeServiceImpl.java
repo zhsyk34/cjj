@@ -12,14 +12,12 @@ import com.baiyi.order.dao.TypeDao;
 import com.baiyi.order.model.Food;
 import com.baiyi.order.model.Type;
 import com.baiyi.order.service.TypeService;
-import com.baiyi.order.util.ValidateUtil;
 
 @Service
 public class TypeServiceImpl implements TypeService {
 
 	@Resource
 	private TypeDao typeDao;
-
 	@Resource
 	private FoodDao foodDao;
 
@@ -91,22 +89,13 @@ public class TypeServiceImpl implements TypeService {
 	@Override
 	public boolean exist(Integer id, String name) {
 		Type type = this.find(name);
-		if (type == null) {
-			return false;
-		}
-		if (!ValidateUtil.isPK(id)) {
-			return true;
-		}
-		return !type.getId().equals(id);
+		return type == null ? false : !type.getId().equals(id);
 	}
 
 	@Override
 	public boolean relate(Integer id) {
-		List<Food> foodList = foodDao.findList(null, id, null);
-		if (CollectionUtils.isNotEmpty(foodList)) {
-			return true;
-		}
-		return false;
+		List<Food> list = foodDao.findList(null, id, null);
+		return CollectionUtils.isNotEmpty(list);
 	}
 
 	@Override

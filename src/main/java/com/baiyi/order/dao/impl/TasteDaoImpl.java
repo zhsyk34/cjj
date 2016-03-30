@@ -27,11 +27,8 @@ public class TasteDaoImpl extends CommonsDaoImpl<Taste> implements TasteDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Taste find(String name) {
-		List<Taste> tasteList = (List<Taste>) hibernateTemplate.find("from Taste as taste where taste.name = ?", name);
-		if (CollectionUtils.isEmpty(tasteList)) {
-			return null;
-		}
-		return tasteList.get(0);
+		List<Taste> list = (List<Taste>) hibernateTemplate.find("from Taste as taste where taste.name = ?", name);
+		return CollectionUtils.isEmpty(list) ? null : list.get(0);
 	}
 
 	@Override
@@ -101,11 +98,8 @@ public class TasteDaoImpl extends CommonsDaoImpl<Taste> implements TasteDao {
 		query.setResultTransformer(Transformers.aliasToBean(TasteVO.class));
 		query.setParameter("id", id);
 
-		List<TasteVO> tasteVOList = (List<TasteVO>) query.list();
-		if (CollectionUtils.isNotEmpty(tasteVOList)) {
-			return tasteVOList.get(0);
-		}
-		return null;
+		List<TasteVO> list = (List<TasteVO>) query.list();
+		return CollectionUtils.isEmpty(list) ? null : list.get(0);
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package com.baiyi.order.dao;
 import java.util.List;
 
 import com.baiyi.order.model.TemplateMaterial;
+import com.baiyi.order.util.EnumList.TemplateMaterialEnum;
 
 public interface TemplateMaterialDao {
 
@@ -18,7 +19,7 @@ public interface TemplateMaterialDao {
 
 	public List<TemplateMaterial> findList();
 
-	public List<TemplateMaterial> findList(Integer type, Integer templateId, Integer materialId);
+	public List<TemplateMaterial> findList(TemplateMaterialEnum type, Integer templateId, Integer materialId);
 
 	public void deleteByTemplateId(Integer templateId);
 

@@ -9,7 +9,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.baiyi.order.dao.MaterialDao;
-import com.baiyi.order.model.Food;
 import com.baiyi.order.model.Material;
 import com.baiyi.order.util.EnumList.MaterialTypeEnum;
 import com.baiyi.order.util.ValidateUtil;
@@ -25,11 +24,8 @@ public class MaterialDaoImpl extends CommonsDaoImpl<Material> implements Materia
 	@SuppressWarnings("unchecked")
 	@Override
 	public Material find(String name) {
-		List<Material> materialList = (List<Material>) hibernateTemplate.find("from Material as material where material.name = ?", name);
-		if (CollectionUtils.isEmpty(materialList)) {
-			return null;
-		}
-		return materialList.get(0);
+		List<Material> list = (List<Material>) hibernateTemplate.find("from Material as material where material.name = ?", name);
+		return CollectionUtils.isEmpty(list) ? null : list.get(0);
 	}
 
 	@Override
@@ -80,13 +76,4 @@ public class MaterialDaoImpl extends CommonsDaoImpl<Material> implements Materia
 		return super.count(queryString.toString(), map);
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public Food findFood(Integer id) {
-		List<Food> foodList = (List<Food>) hibernateTemplate.find("from Food as food where food.materialId = ?", id);
-		if (CollectionUtils.isEmpty(foodList)) {
-			return null;
-		}
-		return foodList.get(0);
-	}
 }

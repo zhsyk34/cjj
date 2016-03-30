@@ -116,17 +116,17 @@ require([ "jquery", "modal", "page", "slider", "spectrum", "checkctrl", "crud", 
 
 		var params = getParam();
 		if (!params.content) {
+			$("#preview").text("");
+			$("#wrap").css("background", "#fff");
 			return;
 		}
 
-		$("#wrap").css({
-			"background" : params.background
-		});
+		$("#wrap").css("background", params.background);
 
 		$("#preview").text(params.content);
 		$("#preview").css({
 			"color" : params.color,
-			"font-family" : params.font,
+			"font-family" : params.font,// TODO
 			"font-size" : params.size + "px"
 		});
 

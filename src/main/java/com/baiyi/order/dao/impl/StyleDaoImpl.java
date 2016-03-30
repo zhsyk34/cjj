@@ -23,11 +23,8 @@ public class StyleDaoImpl extends CommonsDaoImpl<Style> implements StyleDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Style find(String name) {
-		List<Style> styleList = (List<Style>) hibernateTemplate.find("from Style as style where style.name = ?", name);
-		if (CollectionUtils.isEmpty(styleList)) {
-			return null;
-		}
-		return styleList.get(0);
+		List<Style> list = (List<Style>) hibernateTemplate.find("from Style as style where style.name = ?", name);
+		return CollectionUtils.isEmpty(list) ? null : list.get(0);
 	}
 
 	@Override

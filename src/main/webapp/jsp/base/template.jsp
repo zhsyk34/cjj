@@ -66,10 +66,10 @@
 					<th>布局</th>
 					<td>
 						<div class="inline">
-							<label for="rowcount">行数</label><input class="text" value="25" id="rowcount">
+							<input class="text" value="25" id="rowcount" placeholder="行数">
 						</div>
 						<div class="inline">
-							<label for="colcount">列数</label><input class="text" value="3" id="colcount">
+							<input class="text" value="3" id="colcount" placeholder="列数">
 						</div>
 					</td>
 				</tr>

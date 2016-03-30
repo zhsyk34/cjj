@@ -4,20 +4,27 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
+import com.baiyi.order.dao.FoodDao;
 import com.baiyi.order.dao.MaterialDao;
+import com.baiyi.order.dao.TemplateMaterialDao;
 import com.baiyi.order.model.Food;
 import com.baiyi.order.model.Material;
+import com.baiyi.order.model.TemplateMaterial;
 import com.baiyi.order.service.MaterialService;
 import com.baiyi.order.util.EnumList.MaterialTypeEnum;
-import com.baiyi.order.util.ValidateUtil;
 
 @Service
 public class MaterialServiceImpl implements MaterialService {
 
 	@Resource
 	private MaterialDao materialDao;
+	@Resource
+	private FoodDao foodDao;
+	@Resource
+	private TemplateMaterialDao templateMaterialDao;
 
 	@Override
 	public void save(Material material) {
@@ -87,19 +94,14 @@ public class MaterialServiceImpl implements MaterialService {
 	@Override
 	public boolean exist(Integer id, String name) {
 		Material material = this.find(name);
-		if (material == null) {
-			return false;
-		}
-		if (!ValidateUtil.isPK(id)) {
-			return true;
-		}
-		return !material.getId().equals(id);
+		return material == null ? false : !material.getId().equals(id);
 	}
 
 	@Override
-	public boolean relate(Integer id) {
-		Food food = materialDao.findFood(id);
-		return food != null;
+	public boolean relate(Integer id) {// TODO check
+		Food food = foodDao.findByMaterial(id);
+		List<TemplateMaterial> list = templateMaterialDao.findList(null, null, id);
+		return food != null || CollectionUtils.isNotEmpty(list);
 	}
 
 	@Override

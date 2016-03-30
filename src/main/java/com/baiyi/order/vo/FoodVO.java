@@ -3,6 +3,7 @@ package com.baiyi.order.vo;
 import java.util.Date;
 import java.util.List;
 
+import com.baiyi.order.model.Style;
 import com.baiyi.order.model.Taste;
 
 public class FoodVO {
@@ -11,19 +12,19 @@ public class FoodVO {
 
 	private String name;
 
-	private String abbreviation;// 简称
+	private String abbreviation;
 
-	private String nickname;// 别名
+	private String nickname;
 
 	private double price;
 
 	private Integer typeId;
 
-	private String typeName;//
+	private String typeName;// VO
 
 	private Integer materialId;
 
-	private String path;//
+	private String path;// VO
 
 	private String introduction;
 
@@ -33,7 +34,9 @@ public class FoodVO {
 
 	private Date updatetime;
 
-	private List<Taste> tasteList;//
+	private List<Taste> tasteList;// VO
+
+	private List<Style> styleList;// VO
 
 	public Integer getId() {
 		return id;
@@ -146,4 +149,13 @@ public class FoodVO {
 	public void setTasteList(List<Taste> tasteList) {
 		this.tasteList = tasteList;
 	}
+
+	public List<Style> getStyleList() {
+		return styleList;
+	}
+
+	public void setStyleList(List<Style> styleList) {
+		this.styleList = styleList;
+	}
+
 }
