@@ -1,10 +1,13 @@
 package com.baiyi.order.dao.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Query;
@@ -34,11 +37,8 @@ public class TemplateDaoImpl extends CommonsDaoImpl<Template> implements Templat
 	@SuppressWarnings("unchecked")
 	@Override
 	public Template find(String name) {
-		List<Template> templateList = (List<Template>) hibernateTemplate.find("from Template as template where template.name = ?", name);
-		if (CollectionUtils.isEmpty(templateList)) {
-			return null;
-		}
-		return templateList.get(0);
+		List<Template> list = (List<Template>) hibernateTemplate.find("from Template as template where template.name = ?", name);
+		return CollectionUtils.isEmpty(list) ? null : list.get(0);
 	}
 
 	@Override
@@ -92,15 +92,14 @@ public class TemplateDaoImpl extends CommonsDaoImpl<Template> implements Templat
 		if (template == null) {
 			return null;
 		}
+
 		TemplateVO templateVO = new TemplateVO();
-		templateVO.setId(template.getId());
-		templateVO.setName(template.getName());
-		templateVO.setType(template.getType());
-		templateVO.setRowcount(template.getRowcount());
-		templateVO.setColcount(template.getColcount());
-		templateVO.setContent(template.getContent());
-		templateVO.setInterlude(template.getInterlude());
-		templateVO.setEffect(template.getEffect());
+		BeanUtilsBean.getInstance().getConvertUtils().register(false, true, 0);
+		try {
+			BeanUtils.copyProperties(templateVO, template);
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
 
 		// foodVO
 		StringBuffer queryString = new StringBuffer("select food.*, type.name as typeName, material.path");
@@ -135,23 +134,23 @@ public class TemplateDaoImpl extends CommonsDaoImpl<Template> implements Templat
 			break;
 		}
 
-		List<Material> logo = this.findMaterial(id, TemplateMaterialEnum.LOGO);
+		List<Material> logo = this.findMaterialList(id, TemplateMaterialEnum.LOGO);
 		if (CollectionUtils.isNotEmpty(logo)) {
 			templateVO.setLogo(logo.get(0));
 		}
 
-		List<Material> number = this.findMaterial(id, TemplateMaterialEnum.NUMBER);
+		List<Material> number = this.findMaterialList(id, TemplateMaterialEnum.NUMBER);
 		if (CollectionUtils.isNotEmpty(number)) {
 			templateVO.setNumber(number.get(0));
 		}
 
-		List<Material> videoList = this.findMaterial(id, TemplateMaterialEnum.VIDEO);
+		List<Material> videoList = this.findMaterialList(id, TemplateMaterialEnum.VIDEO);
 		templateVO.setVideoList(videoList);
 
-		List<Material> pictureList = this.findMaterial(id, TemplateMaterialEnum.PICTURE);
+		List<Material> pictureList = this.findMaterialList(id, TemplateMaterialEnum.PICTURE);
 		templateVO.setPictureList(pictureList);
 
-		List<Marquee> marqueeList = this.findMarquees(id);
+		List<Marquee> marqueeList = this.findMarqueeList(id);
 		templateVO.setMarqueeList(marqueeList);
 
 		return templateVO;
@@ -183,7 +182,7 @@ public class TemplateDaoImpl extends CommonsDaoImpl<Template> implements Templat
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Food> findFoods(Integer id) {
+	public List<Food> findFoodList(Integer id) {
 		StringBuffer queryString = new StringBuffer("select food from Food as food, TemplateFood as templateFood");
 		queryString.append(" where food.id = templateFood.foodId and templateFood.templateId = ?");
 		return (List<Food>) hibernateTemplate.find(queryString.toString(), id);
@@ -191,7 +190,7 @@ public class TemplateDaoImpl extends CommonsDaoImpl<Template> implements Templat
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Material> findMaterial(Integer id, TemplateMaterialEnum type) {
+	public List<Material> findMaterialList(Integer id, TemplateMaterialEnum type) {
 		StringBuffer queryString = new StringBuffer("select material from Material as material, TemplateMaterial as templateMaterial");
 		queryString.append(" where material.id = templateMaterial.materialId and templateMaterial.templateId = ? and templateMaterial.type = ?");
 		return (List<Material>) hibernateTemplate.find(queryString.toString(), id, type);
@@ -199,7 +198,7 @@ public class TemplateDaoImpl extends CommonsDaoImpl<Template> implements Templat
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Marquee> findMarquees(Integer id) {
+	public List<Marquee> findMarqueeList(Integer id) {
 		StringBuffer queryString = new StringBuffer("select marquee from Marquee as marquee, TemplateMarquee as templateMarquee");
 		queryString.append(" where marquee.id = templateMarquee.marqueeId and templateMarquee.templateId = ?");
 		return (List<Marquee>) hibernateTemplate.find(queryString.toString(), id);

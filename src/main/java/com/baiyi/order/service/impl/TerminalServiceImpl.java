@@ -186,8 +186,8 @@ public class TerminalServiceImpl implements TerminalService {
 		List<TerminalVO> list = new ArrayList<>();
 		for (Terminal terminal : terminals) {
 			TerminalVO terminalVO = new TerminalVO();
-
-			BeanUtilsBean.getInstance().getConvertUtils().register(false, false, 0);
+			//
+			BeanUtilsBean.getInstance().getConvertUtils().register(false, true, 0);
 			try {
 				BeanUtils.copyProperties(terminalVO, terminal);
 			} catch (IllegalAccessException | InvocationTargetException e) {

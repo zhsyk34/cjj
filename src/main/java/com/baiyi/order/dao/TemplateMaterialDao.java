@@ -17,10 +17,14 @@ public interface TemplateMaterialDao {
 
 	public void delete(List<TemplateMaterial> templateMaterials);
 
+	public void update(TemplateMaterial templateMaterial);
+
+	public void merge(TemplateMaterial templateMaterial);
+
+	public TemplateMaterial find(Integer id);
+
 	public List<TemplateMaterial> findList();
 
 	public List<TemplateMaterial> findList(TemplateMaterialEnum type, Integer templateId, Integer materialId);
-
-	public void deleteByTemplateId(Integer templateId);
 
 }

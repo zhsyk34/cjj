@@ -1,5 +1,6 @@
 package com.baiyi.order.vo;
 
+import java.util.Date;
 import java.util.List;
 
 import com.baiyi.order.model.Marquee;
@@ -14,25 +15,28 @@ public class TemplateVO {
 
 	private String name;
 
-	private Material logo;
-
 	private TemplateTypeEnum type;
 	private int rowcount;
 	private int colcount;
 
 	private TemplateContentEnum content;
-
-	private List<FoodVO> foodList;
-
-	private Material number;
-
-	private List<Material> videoList;
-
-	private List<Material> pictureList;
 	private int interlude;
 	private Effect effect;
 
-	private List<Marquee> marqueeList;
+	private Integer userId;
+
+	private Date createtime;
+
+	private Date updatetime;
+
+	private List<FoodVO> foodList;// VO
+	
+	private Material logo;// VO
+	private Material number;// VO
+	private List<Material> videoList;// VO
+	private List<Material> pictureList;// VO
+	
+	private List<Marquee> marqueeList;// VO
 
 	public Integer getId() {
 		return id;
@@ -48,14 +52,6 @@ public class TemplateVO {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Material getLogo() {
-		return logo;
-	}
-
-	public void setLogo(Material logo) {
-		this.logo = logo;
 	}
 
 	public TemplateTypeEnum getType() {
@@ -90,12 +86,60 @@ public class TemplateVO {
 		this.content = content;
 	}
 
+	public int getInterlude() {
+		return interlude;
+	}
+
+	public void setInterlude(int interlude) {
+		this.interlude = interlude;
+	}
+
+	public Effect getEffect() {
+		return effect;
+	}
+
+	public void setEffect(Effect effect) {
+		this.effect = effect;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	public Date getCreatetime() {
+		return createtime;
+	}
+
+	public void setCreatetime(Date createtime) {
+		this.createtime = createtime;
+	}
+
+	public Date getUpdatetime() {
+		return updatetime;
+	}
+
+	public void setUpdatetime(Date updatetime) {
+		this.updatetime = updatetime;
+	}
+
 	public List<FoodVO> getFoodList() {
 		return foodList;
 	}
 
 	public void setFoodList(List<FoodVO> foodList) {
 		this.foodList = foodList;
+	}
+
+	public Material getLogo() {
+		return logo;
+	}
+
+	public void setLogo(Material logo) {
+		this.logo = logo;
 	}
 
 	public Material getNumber() {
@@ -120,22 +164,6 @@ public class TemplateVO {
 
 	public void setPictureList(List<Material> pictureList) {
 		this.pictureList = pictureList;
-	}
-
-	public int getInterlude() {
-		return interlude;
-	}
-
-	public void setInterlude(int interlude) {
-		this.interlude = interlude;
-	}
-
-	public Effect getEffect() {
-		return effect;
-	}
-
-	public void setEffect(Effect effect) {
-		this.effect = effect;
 	}
 
 	public List<Marquee> getMarqueeList() {

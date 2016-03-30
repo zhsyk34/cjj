@@ -13,8 +13,6 @@ public class RandomUtil {
 
 	public static char randomChar() {
 		String charStr = "abcdefghijklmnopqrstuvwxyz";
-
-		// return (char) (int) (Math.random() * 26 + 97);
 		return charStr.charAt((int) (Math.random() * 26));
 	}
 

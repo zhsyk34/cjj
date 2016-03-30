@@ -11,6 +11,7 @@ import com.baiyi.order.dao.TemplateDao;
 import com.baiyi.order.dao.TemplateFoodDao;
 import com.baiyi.order.dao.TemplateMarqueeDao;
 import com.baiyi.order.dao.TemplateMaterialDao;
+import com.baiyi.order.dao.TerminalTemplateDao;
 import com.baiyi.order.model.Template;
 import com.baiyi.order.model.TemplateFood;
 import com.baiyi.order.model.TemplateMarquee;
@@ -33,46 +34,49 @@ public class TemplateServiceImpl implements TemplateService {
 	private TemplateMaterialDao templateMaterialDao;
 	@Resource
 	private TemplateMarqueeDao templateMarqueeDao;
+	@Resource
+	private TerminalTemplateDao terminalTemplateDao;
+
+	@Override
+	public void save(Template template) {
+		templateDao.save(template);
+	}
 
 	@Override
 	public void save(Template template, Integer[] foodIds, Integer logoId, Integer numberId, Integer[] videoIds, Integer[] pictureIds, Integer[] marqueeIds) {
 		templateDao.save(template);
 		Integer templateId = template.getId();
 
-		TemplateFood templateFood = null;
-		TemplateMaterial templateMaterial = null;
-		TemplateMarquee templateMarquee = null;
-
 		if (ValidateUtil.isNotEmpty(foodIds)) {
 			for (Integer foodId : foodIds) {
-				templateFood = new TemplateFood();
-				templateFood.setFoodId(foodId);
+				TemplateFood templateFood = new TemplateFood();
 				templateFood.setTemplateId(templateId);
+				templateFood.setFoodId(foodId);
 				templateFoodDao.save(templateFood);
 			}
 		}
 
 		if (ValidateUtil.isPK(logoId)) {
-			templateMaterial = new TemplateMaterial();
-			templateMaterial.setMaterialId(logoId);
+			TemplateMaterial templateMaterial = new TemplateMaterial();
 			templateMaterial.setTemplateId(templateId);
+			templateMaterial.setMaterialId(logoId);
 			templateMaterial.setType(TemplateMaterialEnum.LOGO);
 			templateMaterialDao.save(templateMaterial);
 		}
 
 		if (ValidateUtil.isPK(numberId)) {
-			templateMaterial = new TemplateMaterial();
-			templateMaterial.setMaterialId(numberId);
+			TemplateMaterial templateMaterial = new TemplateMaterial();
 			templateMaterial.setTemplateId(templateId);
+			templateMaterial.setMaterialId(numberId);
 			templateMaterial.setType(TemplateMaterialEnum.NUMBER);
 			templateMaterialDao.save(templateMaterial);
 		}
 
 		if (ValidateUtil.isNotEmpty(videoIds)) {
 			for (Integer materialId : videoIds) {
-				templateMaterial = new TemplateMaterial();
-				templateMaterial.setMaterialId(materialId);
+				TemplateMaterial templateMaterial = new TemplateMaterial();
 				templateMaterial.setTemplateId(templateId);
+				templateMaterial.setMaterialId(materialId);
 				templateMaterial.setType(TemplateMaterialEnum.VIDEO);
 				templateMaterialDao.save(templateMaterial);
 			}
@@ -80,9 +84,9 @@ public class TemplateServiceImpl implements TemplateService {
 
 		if (ValidateUtil.isNotEmpty(pictureIds)) {
 			for (Integer materialId : pictureIds) {
-				templateMaterial = new TemplateMaterial();
-				templateMaterial.setMaterialId(materialId);
+				TemplateMaterial templateMaterial = new TemplateMaterial();
 				templateMaterial.setTemplateId(templateId);
+				templateMaterial.setMaterialId(materialId);
 				templateMaterial.setType(TemplateMaterialEnum.PICTURE);
 				templateMaterialDao.save(templateMaterial);
 			}
@@ -90,32 +94,25 @@ public class TemplateServiceImpl implements TemplateService {
 
 		if (ValidateUtil.isNotEmpty(marqueeIds)) {
 			for (Integer marqueeId : marqueeIds) {
-				templateMarquee = new TemplateMarquee();
-				templateMarquee.setMarqueeId(marqueeId);
+				TemplateMarquee templateMarquee = new TemplateMarquee();
 				templateMarquee.setTemplateId(templateId);
+				templateMarquee.setMarqueeId(marqueeId);
 				templateMarqueeDao.save(templateMarquee);
 			}
 		}
-
 	}
 
 	@Override
 	public void delete(Integer id) {
-		templateFoodDao.deleteByTemplateId(id);
-		templateMarqueeDao.deleteByTemplateId(id);
-		templateMaterialDao.deleteByTemplateId(id);
+		templateFoodDao.delete(templateFoodDao.findList(id, null));
+		templateMarqueeDao.delete(templateMarqueeDao.findList(id, null));
+		templateMaterialDao.delete(templateMaterialDao.findList(null, id, null));
 		templateDao.delete(id);
 	}
 
 	@Override
 	public void delete(Template template) {
-		if (template == null) {
-			return;
-		}
-		Integer id = template.getId();
-		if (ValidateUtil.isPK(id)) {
-			this.delete(id);
-		}
+		this.delete(template.getId());
 	}
 
 	@Override
@@ -137,47 +134,50 @@ public class TemplateServiceImpl implements TemplateService {
 	}
 
 	@Override
+	public void update(Template template) {
+		templateDao.update(template);
+	}
+
+	@Override
 	public void update(Template template, Integer[] foodIds, Integer logoId, Integer numberId, Integer[] videoIds, Integer[] pictureIds, Integer[] marqueeIds) {
 		Integer templateId = template.getId();
-		templateFoodDao.deleteByTemplateId(templateId);
-		templateMarqueeDao.deleteByTemplateId(templateId);
-		templateMaterialDao.deleteByTemplateId(templateId);
+
+		templateFoodDao.delete(templateFoodDao.findList(templateId, null));
+		templateMarqueeDao.delete(templateMarqueeDao.findList(templateId, null));
+		templateMaterialDao.delete(templateMaterialDao.findList(null, templateId, null));
 
 		templateDao.update(template);
-		TemplateFood templateFood = null;
-		TemplateMaterial templateMaterial = null;
-		TemplateMarquee templateMarquee = null;
 
 		if (ValidateUtil.isNotEmpty(foodIds)) {
 			for (Integer foodId : foodIds) {
-				templateFood = new TemplateFood();
-				templateFood.setFoodId(foodId);
+				TemplateFood templateFood = new TemplateFood();
 				templateFood.setTemplateId(templateId);
+				templateFood.setFoodId(foodId);
 				templateFoodDao.save(templateFood);
 			}
 		}
 
 		if (ValidateUtil.isPK(logoId)) {
-			templateMaterial = new TemplateMaterial();
-			templateMaterial.setMaterialId(logoId);
+			TemplateMaterial templateMaterial = new TemplateMaterial();
 			templateMaterial.setTemplateId(templateId);
+			templateMaterial.setMaterialId(logoId);
 			templateMaterial.setType(TemplateMaterialEnum.LOGO);
 			templateMaterialDao.save(templateMaterial);
 		}
 
 		if (ValidateUtil.isPK(numberId)) {
-			templateMaterial = new TemplateMaterial();
-			templateMaterial.setMaterialId(numberId);
+			TemplateMaterial templateMaterial = new TemplateMaterial();
 			templateMaterial.setTemplateId(templateId);
+			templateMaterial.setMaterialId(numberId);
 			templateMaterial.setType(TemplateMaterialEnum.NUMBER);
 			templateMaterialDao.save(templateMaterial);
 		}
 
 		if (ValidateUtil.isNotEmpty(videoIds)) {
 			for (Integer materialId : videoIds) {
-				templateMaterial = new TemplateMaterial();
-				templateMaterial.setMaterialId(materialId);
+				TemplateMaterial templateMaterial = new TemplateMaterial();
 				templateMaterial.setTemplateId(templateId);
+				templateMaterial.setMaterialId(materialId);
 				templateMaterial.setType(TemplateMaterialEnum.VIDEO);
 				templateMaterialDao.save(templateMaterial);
 			}
@@ -185,9 +185,9 @@ public class TemplateServiceImpl implements TemplateService {
 
 		if (ValidateUtil.isNotEmpty(pictureIds)) {
 			for (Integer materialId : pictureIds) {
-				templateMaterial = new TemplateMaterial();
-				templateMaterial.setMaterialId(materialId);
+				TemplateMaterial templateMaterial = new TemplateMaterial();
 				templateMaterial.setTemplateId(templateId);
+				templateMaterial.setMaterialId(materialId);
 				templateMaterial.setType(TemplateMaterialEnum.PICTURE);
 				templateMaterialDao.save(templateMaterial);
 			}
@@ -195,18 +195,22 @@ public class TemplateServiceImpl implements TemplateService {
 
 		if (ValidateUtil.isNotEmpty(marqueeIds)) {
 			for (Integer marqueeId : marqueeIds) {
-				templateMarquee = new TemplateMarquee();
-				templateMarquee.setMarqueeId(marqueeId);
+				TemplateMarquee templateMarquee = new TemplateMarquee();
 				templateMarquee.setTemplateId(templateId);
+				templateMarquee.setMarqueeId(marqueeId);
 				templateMarqueeDao.save(templateMarquee);
 			}
 		}
 	}
 
 	@Override
+	public void merge(Template template) {
+		templateDao.merge(template);
+	}
+
+	@Override
 	public void merge(Template template, Integer[] foodIds, Integer logoId, Integer numberId, Integer[] videoIds, Integer[] pictureIds, Integer[] marqueeIds) {
-		Integer templateId = template.getId();
-		if (ValidateUtil.isPK(templateId)) {
+		if (ValidateUtil.isPK(template.getId())) {
 			this.update(template, foodIds, logoId, numberId, videoIds, pictureIds, marqueeIds);
 		} else {
 			this.save(template, foodIds, logoId, numberId, videoIds, pictureIds, marqueeIds);
@@ -266,23 +270,13 @@ public class TemplateServiceImpl implements TemplateService {
 	@Override
 	public boolean exist(Integer id, String name) {
 		Template template = templateDao.find(name);
-		if (template == null) {
-			return false;
-		}
-		if (!ValidateUtil.isPK(id)) {
-			return true;
-		}
-		return !template.getId().equals(id);
+		return template == null ? false : !template.getId().equals(id);
 	}
 
 	@Override
-	public boolean relate(Integer id) {
-		// TODO
-		List<TerminalTemplate> terminalTemplateList = null;
-		if (CollectionUtils.isNotEmpty(terminalTemplateList)) {
-			return true;
-		}
-		return false;
+	public boolean relate(Integer id) {// TODO CHECK
+		List<TerminalTemplate> list = terminalTemplateDao.findList(null, id, null, null, null);
+		return CollectionUtils.isNotEmpty(list);
 	}
 
 	@Override
@@ -294,4 +288,5 @@ public class TemplateServiceImpl implements TemplateService {
 		}
 		return false;
 	}
+
 }

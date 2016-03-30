@@ -16,10 +16,14 @@ public interface TemplateMarqueeDao {
 
 	public void delete(List<TemplateMarquee> templateMarquees);
 
+	public void update(TemplateMarquee templateMarquee);
+
+	public void merge(TemplateMarquee templateMarquee);
+
+	public TemplateMarquee find(Integer id);
+
 	public List<TemplateMarquee> findList();
 
 	public List<TemplateMarquee> findList(Integer templateId, Integer marqueeId);
-
-	public void deleteByTemplateId(Integer templateId);
 
 }

@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import com.baiyi.order.dao.TemplateFoodDao;
@@ -35,13 +33,5 @@ public class TemplateFoodDaoImpl extends CommonsDaoImpl<TemplateFood> implements
 		}
 
 		return super.findList(queryString.toString(), -1, -1, map);
-	}
-
-	@Override
-	public void deleteByTemplateId(Integer templateId) {
-		String queryString = "delete TemplateFood as templateFood where templateFood.templateId = :templateId";
-		Session session = hibernateTemplate.getSessionFactory().getCurrentSession();
-		Query query = session.createQuery(queryString).setParameter("templateId", templateId);
-		query.executeUpdate();
 	}
 }

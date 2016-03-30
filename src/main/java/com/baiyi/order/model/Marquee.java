@@ -16,8 +16,11 @@ public class Marquee {
 	private Integer id;
 
 	private String title;
+
 	private String content;
+
 	private MarqueeDirectionEnum direction;// 滚动方向
+
 	private int speed;// 速度1-100
 
 	/* 样式 */
@@ -27,7 +30,9 @@ public class Marquee {
 	private String background;
 
 	private Integer userId;
+	
 	private Date createtime;
+	
 	private Date updatetime;
 
 	@Id

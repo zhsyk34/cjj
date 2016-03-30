@@ -26,7 +26,4 @@ public interface TemplateFoodDao {
 
 	public List<TemplateFood> findList(Integer templateId, Integer foodId);
 
-	/**/
-	public void deleteByTemplateId(Integer templateId);
-
 }

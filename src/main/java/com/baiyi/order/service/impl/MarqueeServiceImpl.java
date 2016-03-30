@@ -12,14 +12,12 @@ import com.baiyi.order.dao.TemplateMarqueeDao;
 import com.baiyi.order.model.Marquee;
 import com.baiyi.order.model.TemplateMarquee;
 import com.baiyi.order.service.MarqueeService;
-import com.baiyi.order.util.ValidateUtil;
 
 @Service
 public class MarqueeServiceImpl implements MarqueeService {
 
 	@Resource
 	private MarqueeDao marqueeDao;
-
 	@Resource
 	private TemplateMarqueeDao templateMarqueeDao;
 
@@ -91,19 +89,13 @@ public class MarqueeServiceImpl implements MarqueeService {
 	@Override
 	public boolean exist(Integer id, String title) {
 		Marquee marquee = this.find(title);
-		if (marquee == null) {
-			return false;
-		}
-		if (!ValidateUtil.isPK(id)) {
-			return true;
-		}
-		return !marquee.getId().equals(id);
+		return marquee == null ? false : !marquee.getId().equals(id);
 	}
 
 	@Override
 	public boolean relate(Integer id) {
-		List<TemplateMarquee> templateMarqueeList = templateMarqueeDao.findList(null, id);
-		return CollectionUtils.isNotEmpty(templateMarqueeList);
+		List<TemplateMarquee> list = templateMarqueeDao.findList(null, id);
+		return CollectionUtils.isNotEmpty(list);
 	}
 
 	@Override
@@ -115,5 +107,4 @@ public class MarqueeServiceImpl implements MarqueeService {
 		}
 		return false;
 	}
-
 }

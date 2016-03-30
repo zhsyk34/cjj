@@ -48,10 +48,10 @@ public interface TemplateDao {
 	public List<TemplateVO> findVOList(String name, TemplateTypeEnum type, Integer userId, String sort, String order, int pageNo, int pageSize);
 
 	/* join search */
-	public List<Food> findFoods(Integer id);
+	public List<Food> findFoodList(Integer id);
 
-	public List<Material> findMaterial(Integer id, TemplateMaterialEnum type);
+	public List<Material> findMaterialList(Integer id, TemplateMaterialEnum type);
 
-	public List<Marquee> findMarquees(Integer id);
+	public List<Marquee> findMarqueeList(Integer id);
 
 }

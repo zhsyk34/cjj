@@ -8,6 +8,8 @@ import com.baiyi.order.vo.TemplateVO;
 
 public interface TemplateService {
 
+	public void save(Template template);
+
 	public void save(Template template, Integer[] foodIds, Integer logoId, Integer numberId, Integer[] videoIds, Integer[] pictureIds, Integer[] marqueeIds);
 
 	public void delete(Integer id);
@@ -18,7 +20,11 @@ public interface TemplateService {
 
 	public void delete(List<Template> templates);
 
+	public void update(Template template);
+
 	public void update(Template template, Integer[] foodIds, Integer logoId, Integer numberId, Integer[] videoIds, Integer[] pictureIds, Integer[] marqueeIds);
+
+	public void merge(Template template);
 
 	public void merge(Template template, Integer[] foodIds, Integer logoId, Integer numberId, Integer[] videoIds, Integer[] pictureIds, Integer[] marqueeIds);
 

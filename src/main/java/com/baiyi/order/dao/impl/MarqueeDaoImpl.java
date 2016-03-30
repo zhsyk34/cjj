@@ -23,11 +23,8 @@ public class MarqueeDaoImpl extends CommonsDaoImpl<Marquee> implements MarqueeDa
 	@SuppressWarnings("unchecked")
 	@Override
 	public Marquee find(String title) {
-		List<Marquee> marqueeList = (List<Marquee>) hibernateTemplate.find("from Marquee as marquee where marquee.title = ?", title);
-		if (CollectionUtils.isEmpty(marqueeList)) {
-			return null;
-		}
-		return marqueeList.get(0);
+		List<Marquee> list = (List<Marquee>) hibernateTemplate.find("from Marquee as marquee where marquee.title = ?", title);
+		return CollectionUtils.isEmpty(list) ? null : list.get(0);
 	}
 
 	@Override
