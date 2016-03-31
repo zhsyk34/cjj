@@ -8,15 +8,18 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import com.baiyi.order.dao.SeatDao;
+import com.baiyi.order.dao.TerminalSeatDao;
 import com.baiyi.order.model.Seat;
+import com.baiyi.order.model.TerminalSeat;
 import com.baiyi.order.service.SeatService;
-import com.baiyi.order.util.ValidateUtil;
 
 @Service
 public class SeatServiceImpl implements SeatService {
 
 	@Resource
 	private SeatDao seatDao;
+	@Resource
+	private TerminalSeatDao terminalSeatDao;
 
 	@Override
 	public void save(Seat seat) {
@@ -95,25 +98,22 @@ public class SeatServiceImpl implements SeatService {
 	@Override
 	public boolean exist(Integer id, String name) {
 		Seat seat = this.find(name);
-		if (seat == null) {
-			return false;
-		}
-		if (!ValidateUtil.isPK(id)) {
-			return true;
-		}
-		return !seat.getId().equals(id);
+		return seat == null ? false : !seat.getId().equals(id);
 	}
 
 	@Override
 	public boolean relate(Integer id) {
-		// TODO Auto-generated method stub
-		// terminal
-		return false;
+		List<TerminalSeat> list = terminalSeatDao.findList(null, id);
+		return CollectionUtils.isNotEmpty(list);
 	}
 
 	@Override
 	public boolean relate(Integer[] ids) {
-		// TODO Auto-generated method stub
+		for (Integer id : ids) {
+			if (this.relate(id)) {
+				return true;
+			}
+		}
 		return false;
 	}
 

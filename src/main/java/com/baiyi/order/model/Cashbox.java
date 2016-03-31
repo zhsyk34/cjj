@@ -1,5 +1,7 @@
 package com.baiyi.order.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -32,6 +34,12 @@ public class Cashbox {
 	private int hoppercn01;
 	private int hoppercn05;
 	private int hoppercn1;
+
+	private Integer userId;
+
+	private Date createtime;
+
+	private Date updatetime;
 
 	@Id
 	@GeneratedValue
@@ -193,6 +201,30 @@ public class Cashbox {
 
 	public void setHoppercn1(int hoppercn1) {
 		this.hoppercn1 = hoppercn1;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	public Date getCreatetime() {
+		return createtime;
+	}
+
+	public void setCreatetime(Date createtime) {
+		this.createtime = createtime;
+	}
+
+	public Date getUpdatetime() {
+		return updatetime;
+	}
+
+	public void setUpdatetime(Date updatetime) {
+		this.updatetime = updatetime;
 	}
 
 }

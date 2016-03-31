@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import com.baiyi.order.util.EnumList.PaymentEnum;
 
 @Entity
-public class PaySetting {
+public class PaySetting {// TODO time and ...
 
 	private Integer id;
 

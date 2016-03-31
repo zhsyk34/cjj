@@ -4,12 +4,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.baiyi.order.dao.UserDao;
 import com.baiyi.order.model.User;
 import com.baiyi.order.service.UserService;
-import com.baiyi.order.util.ValidateUtil;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -85,25 +85,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean exist(Integer id, String name) {
 		User user = this.find(name);
-		if (user == null) {
-			return false;
-		}
-		if (!ValidateUtil.isPK(id)) {
-			return true;
-		}
-		return !user.getId().equals(id);
+		return user == null ? false : !user.getId().equals(id);
 	}
 
 	@Override
 	public User login(String name, String password) {
 		User user = this.find(name);
-		if (user == null) {
+		if (user == null || StringUtils.isBlank(password) || !password.equals(user.getPassword())) {
 			return null;
 		}
-		if (password.equals(user.getPassword())) {
-			return user;
-		}
-		return null;
+		return user;
 	}
 
 }

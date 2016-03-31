@@ -23,6 +23,26 @@ public class ConfigServiceImpl implements ConfigService {
 	}
 
 	@Override
+	public void delete(Integer id) {
+		configDao.delete(id);
+	}
+
+	@Override
+	public void delete(Config config) {
+		configDao.delete(config);
+	}
+
+	@Override
+	public void delete(Integer[] ids) {
+		configDao.delete(ids);
+	}
+
+	@Override
+	public void delete(List<Config> configs) {
+		configDao.delete(configs);
+	}
+
+	@Override
 	public void update(Config config) {
 		configDao.update(config);
 	}
@@ -33,14 +53,24 @@ public class ConfigServiceImpl implements ConfigService {
 	}
 
 	@Override
+	public Config find(Integer id) {
+		return configDao.find(id);
+	}
+
+	@Override
+	public Config find() {
+		List<Config> list = configDao.findList();
+		return CollectionUtils.isEmpty(list) ? null : list.get(0);
+	}
+
+	@Override
 	public List<Config> findList() {
 		return configDao.findList();
 	}
 
 	@Override
-	public Config findCurrent() {
-		List<Config> list = configDao.findList();
-		return CollectionUtils.isEmpty(list) ? null : list.get(0);
+	public int count() {
+		return configDao.count();
 	}
 
 }

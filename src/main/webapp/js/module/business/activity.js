@@ -233,14 +233,16 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 
 		$("#data").on("click", ".revoke", function() {
 			var id = parseInt($(this).parents("tr").data("row").id);
-			
+
 			params.ids = [ id ];
-			console.log(params);return false;
+			console.log(params);
+			return false;
 			crud.merge(url, params, find);
 		});
 		$("#revoke-all").on("click", function() {
 			params.ids = select().ids;
-			console.log(params);return false;
+			console.log(params);
+			return false;
 			if (params.ids.length == 0) {
 				$.alert("请选择数据");
 				return;

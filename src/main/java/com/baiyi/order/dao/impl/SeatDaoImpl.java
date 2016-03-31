@@ -23,11 +23,8 @@ public class SeatDaoImpl extends CommonsDaoImpl<Seat> implements SeatDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Seat find(String name) {
-		List<Seat> seatList = (List<Seat>) hibernateTemplate.find("from Seat as seat where seat.name = ?", name);
-		if (CollectionUtils.isEmpty(seatList)) {
-			return null;
-		}
-		return seatList.get(0);
+		List<Seat> list = (List<Seat>) hibernateTemplate.find("from Seat as seat where seat.name = ?", name);
+		return CollectionUtils.isEmpty(list) ? null : list.get(0);
 	}
 
 	@Override

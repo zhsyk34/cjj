@@ -53,7 +53,7 @@ define([ "jquery", "modal", "page" ], function() {
 				ids = [ ids ];
 			}
 			if (ids.length == 0) {
-				$.alert("请选择要删除的数据！");
+				$.alert("请选择要删除的数据");
 				return;
 			}
 			$.confirm({
@@ -66,12 +66,17 @@ define([ "jquery", "modal", "page" ], function() {
 							ids : ids
 						},
 						success : function(data) {
-							if (data.result == "relate") {
-								$.alert("数据正被使用中，删除失败！");
+							var result = data.result;
+							switch (result) {
+							case "relate":
+								$.alert("数据正被使用中,不能删除");
 								return;
-							}
-							if (data.result == "delete") {
-								$.alert("删除成功！");
+							case "delete":
+								$.alert("删除成功");
+								break;
+							case "revoke":
+								$.alert("撤销成功");
+								break;
 							}
 							$("#page").page({
 								pageNo : 1
@@ -83,7 +88,7 @@ define([ "jquery", "modal", "page" ], function() {
 					});
 				}
 			});
-			$.confirm("确认删除？");
+			$.confirm("确认删除");
 		}
 	};
 });

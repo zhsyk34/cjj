@@ -1,11 +1,13 @@
 package com.baiyi.order.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Config {// TODO
+public class Config {// TODO terminalId?
 
 	private Integer id;
 
@@ -33,6 +35,12 @@ public class Config {// TODO
 	private boolean accessory;
 	private String accessoryName;
 	private int accessoryPercent;
+
+	private Integer userId;
+
+	private Date createtime;
+
+	private Date updatetime;
 
 	@Id
 	@GeneratedValue
@@ -170,6 +178,30 @@ public class Config {// TODO
 
 	public void setAccessoryPercent(int accessoryPercent) {
 		this.accessoryPercent = accessoryPercent;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	public Date getCreatetime() {
+		return createtime;
+	}
+
+	public void setCreatetime(Date createtime) {
+		this.createtime = createtime;
+	}
+
+	public Date getUpdatetime() {
+		return updatetime;
+	}
+
+	public void setUpdatetime(Date updatetime) {
+		this.updatetime = updatetime;
 	}
 
 }

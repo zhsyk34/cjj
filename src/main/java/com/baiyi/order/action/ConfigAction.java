@@ -12,7 +12,7 @@ import com.baiyi.order.util.EnumList.PaymentEnum;
 public class ConfigAction extends CommonsAction {
 
 	public String update() {
-		Config config = configService.findCurrent();
+		Config config = configService.find();
 
 		config.setTakeShow(takeShow);
 		config.setTakeAway(takeAway);
@@ -44,7 +44,7 @@ public class ConfigAction extends CommonsAction {
 	}
 
 	public String find() {
-		Config config = configService.findCurrent();
+		Config config = configService.find();
 
 		if (config == null) {
 			config = new Config();

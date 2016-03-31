@@ -22,11 +22,8 @@ public class UserDaoImpl extends CommonsDaoImpl<User> implements UserDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public User find(String name) {
-		List<User> users = (List<User>) hibernateTemplate.find("from User as user where user.name = ?", name);
-		if (CollectionUtils.isEmpty(users)) {
-			return null;
-		}
-		return users.get(0);
+		List<User> list = (List<User>) hibernateTemplate.find("from User as user where user.name = ?", name);
+		return CollectionUtils.isEmpty(list) ? null : list.get(0);
 	}
 
 	@Override
