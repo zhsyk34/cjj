@@ -232,12 +232,15 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 		};
 
 		$("#data").on("click", ".revoke", function() {
-			var id = parseInt($(this).parents("tr").find(":checkbox").val());
+			var id = parseInt($(this).parents("tr").data("row").id);
+			
 			params.ids = [ id ];
+			console.log(params);return false;
 			crud.merge(url, params, find);
 		});
 		$("#revoke-all").on("click", function() {
-			params.ids = select();
+			params.ids = select().ids;
+			console.log(params);return false;
 			if (params.ids.length == 0) {
 				$.alert("请选择数据");
 				return;
@@ -289,12 +292,21 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 
 	// util
 	function select() {
-		var ids = [];
+		var result = {
+			ids : [],
+			kitchenIds : [],
+			foodIds : []
+		};
 		$("#data :checkbox:checked").each(function() {
-			var id = parseInt($(this).val());
-			ids.push(id);
+			var row = $(this).parents("tr").data("row");
+			var id = parseInt(row.id);
+			var kitchenId = parseInt(row.kitchenId);
+			var foodId = parseInt(row.foodId);
+			id && ids.push(id);
+			kitchenId && kitchenIds.push(id);
+			foodId && foodIds.push(id);
 		});
-		return ids;
+		return result;
 	}
 
 	function search() {
@@ -337,9 +349,6 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 		function load(data) {
 			$("#data").empty();
 			$("#check-parent").prop("checked", false);
-			if (!data.list) {
-				return;
-			}
 
 			var str = "<tr>";
 			str += "<td><input type='checkbox'></td>";
@@ -369,9 +378,9 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 			var disable = "<button class='btn btn-warning btn-small disable'>禁用</button>";
 			var revoke = "<button class='btn btn-danger btn-small revoke'>撤销</button>";
 
-			$.each(data.list, function(index, row) {
+			$.each(data.list || [], function(index, row) {
 				var tr = $(str).data("row", row);
-				tr.find(":checkbox").val(row.id);
+				// tr.find(":checkbox").val(row.id);
 				tr.find(".index").text(index + 1);
 				tr.find(".kitchenNo").text(row.kitchenNo);
 				tr.find(".location").text(row.location);
@@ -387,12 +396,12 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 					tr.find(".used").html(row.used ? disable : enable);
 					break;
 				case "gift":
-					tr.find(".unit").text(row.type == type.toUpperCase() ? row.unit : "");
+					tr.find(".unit").text(row.unit || "");
 					tr.find(".used").html(row.used ? disable : enable);
 					break;
 				case "discount":
 					tr.find(".price").text(row.price);
-					tr.find(".discount").text(row.type == type.toUpperCase() ? row.discount : "");
+					tr.find(".discount").text(row.discount || "");
 					tr.find(".used").html(row.used ? disable : "");// 促销不能立即启用
 					break;
 				}

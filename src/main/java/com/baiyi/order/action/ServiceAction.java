@@ -33,6 +33,7 @@ import com.baiyi.order.vo.TemplateVO;
 @SuppressWarnings("serial")
 public class ServiceAction extends CommonsAction {
 
+	// result = .... key
 	// TODO
 	public String a() {
 		jsonData.put(result, Feedback.SUCCESS.toString());

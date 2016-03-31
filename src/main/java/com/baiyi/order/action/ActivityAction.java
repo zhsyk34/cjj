@@ -18,7 +18,7 @@ public class ActivityAction extends CommonsAction {
 
 	public String update() {
 		ActivityTypeEnum typeEnum = FormatUtil.getEnum(ActivityTypeEnum.class, type);
-		if (typeEnum == null || typeEnum == ActivityTypeEnum.NORMAL) {// normal时执行撤销操作
+		if (typeEnum == null) {
 			jsonData.put("result", Feedback.ERROR.toString());
 			return SUCCESS;
 		}
@@ -41,8 +41,6 @@ public class ActivityAction extends CommonsAction {
 
 			activity.setType(typeEnum);
 			switch (typeEnum) {
-			case NORMAL:
-				return SUCCESS;// 已排除
 			case STOP:
 				activity.setUnit(0);
 				activity.setDiscount(0);
@@ -92,16 +90,13 @@ public class ActivityAction extends CommonsAction {
 		for (Integer id : ids) {
 			Activity activity = activityService.find(id);
 
-			if (activity.getType() == ActivityTypeEnum.NORMAL) {// 对原未参与活动的数据进行判断和设置
+			if (activity.getType() == null) {// 对原未参与活动的数据进行判断和设置
 				if (usedStatus) {// 直接启用
 					if (typeEnum == null) {
-						jsonData.put("result", Feedback.ERROR.toString());
+						jsonData.put("result", Feedback.ERROR.toString());						
 						return SUCCESS;
 					}
 					switch (typeEnum) {
-					case NORMAL:
-						jsonData.put("result", Feedback.ERROR.toString());
-						return SUCCESS;// 已排除
 					case STOP:
 						activity.setBegin(new Date());
 						activity.setEnd(FormatUtil.stringToDate("2999-12-31 23:59:59", null));
@@ -132,19 +127,8 @@ public class ActivityAction extends CommonsAction {
 
 	}
 
-	public String delete() {// 撤销活动:清空所有数据
-		List<Activity> activities = new ArrayList<>();
-		for (Integer id : ids) {
-			Activity original = activityService.find(id);
-
-			Activity activity = new Activity();
-			activity.setId(id);
-			activity.setKitchenId(original.getKitchenId());
-			activity.setFoodId(original.getFoodId());
-			activity.setType(ActivityTypeEnum.NORMAL);
-			activities.add(activity);
-		}
-		activityService.update(activities);
+	public String delete() {
+		activityService.delete(ids);
 		jsonData.put("result", Feedback.REVOKE.toString());
 		return SUCCESS;
 	}
@@ -153,7 +137,7 @@ public class ActivityAction extends CommonsAction {
 		ActivityTypeEnum typeEnum = FormatUtil.getEnum(ActivityTypeEnum.class, type);
 		Boolean usedStatus = FormatUtil.intToBol(used);
 
-		List<ActivityVO> list = activityService.findVOList(kitchen, food, typeEnum, usedStatus, sort, order, pageNo, pageSize);
+		List<ActivityVO> list = activityService.findVOList(kitchen, food, typeEnum, usedStatus, "tid", order, pageNo, pageSize);
 		int count = activityService.countVO(kitchen, food, typeEnum, usedStatus);
 		jsonData.put("list", list);
 		jsonData.put("count", count);

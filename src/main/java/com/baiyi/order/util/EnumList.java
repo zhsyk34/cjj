@@ -62,7 +62,7 @@ public interface EnumList {
 	}
 
 	public enum ActivityTypeEnum {// 餐点活动类型
-		NORMAL, STOP, GIFT, DISCOUNT
+		STOP, GIFT, DISCOUNT
 	}
 
 	public enum PaymentEnum {// 支付方式

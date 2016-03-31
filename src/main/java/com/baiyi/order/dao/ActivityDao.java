@@ -30,13 +30,26 @@ public interface ActivityDao {
 
 	public List<Activity> findList(Integer kitchenId, Integer foodId, ActivityTypeEnum type, Boolean used);
 
+	public List<Activity> findList(Integer kitchenId, Integer foodId, ActivityTypeEnum type, Boolean used, String sort, String order, int pageNo, int pageSize);
+
 	public List<Activity> findList(String kitchen, String food, ActivityTypeEnum type, Boolean used);
 
 	public List<Activity> findList(String kitchen, String food, ActivityTypeEnum type, Boolean used, String sort, String order, int pageNo, int pageSize);
 
-	public List<ActivityVO> findVOList(String kitchen, String food, ActivityTypeEnum type, Boolean used, String sort, String order, int pageNo, int pageSize);
-
 	public int count(String kitchen, String food, ActivityTypeEnum type, Boolean used);
 
-	public int countVO(String kitchen, String food, ActivityTypeEnum type, Boolean used);
+	/* VO */
+	public List<ActivityVO> findVOList();
+
+	public List<ActivityVO> findVOList(String kitchen, String food, ActivityTypeEnum type, Boolean used);
+
+	public List<ActivityVO> findVOList(String kitchen, String food, ActivityTypeEnum type, Boolean used, String sort, String order, int pageNo, int pageSize);
+
+	/* VO with extra */
+	public List<ActivityVO> findVOList(boolean extra);
+
+	public List<ActivityVO> findVOList(String kitchen, String food, ActivityTypeEnum type, Boolean used, boolean extra);
+
+	public List<ActivityVO> findVOList(String kitchen, String food, ActivityTypeEnum type, Boolean used, boolean extra, String sort, String order, int pageNo, int pageSize);
+
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import com.baiyi.order.dao.ActivityDao;
@@ -26,15 +27,47 @@ public class ActivityServiceImpl implements ActivityService {
 	private FoodDao foodDao;
 
 	@Override
+	public void save(Activity activity) {
+		activityDao.save(activity);
+	}
+
+	@Override
+	public void delete(Integer id) {
+		activityDao.delete(id);
+	}
+
+	@Override
+	public void delete(Activity activity) {
+		activityDao.delete(activity);
+	}
+
+	@Override
+	public void delete(Integer[] ids) {
+		activityDao.delete(ids);
+	}
+
+	@Override
+	public void delete(List<Activity> activitys) {
+		activityDao.delete(activitys);
+	}
+
+	@Override
 	public void update(Activity activity) {
 		activityDao.update(activity);
 	}
 
 	@Override
 	public void update(Collection<Activity> activities) {
-		for (Activity activity : activities) {
-			activityDao.update(activity);
+		if (CollectionUtils.isNotEmpty(activities)) {
+			for (Activity activity : activities) {
+				activityDao.update(activity);
+			}
 		}
+	}
+
+	@Override
+	public void merge(Activity activity) {
+		activityDao.merge(activity);
 	}
 
 	@Override
@@ -58,6 +91,11 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
+	public List<Activity> findList(Integer kitchenId, Integer foodId, ActivityTypeEnum type, Boolean used, String sort, String order, int pageNo, int pageSize) {
+		return activityDao.findList(kitchenId, foodId, type, used, sort, order, pageNo, pageSize);
+	}
+
+	@Override
 	public List<Activity> findList(String kitchen, String food, ActivityTypeEnum type, Boolean used) {
 		return activityDao.findList(kitchen, food, type, used);
 	}
@@ -68,18 +106,29 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
-	public List<ActivityVO> findVOList(String kitchen, String food, ActivityTypeEnum type, Boolean used, String sort, String order, int pageNo, int pageSize) {
-		return activityDao.findVOList(kitchen, food, type, used, sort, order, pageNo, pageSize);
-	}
-
-	@Override
 	public int count(String kitchen, String food, ActivityTypeEnum type, Boolean used) {
 		return activityDao.count(kitchen, food, type, used);
 	}
 
 	@Override
+	public List<ActivityVO> findVOList() {
+		return activityDao.findVOList(true);
+	}
+
+	@Override
+	public List<ActivityVO> findVOList(String kitchen, String food, ActivityTypeEnum type, Boolean used) {
+		return activityDao.findVOList(kitchen, food, type, used, true);
+	}
+
+	@Override
+	public List<ActivityVO> findVOList(String kitchen, String food, ActivityTypeEnum type, Boolean used, String sort, String order, int pageNo, int pageSize) {
+		return activityDao.findVOList(kitchen, food, type, used, true, sort, order, pageNo, pageSize);
+	}
+
+	@Override
 	public int countVO(String kitchen, String food, ActivityTypeEnum type, Boolean used) {
-		return activityDao.countVO(kitchen, food, type, used);
+		List<ActivityVO> list = this.findVOList(kitchen, food, type, used);
+		return CollectionUtils.isEmpty(list) ? 0 : list.size();
 	}
 
 }

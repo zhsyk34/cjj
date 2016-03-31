@@ -21,9 +21,7 @@ import com.baiyi.order.dao.TerminalDao;
 import com.baiyi.order.dao.TerminalSeatDao;
 import com.baiyi.order.dao.TerminalTemplateDao;
 import com.baiyi.order.dao.TerminalTimeDao;
-import com.baiyi.order.model.Activity;
 import com.baiyi.order.model.Cashbox;
-import com.baiyi.order.model.Food;
 import com.baiyi.order.model.Template;
 import com.baiyi.order.model.Terminal;
 import com.baiyi.order.model.TerminalConnect;
@@ -31,7 +29,6 @@ import com.baiyi.order.model.TerminalSeat;
 import com.baiyi.order.model.TerminalTemplate;
 import com.baiyi.order.model.TerminalTime;
 import com.baiyi.order.service.TerminalService;
-import com.baiyi.order.util.EnumList.ActivityTypeEnum;
 import com.baiyi.order.util.EnumList.RemoteTimeEnum;
 import com.baiyi.order.util.EnumList.TemplateDownEnum;
 import com.baiyi.order.util.EnumList.TerminalTypeEnum;
@@ -67,19 +64,7 @@ public class TerminalServiceImpl implements TerminalService {
 	public void save(Terminal terminal) {
 		terminalDao.save(terminal);
 		Integer terminalId = terminal.getId();
-		// 活动
-		if (terminal.getType() == TerminalTypeEnum.KITCHEN) {
-			List<Food> foods = foodDao.findList();
-			if (CollectionUtils.isNotEmpty(foods)) {
-				for (Food food : foods) {
-					Activity activity = new Activity();
-					activity.setKitchenId(terminalId);
-					activity.setFoodId(food.getId());
-					activity.setType(ActivityTypeEnum.NORMAL);
-					activityDao.save(activity);
-				}
-			}
-		}
+
 		// 币值存量
 		Cashbox cashbox = new Cashbox();
 		cashbox.setTerminalId(terminalId);

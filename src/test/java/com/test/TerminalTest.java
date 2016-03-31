@@ -1,6 +1,7 @@
 package com.test;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -9,14 +10,20 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.baiyi.order.dao.ActivityDao;
 import com.baiyi.order.dao.TerminalDao;
 import com.baiyi.order.dao.TerminalTemplateDao;
+import com.baiyi.order.model.Activity;
 import com.baiyi.order.model.Terminal;
 import com.baiyi.order.model.TerminalTemplate;
 import com.baiyi.order.service.TerminalService;
+import com.baiyi.order.util.EnumList.ActivityTypeEnum;
 import com.baiyi.order.util.EnumList.TerminalTypeEnum;
 import com.baiyi.order.util.FormatUtil;
 import com.baiyi.order.util.RandomUtil;
+import com.baiyi.order.vo.ActivityVO;
+
+import net.sf.json.JSONArray;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring2.xml")
@@ -28,6 +35,27 @@ public class TerminalTest {
 	private TerminalTemplateDao terminalTemplateDao;
 	@Resource
 	private TerminalDao terminalDao;
+	@Resource
+	private ActivityDao activityDao;
+
+	@Test
+	public void findActivity() {
+		// List<ActivityVO> list = activityDao.findVOList();
+		// System.out.println(JSONArray.fromObject(list));
+		// System.out.println(list.size());
+
+		List<ActivityVO> list1 = activityDao.findVOList("001", null, null, null);
+		System.out.println(JSONArray.fromObject(list1));
+		System.out.println(list1.size());
+
+		List<ActivityVO> list2 = activityDao.findVOList("001", null, null, null, true);
+		System.out.println(JSONArray.fromObject(list2));
+		System.out.println(list2.size());
+
+		List<ActivityVO> list3 = activityDao.findVOList(null, "3", null, null, true);
+		System.out.println(JSONArray.fromObject(list3));
+		System.out.println(list3.size());
+	}
 
 	@Test
 	public void findTerminal() {
@@ -107,7 +135,20 @@ public class TerminalTest {
 			terminal.setLocation("xm001");
 			terminal.setCreatetime(new Date());
 			terminal.setUserId(1);
-			terminalService.save(terminal);
+			terminalDao.save(terminal);
+		}
+
+		for (int i = 1; i < 5; i++) {
+			for (int j = 1; j < 7;) {
+				Activity a = new Activity();
+				a.setType(ActivityTypeEnum.values()[RandomUtil.randomInteger(0, 2)]);
+
+				a.setKitchenId(i);
+				a.setFoodId(j);
+
+				activityDao.save(a);
+				j += RandomUtil.randomInteger(1, 3);
+			}
 		}
 	}
 
