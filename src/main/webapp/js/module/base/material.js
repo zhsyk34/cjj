@@ -147,7 +147,7 @@ require([ "jquery", "modal", "page", "form", "checkctrl", "crud", "intercept", "
 
 	function upload() {
 		var imageType = /\S+\.(jpg|jpeg|bmp|png|gif)$/i;
-		var videoType = /\S+\.(asx|asf|mpg|wmv|3gp|mp4|mov|avi|wmv9|rm|rmvb|vob)$/i;
+		var videoType = /\S+\.(flv|asx|asf|mpg|wmv|3gp|mp4|mov|avi|wmv9|rm|rmvb|vob)$/i;
 		// 上传内容 类型
 		var files = $("input[name='upload']");
 		for (var i = 0, len = files.length; i < len; i++) {
