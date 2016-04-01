@@ -21,10 +21,7 @@ public class OrderRuleDaoImpl extends CommonsDaoImpl<OrderRule> implements Order
 	public OrderRule findUsed() {
 		String queryString = "from OrderRule as orderRule where orderRule.used = ?";
 		List<OrderRule> list = (List<OrderRule>) hibernateTemplate.find(queryString, true);
-		if (CollectionUtils.isNotEmpty(list)) {
-			return list.get(0);
-		}
-		return null;
+		return CollectionUtils.isEmpty(list) ? null : list.get(0);
 	}
 
 	@Override

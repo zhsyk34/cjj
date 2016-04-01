@@ -6,7 +6,6 @@
 %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
 <base href="<%=basePath%>" />
 <script src="js/lib/require.config.js"></script>
 <link rel="stylesheet" href="css/lib/init.css">

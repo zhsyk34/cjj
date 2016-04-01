@@ -18,7 +18,7 @@ public class Refund {
 
 	private String authenticode;// 验证码
 
-	private String terminalNo;
+	private String terminalNo;// TODO
 
 	private String orderNo;
 

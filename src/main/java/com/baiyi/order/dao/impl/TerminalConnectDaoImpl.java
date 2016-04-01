@@ -181,7 +181,7 @@ public class TerminalConnectDaoImpl extends CommonsDaoImpl<TerminalConnect> impl
 	}
 
 	@Override
-	public int countVO(String terminalNo, Date begin, Date end, Boolean online) {
+	public int count(String terminalNo, Date begin, Date end, Boolean online) {
 		StringBuffer queryString = new StringBuffer("select count(*)");
 		queryString.append(" from TerminalConnect as terminalConnect left join Terminal as terminal");
 		queryString.append(" on terminalConnect.terminalId = terminal.id");

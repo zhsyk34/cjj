@@ -76,42 +76,4 @@ public class TerminalDaoImpl extends CommonsDaoImpl<Terminal> implements Termina
 		return super.count(queryString.toString(), map);
 	}
 
-	// @SuppressWarnings("unchecked")
-	// @Override
-	// public List<Integer> findSeat(Integer terminalId) {
-	// StringBuffer queryString = new StringBuffer("select seat.id from Seat as
-	// seat, TerminalSeat as terminalSeat");
-	// queryString.append(" where seat.id = terminalSeat.seatId and
-	// terminalSeat.terminalId = ?");
-	// return (List<Integer>) hibernateTemplate.find(queryString.toString(),
-	// terminalId);
-	// }
-	//
-	// @SuppressWarnings("unchecked")
-	// @Override
-	// public List<Template> findTemplate(Integer terminalId, TemplateDownEnum
-	// status) {
-	// StringBuffer queryString = new StringBuffer("select template from
-	// Template as template, TerminalTemplate as terminalTemplate");
-	// queryString.append(" where template.id = terminalTemplate.templateId");
-	// Map<String, Object> map = new HashMap<>();
-	//
-	// if (ValidateUtil.isPK(terminalId)) {
-	// queryString.append(" and terminalTemplate.terminalId = :terminalId");
-	// map.put("terminalId", terminalId);
-	// }
-	// if (status != null) {
-	// queryString.append(" and terminalTemplate.status = :status");
-	// map.put("status", status);
-	// }
-	//
-	// Session session =
-	// hibernateTemplate.getSessionFactory().getCurrentSession();
-	// Query query = session.createQuery(queryString.toString());
-	// if (map != null) {
-	// query.setProperties(map);
-	// }
-	// return query.list();
-	// }
-
 }

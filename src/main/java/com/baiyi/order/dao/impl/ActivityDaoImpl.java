@@ -199,7 +199,10 @@ public class ActivityDaoImpl extends CommonsDaoImpl<Activity> implements Activit
 			return this.findVOList(kitchen, food, type, used, sort, order, pageNo, pageSize);
 		}
 
-		StringBuffer queryString = new StringBuffer("select activity.*,");
+		StringBuffer queryString = new StringBuffer("select activity.id, activity.type,");
+		queryString.append(" activity.unit, activity.discount, activity.percent, activity.begin, activity.end,");
+		queryString.append(" activity.count, activity.send, activity.used, activity.userId, activity.createtime,");
+		queryString.append(" temp.fid as foodId, temp.tid as kitchenId,");//
 		queryString.append(" temp.terminalNo as kitchenNo, temp.location, temp.name as foodName, temp.price");
 		queryString.append(" from Activity as activity right join");
 		queryString.append(" (select terminal.id as tid, terminal.location, terminal.terminalNo, food.id as fid, food.name, food.price");

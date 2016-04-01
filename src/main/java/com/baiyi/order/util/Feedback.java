@@ -7,7 +7,7 @@ public enum Feedback {
 	/* 状态判断 */
 	EXIST(11, "数据已存在"), NOTEXIST(12, "数据不存在"), RELATE(13, "数据正被使用中"),
 	/* 操作结果 */
-	SUCCESS(21, "成功"), FAIL(22, "失败"), ERROR(23, "出错"), ENABLE(24, "启用"), DISABLE(25, "禁用"), DEAL(26, "处理"), REVOKE(27, "撤销"), OFFLINE(28, "离线未登录");
+	SUCCESS(21, "成功"), FAIL(22, "失败"), ERROR(23, "出错"), ENABLE(24, "启用"), DISABLE(25, "禁用"), DEAL(26, "处理"), REVOKE(27, "撤销"), OFFLINE(28, "未登录");
 	private Feedback(Integer index, String name) {
 		this.index = index;
 		this.name = name;

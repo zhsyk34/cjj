@@ -90,8 +90,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User login(String name, String password) {
+		if (StringUtils.isBlank(name) || StringUtils.isBlank(password)) {
+			return null;
+		}
 		User user = this.find(name);
-		if (user == null || StringUtils.isBlank(password) || !password.equals(user.getPassword())) {
+		if (user == null || !password.equals(user.getPassword())) {
 			return null;
 		}
 		return user;

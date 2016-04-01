@@ -55,9 +55,9 @@
 					<th width="10%">厨房编号</th>
 					<th width="10%">厨房位置</th>
 					<th width="10%">餐点</th>
-					<th width="20%">停售时间</th>
-					<th width="10%">数量</th>
-					<th width="10%">每份数量</th>
+					<th width="18%">停售时间</th>
+					<th width="7%">数量</th>
+					<th width="5%">每份</th>
 					<th width="10%">启用</th>
 					<th width="10%">设置</th>
 					<th width="10%">撤销</th>

@@ -77,28 +77,16 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 
 	function used() {
 		$("#data").on("click", ".switch", function() {
+			var url = "json/OrderRule_used";
 			var row = $(this).parents("tr").data("row");
 			var id = row.id;
 			var used = !row.used;
 
-			$.ajax({
-				url : "json/OrderRule_used",
-				async : false,
-				traditional : true,
-				data : {
-					id : id,
-					used : used
-				},
-				success : function(data) {
-					if (data.result == "enable") {
-						$.alert("已启用");
-					}
-					if (data.result == "disable") {
-						$.alert("已禁用");
-					}
-					find();
-				}
-			});
+			var params = {
+				id : id,
+				used : used
+			};
+			crud.merge(url, params, find);
 		});
 	}
 

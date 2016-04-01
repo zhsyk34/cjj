@@ -24,7 +24,7 @@ public class RefundAction extends CommonsAction {
 		refund.setAmount(amount);
 		refund.setHappentime(FormatUtil.stringToDate(happentime, null));
 		refund.setOver(false);
-		jsonData.put("result", Feedback.CREATE.toString());
+		jsonData.put(result, Feedback.CREATE.toString());
 		return SUCCESS;
 	}
 
@@ -32,11 +32,11 @@ public class RefundAction extends CommonsAction {
 		Refund refund = refundService.find(id);
 		refund.setUserId(loginId);
 
-		boolean overStatus = FormatUtil.intToBol(over) == null ? false : FormatUtil.intToBol(over);
+		boolean overStatus = FormatUtil.intToboolean(over);
 		refund.setOver(overStatus);
 		refund.setDealtime(overStatus ? new Date() : null);
 		refundService.update(refund);
-		jsonData.put("result", overStatus ? Feedback.DEAL.toString() : Feedback.REVOKE.toString());
+		jsonData.put(result, overStatus ? Feedback.DEAL.toString() : Feedback.REVOKE.toString());
 		return SUCCESS;
 	}
 
@@ -45,7 +45,7 @@ public class RefundAction extends CommonsAction {
 		RefundTypeEnum typeEnum = FormatUtil.getEnum(RefundTypeEnum.class, type);
 		Date beginDate = FormatUtil.stringToDate(begin, null);
 		Date endDate = FormatUtil.stringToDate(StringUtils.isBlank(end) ? null : end + " 23:59:59", null);
-		Boolean overStatus = FormatUtil.intToBol(over);
+		Boolean overStatus = FormatUtil.intToBoolean(over);
 
 		List<Refund> list = refundService.findList(authenticode, terminalNo, orderNo, reasonEnum, typeEnum, beginDate, endDate, userId, overStatus, authenticode, orderNo, pageNo, pageSize);
 		int count = refundService.count(authenticode, terminalNo, orderNo, reasonEnum, typeEnum, beginDate, endDate, userId, overStatus);

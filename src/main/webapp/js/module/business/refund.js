@@ -5,28 +5,18 @@ require([ "jquery", "modal", "page", "datePicker", "crud", "intercept", "tool" ]
 
 	function update() {
 		$("#data").on("click", ".deal button", function() {
+			var url = "json/Refund_update";
+
 			var row = $(this).parents("tr").data("row");
 			var id = row.id;
 			var over = row.over ? 0 : 1;
 
-			$.ajax({
-				url : "json/Refund_update",
-				async : false,
-				traditional : true,
-				data : {
-					id : id,
-					over : over
-				},
-				success : function(data) {
-					if (data.result == "deal") {
-						$.alert("已处理");
-					}
-					if (data.result == "revoke") {
-						$.alert("已撤销");
-					}
-					find();
-				}
-			});
+			var params = {
+				id : id,
+				over : over
+			};
+
+			crud.merge(url, params, find);
 		});
 	}
 

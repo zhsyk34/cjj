@@ -11,10 +11,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.baiyi.order.dao.ActivityDao;
+import com.baiyi.order.dao.TerminalConnectDao;
 import com.baiyi.order.dao.TerminalDao;
 import com.baiyi.order.dao.TerminalTemplateDao;
 import com.baiyi.order.model.Activity;
 import com.baiyi.order.model.Terminal;
+import com.baiyi.order.model.TerminalConnect;
 import com.baiyi.order.model.TerminalTemplate;
 import com.baiyi.order.service.TerminalService;
 import com.baiyi.order.util.EnumList.ActivityTypeEnum;
@@ -22,6 +24,7 @@ import com.baiyi.order.util.EnumList.TerminalTypeEnum;
 import com.baiyi.order.util.FormatUtil;
 import com.baiyi.order.util.RandomUtil;
 import com.baiyi.order.vo.ActivityVO;
+import com.baiyi.order.vo.Record;
 
 import net.sf.json.JSONArray;
 
@@ -35,6 +38,8 @@ public class TerminalTest {
 	private TerminalTemplateDao terminalTemplateDao;
 	@Resource
 	private TerminalDao terminalDao;
+	@Resource
+	private TerminalConnectDao terminalConnectDao;
 	@Resource
 	private ActivityDao activityDao;
 
@@ -67,6 +72,16 @@ public class TerminalTest {
 		if (terminal2 != null) {
 			System.out.println(terminal2.getTerminalNo());
 		}
+	}
+
+	@Test
+	public void findTermina2() {
+		List<Record> rs = terminalConnectDao.findVOList("9", null, null, null);
+		System.out.println(JSONArray.fromObject(rs));
+		Date begin = FormatUtil.stringToDate("2016-03-01", null);
+		Date end = FormatUtil.stringToDate("2016-03-24", null);
+		List<Record> rs2 = terminalConnectDao.findVOList("9", begin, end, false);
+		System.out.println(JSONArray.fromObject(rs2));
 	}
 
 	@Test
@@ -148,6 +163,21 @@ public class TerminalTest {
 
 				activityDao.save(a);
 				j += RandomUtil.randomInteger(1, 3);
+			}
+		}
+
+		List<Terminal> list = terminalDao.findList();
+		for (Terminal t : list) {
+			for (int i = 0; i < 10;) {
+				TerminalConnect tc = new TerminalConnect();
+				tc.setTerminalId(t.getId());
+				tc.setDate(null);
+				tc.setImage(t.getTerminalNo() + i);
+				tc.setOnline(RandomUtil.randomInteger(1, 10) > 5);
+
+				i += RandomUtil.randomInteger(1, 4);
+
+				terminalConnectDao.save(tc);
 			}
 		}
 	}

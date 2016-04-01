@@ -21,9 +21,9 @@ public interface ActivityService {
 
 	public void update(Activity activity);
 
-	public void update(Collection<Activity> activities);
-
 	public void merge(Activity activity);
+
+	public void merge(Collection<Activity> activities);
 
 	public Activity find(Integer id);
 

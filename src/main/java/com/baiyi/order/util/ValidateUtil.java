@@ -23,6 +23,20 @@ public class ValidateUtil {
 		return key != null && key > 0;
 	}
 
+	/* array contains obj */// TODO
+	public static boolean indexOf(Object[] array, Object obj) {
+		if (isEmpty(array) || obj == null) {
+			return false;
+		}
+		for (Object each : array) {
+			if (each.equals(obj)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/* date */
 	public static boolean isSimpleDate(String str) {
 		if (StringUtils.isBlank(str)) {
 			return false;

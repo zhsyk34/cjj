@@ -10,7 +10,10 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 
 	function update() {
 		var url = "json/Activity_update";
-		var ids = $("#editor").data("ids");
+
+		var foodIds = select().foodIds;
+		var kitchenIds = select().kitchenIds;
+
 		var begin = $.trim($("#begin").val());
 		var end = $.trim($("#end").val());
 		var count = parseInt($.trim($("#count").val()));
@@ -21,7 +24,8 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 		var discount = parseFloat($.trim($("#discount").val()));
 
 		var params = {
-			ids : ids,
+			foodIds : foodIds,
+			kitchenIds : kitchenIds,
 			type : type,
 			begin : begin,
 			end : end,
@@ -32,7 +36,7 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 		switch (type) {
 		case "stop":
 			var pattern = $("#pattern :radio:checked").val();
-			switch (pattern) {// TODO
+			switch (pattern) {
 			case "count":
 				if (!validate.isNatural(count)) {
 					$.alert("请填写正确的停售数量");
@@ -71,6 +75,7 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 				$.alert("请填写正确的每份数量");
 				return false;
 			}
+			params.unit = unit;
 			break;
 		case "discount":
 			if (validate.isEmpty(begin)) {
@@ -104,7 +109,6 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 			}
 			break;
 		}
-
 		crud.merge(url, params, find);
 	}
 
@@ -120,8 +124,75 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 				loadDialog();
 			}
 		});
-		// pattern-listen
+		// 单选事件
 		$("#pattern").on("change", ":radio", function() {
+			showByRadio();
+		});
+
+		// 日期控件
+		$("#begin").on("click", function() {
+			WdatePicker({
+				maxDate : "#F{$dp.$D('end')}",
+				dateFmt : "yyyy-MM-dd HH:mm:ss"
+			});
+		});
+		$("#end").on("click", function() {
+			WdatePicker({
+				minDate : "#F{$dp.$D('begin')}",
+				dateFmt : "yyyy-MM-dd HH:mm:ss"
+			});
+		});
+
+		// 编辑事件
+		$("#data").on("click", ".update", function() {
+			$("#data").find(":checkbox").prop("checked", false);
+			$(this).parents("tr").find(":checkbox").prop("checked", true);
+			var row = $(this).parents("tr").data("row");
+			$("#editor").data("row", row);
+			loadDialog();
+			$("#editor").modal("open");
+		});
+		$("#update-all").on("click", function() {
+			if (select().foodIds.length == 0) {
+				$.alert("请选择数据");
+				return false;
+			}
+			$("#editor").removeData("row");
+			loadDialog();
+			$("#editor").modal("open");
+		});
+
+		// 加载窗口
+		function loadDialog() {
+			var row = $("#editor").data("row");
+			$("#editor").modal("clear");
+			if (row) {
+				$("#begin").val(row.begin ? row.begin.replace("T", " ") : "");
+				$("#end").val(row.end ? row.end.replace("T", " ") : "");
+				$("#count").val(row.count || "");
+
+				var value = row.used ? 1 : 0;
+				$("#used :radio[value='" + value + "']").prop("checked", true);
+
+				switch (type) {
+				case "stop":
+					$("#pattern :radio[value='count']").prop("checked", !!row.count);
+					break;
+				case "gift":
+					$("#unit").val(row.unit);
+					break;
+				case "discount":
+					$("#pattern :radio[value='percent']").prop("checked", !!row.percent);
+					$("#percent").val(row.percent || "");
+					$("#discount").val(row.discount);
+					break;
+				}
+			}
+			showByRadio();
+		}
+
+		// 单选框判断
+		function showByRadio() {
 			var pattern = $("#pattern :radio:checked").val();
 			switch (pattern) {
 			case "count":
@@ -141,155 +212,66 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 				$(".pattern-discount").hide();
 				break;
 			}
-		});
-
-		// data-selector
-		$("#begin").on("click", function() {
-			WdatePicker({
-				maxDate : "#F{$dp.$D('end')}",
-				dateFmt : "yyyy-MM-dd HH:mm:ss"
-			});
-		});
-		$("#end").on("click", function() {
-			WdatePicker({
-				minDate : "#F{$dp.$D('begin')}",
-				dateFmt : "yyyy-MM-dd HH:mm:ss"
-			});
-		});
-
-		// update-event
-		$("#data").on("click", ".update", function() {
-			$("#data").find(":checkbox").prop("checked", false);
-			$(this).parents("tr").find(":checkbox").prop("checked", true);
-			var row = $(this).parents("tr").data("row");
-			$("#editor").data("row", row);
-			$("#editor").data("ids", row.id);
-			loadDialog();
-			$("#editor").modal("open");
-		});
-		$("#update-all").on("click", function() {
-			var ids = select();
-			if (ids.length == 0) {
-				$.alert("请选择数据");
-				return;
-			}
-			$("#editor").removeData("row");
-			$("#editor").data("ids", ids);
-			loadDialog();
-			$("#editor").modal("open");
-		});
-
-		function loadDialog() {
-			var row = $("#editor").data("row");
-			if (row) {
-				$("#begin").val(row.begin ? row.begin.replace("T", " ") : "");
-				$("#end").val(row.end ? row.end.replace("T", " ") : "");
-				$("#count").val(row.count || "");
-
-				var value = row.used ? 1 : 0;
-				$("#used :radio[value='" + value + "']").prop("checked", true);
-
-				switch (type) {
-				case "stop":
-					if (row.count) {
-						$("#pattern :radio[value='count']").prop("checked", true);
-						$(".pattern-count").show();
-						$(".pattern-date").hide();
-					} else {
-						$("#pattern :radio[value='date']").prop("checked", true);
-						$(".pattern-count").hide();
-						$(".pattern-date").show();
-					}
-					break;
-				case "gift":
-					$("#unit").val(row.unit);
-					break;
-				case "discount":
-					if (row.percent) {
-						$("#pattern :radio[value='percent']").prop("checked", true);
-						$(".pattern-percent").show();
-						$(".pattern-discount").hide();
-						$("#percent").val(row.percent);
-					} else {
-						$("#pattern :radio[value='discount']").prop("checked", true);
-						$(".pattern-percent").hide();
-						$(".pattern-discount").show();
-					}
-					$("#discount").val(row.discount);
-					break;
-				}
-
-			} else {
-				$("#editor").modal("clear");
-			}
 		}
 	}
 
 	function revoke() {
 		var url = "json/Activity_delete";
-		var params = {
-			ids : []
-		};
-
 		$("#data").on("click", ".revoke", function() {
 			var id = parseInt($(this).parents("tr").data("row").id);
-
-			params.ids = [ id ];
-			console.log(params);
-			return false;
-			crud.merge(url, params, find);
+			crud.del(url, id, find);
 		});
 		$("#revoke-all").on("click", function() {
-			params.ids = select().ids;
-			console.log(params);
-			return false;
-			if (params.ids.length == 0) {
-				$.alert("请选择数据");
-				return;
-			}
-			crud.merge(url, params, find);
+			var ids = select().ids;
+			crud.del(url, ids, find);
 		});
 	}
 
 	function used() {
 		var url = "json/Activity_used";
+
 		var params = {
-			ids : [],
-			used : null,
-			type : type
+			type : type,
+			used : 0
 		};
+
 		$("#data").on("click", ".disable", function() {
-			var id = parseInt($(this).parents("tr").find(":checkbox").val());
-			params.ids = [ id ];
+			var row = $(this).parents("tr").data("row");
 			params.used = 0;
+			params.foodIds = [ parseInt(row.foodId) ];
+			params.kitchenIds = [ parseInt(row.kitchenId) ];
 			crud.merge(url, params, find);
 		});
 		$("#data").on("click", ".enable", function() {
-			var id = parseInt($(this).parents("tr").find(":checkbox").val());
-			params.ids = [ id ];
+			var row = $(this).parents("tr").data("row");
 			params.used = 1;
+			params.foodIds = [ parseInt(row.foodId) ];
+			params.kitchenIds = [ parseInt(row.kitchenId) ];
 			crud.merge(url, params, find);
 		});
 
 		$("#unused-all").on("click", function() {
-			params.ids = select();
-			if (params.ids.length == 0) {
+			var result = select();
+			params.foodIds = result.foodIds;
+			params.kitchenIds = result.kitchenIds;
+			if (params.foodIds.length == 0) {
 				$.alert("请选择数据");
-				return;
+				return false;
 			}
 			params.used = 0;
 			crud.merge(url, params, find);
 		});
 		$("#used-all").on("click", function() {
-			params.ids = select();
-			if (params.ids.length == 0) {
+			var result = select();
+			params.foodIds = result.foodIds;
+			params.kitchenIds = result.kitchenIds;
+			if (params.foodIds.length == 0) {
 				$.alert("请选择数据");
-				return;
+				return false;
 			}
 			params.used = 1;
 			crud.merge(url, params, find);
 		});
-
 	}
 
 	// util
@@ -304,9 +286,9 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 			var id = parseInt(row.id);
 			var kitchenId = parseInt(row.kitchenId);
 			var foodId = parseInt(row.foodId);
-			id && ids.push(id);
-			kitchenId && kitchenIds.push(id);
-			foodId && foodIds.push(id);
+			id && result.ids.push(id);
+			kitchenId && result.kitchenIds.push(kitchenId);
+			foodId && result.foodIds.push(foodId);
 		});
 		return result;
 	}
@@ -404,7 +386,7 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 				case "discount":
 					tr.find(".price").text(row.price);
 					tr.find(".discount").text(row.discount || "");
-					tr.find(".used").html(row.used ? disable : "");// 促销不能立即启用
+					tr.find(".used").html(row.used ? disable : (row.id ? enable : ""));// 促销不能立即启用
 					break;
 				}
 

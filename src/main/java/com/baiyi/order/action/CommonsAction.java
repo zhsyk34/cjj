@@ -42,7 +42,7 @@ public class CommonsAction extends ActionSupport implements RequestAware, Sessio
 	protected String sort = "id";
 	protected String order = "desc";
 	protected Integer userId;// 用户操作记录
-	protected Integer loginId = 1;// 登录账户 TODO
+	public static Integer loginId;// 登录账户 TODO
 
 	protected Map<String, Object> jsonData = new HashMap<>();
 	protected String result = "result";// jsonData-key
@@ -87,13 +87,13 @@ public class CommonsAction extends ActionSupport implements RequestAware, Sessio
 		this.userId = userId;
 	}
 
-	public Integer getLoginId() {
-		return loginId;
-	}
-
-	public void setLoginId(Integer loginId) {
-		this.loginId = loginId;
-	}
+	// public Integer getLoginId() {
+	// return loginId;
+	// }
+	//
+	// public void setLoginId(Integer loginId) {
+	// this.loginId = loginId;
+	// }
 
 	public Map<String, Object> getJsonData() {
 		return jsonData;

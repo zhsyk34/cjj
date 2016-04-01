@@ -56,12 +56,12 @@
 					<th width="10%">厨房位置</th>
 					<th width="10%">餐点</th>
 					<th width="20%">停售时间</th>
-					<th width="10%">数量</th>
-					<th width="10%">原价</th>
-					<th width="10%">促销价</th>
-					<th width="10%">启用</th>
-					<th width="10%">设置</th>
-					<th width="10%">撤销</th>
+					<th width="6%">数量</th>
+					<th width="5%">原价</th>
+					<th width="5%">促销价</th>
+					<th width="8%">启用</th>
+					<th width="8%">设置</th>
+					<th width="8%">撤销</th>
 				</tr>
 			</thead>
 			<tbody id="data">

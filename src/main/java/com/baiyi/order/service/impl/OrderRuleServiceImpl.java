@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import com.baiyi.order.dao.OrderRuleDao;
@@ -54,10 +55,11 @@ public class OrderRuleServiceImpl implements OrderRuleService {
 	@Override
 	public void enable(Integer id) {
 		List<OrderRule> orderRules = orderRuleDao.findList();
-		// has one rule at least
-		for (OrderRule orderRule : orderRules) {
-			orderRule.setUsed(orderRule.getId().equals(id));
-			orderRuleDao.update(orderRule);
+		if (CollectionUtils.isNotEmpty(orderRules)) {
+			for (OrderRule orderRule : orderRules) {
+				orderRule.setUsed(orderRule.getId().equals(id));
+				orderRuleDao.update(orderRule);
+			}
 		}
 	}
 

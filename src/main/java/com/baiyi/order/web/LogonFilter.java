@@ -34,20 +34,21 @@ public class LogonFilter implements Filter {
 		String servletPath = httpServletRequest.getServletPath();// 访问地址(不带项目名称)
 		// String uri = httpServletRequest.getRequestURI();// 访问地址(带项目名称)
 
-		System.out.printf("%-20s %s%n", servletPath, servletPath.matches(passuri));
+		// System.out.printf("%-20s %s%n", servletPath,
+		// servletPath.matches(passuri));
 
 		if (servletPath.matches(passuri)) {
-			System.out.println("pass uri");
+			// System.out.println("pass uri");
 			chain.doFilter(httpServletRequest, httpServletResponse);
 			return;
 		}
 
 		User user = (User) httpSession.getAttribute("user");
 		if (user == null) {
-			System.out.println("not login,redirect");
+			// System.out.println("not login,redirect");
 			httpServletResponse.sendRedirect(contextPath + "/jsp/logon.jsp");
 		} else {
-			System.out.println("is login,pass");
+			// System.out.println("is login,pass");
 			chain.doFilter(httpServletRequest, httpServletResponse);
 		}
 	}

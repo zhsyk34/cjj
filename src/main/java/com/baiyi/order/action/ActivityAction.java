@@ -1,6 +1,7 @@
 package com.baiyi.order.action;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import com.baiyi.order.model.Food;
 import com.baiyi.order.util.EnumList.ActivityTypeEnum;
 import com.baiyi.order.util.Feedback;
 import com.baiyi.order.util.FormatUtil;
+import com.baiyi.order.util.ValidateUtil;
 import com.baiyi.order.vo.ActivityVO;
 
 @SuppressWarnings("serial")
@@ -18,22 +20,30 @@ public class ActivityAction extends CommonsAction {
 
 	public String update() {
 		ActivityTypeEnum typeEnum = FormatUtil.getEnum(ActivityTypeEnum.class, type);
-		if (typeEnum == null) {
-			jsonData.put("result", Feedback.ERROR.toString());
+
+		System.out.println(Arrays.toString(foodIds));
+		System.out.println(Arrays.toString(kitchenIds));
+		if (typeEnum == null || ValidateUtil.isEmpty(foodIds) || ValidateUtil.isEmpty(kitchenIds) || foodIds.length != kitchenIds.length) {
+			jsonData.put(result, Feedback.ERROR.toString());
 			return SUCCESS;
 		}
-		Boolean usedStatus = FormatUtil.intToBol(used);
-		if (usedStatus == null) {
-			usedStatus = false;
-		}
 		if ((StringUtils.isBlank(begin) || StringUtils.isBlank(end)) && count <= 0) {// 必要的控制信息
-			jsonData.put("result", Feedback.ERROR.toString());
+			jsonData.put(result, Feedback.ERROR.toString());
 			return SUCCESS;
 		}
 
+		boolean usedStatus = FormatUtil.intToboolean(used);
+
 		List<Activity> activities = new ArrayList<>();
-		for (Integer id : ids) {
-			Activity activity = activityService.find(id);
+
+		for (int i = 0; i < foodIds.length; i++) {
+			Integer kitchenId = kitchenIds[i], foodId = foodIds[i];
+			Activity activity = activityService.find(kitchenId, foodId);
+			if (activity == null) {
+				activity = new Activity();
+				activity.setKitchenId(kitchenId);
+				activity.setFoodId(foodId);
+			}
 
 			activity.setBegin(FormatUtil.stringToDate(begin, null));
 			activity.setEnd(FormatUtil.stringToDate(end, null));
@@ -45,7 +55,7 @@ public class ActivityAction extends CommonsAction {
 				activity.setUnit(0);
 				activity.setDiscount(0);
 				activity.setPercent(0);
-				if (count > 0) {
+				if (count > 0) {// 数量控制优先
 					activity.setBegin(null);
 					activity.setEnd(null);
 				}
@@ -64,7 +74,6 @@ public class ActivityAction extends CommonsAction {
 					discount = FormatUtil.format(price * percent / 100, 0);
 				}
 				activity.setDiscount(discount);
-
 				break;
 			}
 
@@ -75,44 +84,51 @@ public class ActivityAction extends CommonsAction {
 			activities.add(activity);
 		}
 
-		activityService.update(activities);
-		jsonData.put("result", Feedback.UPDATE.toString());
+		activityService.merge(activities);
+		jsonData.put(result, Feedback.UPDATE.toString());
 		return SUCCESS;
 	}
 
 	public String used() {
 		ActivityTypeEnum typeEnum = FormatUtil.getEnum(ActivityTypeEnum.class, type);
+		boolean usedStatus = FormatUtil.intToboolean(used);
 
-		Boolean usedStatus = FormatUtil.intToBol(used);
-		usedStatus = usedStatus == null ? false : usedStatus;
+		if (typeEnum == null || ValidateUtil.isEmpty(foodIds) || ValidateUtil.isEmpty(kitchenIds) || foodIds.length != kitchenIds.length) {
+			jsonData.put(result, Feedback.ERROR.toString());
+			return SUCCESS;
+		}
 
 		List<Activity> activities = new ArrayList<>();
-		for (Integer id : ids) {
-			Activity activity = activityService.find(id);
+		for (int i = 0; i < foodIds.length; i++) {
+			Integer kitchenId = kitchenIds[i], foodId = foodIds[i];
+			Activity activity = activityService.find(kitchenId, foodId);
 
-			if (activity.getType() == null) {// 对原未参与活动的数据进行判断和设置
-				if (usedStatus) {// 直接启用
-					if (typeEnum == null) {
-						jsonData.put("result", Feedback.ERROR.toString());						
-						return SUCCESS;
-					}
-					switch (typeEnum) {
-					case STOP:
-						activity.setBegin(new Date());
-						activity.setEnd(FormatUtil.stringToDate("2999-12-31 23:59:59", null));
-						activity.setCount(0);// TODO
-						break;
-					case GIFT:
-						activity.setBegin(new Date());
-						activity.setEnd(FormatUtil.stringToDate("2999-12-31 23:59:59", null));
-						activity.setUnit(1);
-						break;
-					case DISCOUNT:
-						continue;// 暂不支持直接启用促销(缺少必要的价格或折扣信息)
-					}
-					activity.setType(typeEnum);// 启用时设置类型
-				} else {
-					continue; // 不需要禁用
+			if (activity != null && activity.getType() != typeEnum) {
+				continue;// 不允许直接更改活动类型
+			}
+
+			if (activity == null) {// 直接启用
+				if (!usedStatus) {
+					continue;
+				}
+				activity = new Activity();
+				activity.setKitchenId(kitchenId);
+				activity.setFoodId(foodId);
+				activity.setType(typeEnum);// 启用时设置类型
+
+				switch (typeEnum) {
+				case STOP:// 直接无限期启用停售
+					activity.setBegin(new Date());
+					activity.setEnd(FormatUtil.stringToDate("2999-12-31 23:59:59", null));
+					activity.setCount(0);
+					break;
+				case GIFT:// 直接无限期启用促销,促销单位默认设置为1份
+					activity.setBegin(new Date());
+					activity.setEnd(FormatUtil.stringToDate("2999-12-31 23:59:59", null));
+					activity.setUnit(1);
+					break;
+				case DISCOUNT:
+					continue;// 暂不支持直接启用促销(缺少必要的价格或折扣信息)
 				}
 			}
 
@@ -121,23 +137,24 @@ public class ActivityAction extends CommonsAction {
 			activity.setCreatetime(new Date());
 			activities.add(activity);
 		}
-		activityService.update(activities);
-		jsonData.put("result", usedStatus ? Feedback.ENABLE.toString() : Feedback.DISABLE.toString());
+		activityService.merge(activities);
+		jsonData.put(result, usedStatus ? Feedback.ENABLE.toString() : Feedback.DISABLE.toString());
 		return SUCCESS;
 
 	}
 
 	public String delete() {
 		activityService.delete(ids);
-		jsonData.put("result", Feedback.REVOKE.toString());
+		jsonData.put(result, Feedback.REVOKE.toString());
 		return SUCCESS;
 	}
 
 	public String find() {
+		sort = "tid";// 终端:kitchenId
 		ActivityTypeEnum typeEnum = FormatUtil.getEnum(ActivityTypeEnum.class, type);
-		Boolean usedStatus = FormatUtil.intToBol(used);
+		Boolean usedStatus = FormatUtil.intToBoolean(used);
 
-		List<ActivityVO> list = activityService.findVOList(kitchen, food, typeEnum, usedStatus, "tid", order, pageNo, pageSize);
+		List<ActivityVO> list = activityService.findVOList(kitchen, food, typeEnum, usedStatus, sort, order, pageNo, pageSize);
 		int count = activityService.countVO(kitchen, food, typeEnum, usedStatus);
 		jsonData.put("list", list);
 		jsonData.put("count", count);
@@ -153,6 +170,8 @@ public class ActivityAction extends CommonsAction {
 	private String food;
 
 	private Integer[] ids;
+	private Integer[] kitchenIds;
+	private Integer[] foodIds;
 
 	private String type;
 
@@ -171,9 +190,6 @@ public class ActivityAction extends CommonsAction {
 	private int count;
 	// 3.直接
 	private Integer used;
-
-	/**/
-	private int send;// TODO 终端更新送出数量
 
 	public Integer getId() {
 		return id;
@@ -205,6 +221,22 @@ public class ActivityAction extends CommonsAction {
 
 	public void setIds(Integer[] ids) {
 		this.ids = ids;
+	}
+
+	public Integer[] getKitchenIds() {
+		return kitchenIds;
+	}
+
+	public void setKitchenIds(Integer[] kitchenIds) {
+		this.kitchenIds = kitchenIds;
+	}
+
+	public Integer[] getFoodIds() {
+		return foodIds;
+	}
+
+	public void setFoodIds(Integer[] foodIds) {
+		this.foodIds = foodIds;
 	}
 
 	public String getType() {
@@ -269,14 +301,6 @@ public class ActivityAction extends CommonsAction {
 
 	public void setUsed(Integer used) {
 		this.used = used;
-	}
-
-	public int getSend() {
-		return send;
-	}
-
-	public void setSend(int send) {
-		this.send = send;
 	}
 
 }

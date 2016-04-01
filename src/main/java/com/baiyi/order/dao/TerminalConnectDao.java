@@ -42,6 +42,6 @@ public interface TerminalConnectDao {
 
 	public List<Record> findVOList(String terminalNo, Date begin, Date end, Boolean online, String sort, String order, int pageNo, int pageSize);
 
-	public int countVO(String terminalNo, Date begin, Date end, Boolean online);
+	public int count(String terminalNo, Date begin, Date end, Boolean online);
 
 }

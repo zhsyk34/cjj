@@ -7,13 +7,14 @@ import org.apache.commons.lang.StringUtils;
 import com.baiyi.order.model.User;
 import com.baiyi.order.util.Encryption;
 import com.baiyi.order.util.Feedback;
+import com.baiyi.order.util.ValidateUtil;
 
 @SuppressWarnings("serial")
 public class UserAction extends CommonsAction {
 
 	public String save() {
 		if (StringUtils.isBlank(name) || StringUtils.isBlank(password)) {
-			jsonData.put("result", Feedback.ERROR.toString());
+			jsonData.put(result, Feedback.ERROR.toString());
 			return SUCCESS;
 		}
 
@@ -23,20 +24,23 @@ public class UserAction extends CommonsAction {
 		user.setPassword(password);
 
 		userService.save(user);
-		jsonData.put("result", Feedback.CREATE.toString());
+		jsonData.put(result, Feedback.CREATE.toString());
 		return SUCCESS;
 	}
 
 	public String delete() {
-		// TODO check user is used?
+		Integer id = CommonsAction.loginId;// TODO
+		if (ValidateUtil.indexOf(ids, id)) {
+			// ...
+		}
 		userService.delete(ids);
-		jsonData.put("result", Feedback.DELETE.toString());
+		jsonData.put(result, Feedback.DELETE.toString());
 		return SUCCESS;
 	}
 
 	public String update() {
 		if (StringUtils.isBlank(name)) {
-			jsonData.put("result", Feedback.ERROR.toString());
+			jsonData.put(result, Feedback.ERROR.toString());
 			return SUCCESS;
 		}
 
@@ -49,13 +53,13 @@ public class UserAction extends CommonsAction {
 		}
 
 		userService.update(user);
-		jsonData.put("result", Feedback.UPDATE.toString());
+		jsonData.put(result, Feedback.UPDATE.toString());
 		return SUCCESS;
 	}
 
 	public String modify() {// 修改密码
 		if (StringUtils.isBlank(original) || StringUtils.isBlank(password)) {
-			jsonData.put("result", Feedback.ERROR.toString());
+			jsonData.put(result, Feedback.ERROR.toString());
 			return SUCCESS;
 		}
 
@@ -64,7 +68,7 @@ public class UserAction extends CommonsAction {
 		// 验证原密码
 		original = Encryption.encrypt(original);
 		if (!original.equals(user.getPassword())) {
-			jsonData.put("result", Feedback.NOTEXIST.toString());
+			jsonData.put(result, Feedback.NOTEXIST.toString());
 			return SUCCESS;
 		}
 
@@ -72,7 +76,7 @@ public class UserAction extends CommonsAction {
 		user.setPassword(password);
 
 		userService.update(user);
-		jsonData.put("result", Feedback.UPDATE.toString());
+		jsonData.put(result, Feedback.UPDATE.toString());
 		return SUCCESS;
 	}
 
@@ -93,18 +97,19 @@ public class UserAction extends CommonsAction {
 
 	public String login() {
 		if (StringUtils.isBlank(name) || StringUtils.isBlank(password)) {
-			jsonData.put("result", Feedback.ERROR.toString());
+			jsonData.put(result, Feedback.ERROR.toString());
 			return SUCCESS;
 		}
 
 		password = Encryption.encrypt(password);
 		User user = userService.login(name, password);
 		if (user == null) {
-			jsonData.put("result", Feedback.FAIL.toString());
+			jsonData.put(result, Feedback.FAIL.toString());
 			return SUCCESS;
 		}
-		session.put("user", user);// TODO
-		jsonData.put("result", Feedback.SUCCESS.toString());
+		session.put("user", user);
+		CommonsAction.loginId = user.getId();// TODO 记录用户
+		jsonData.put(result, Feedback.SUCCESS.toString());
 		return SUCCESS;
 	}
 

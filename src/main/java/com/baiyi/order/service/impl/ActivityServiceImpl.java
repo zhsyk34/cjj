@@ -57,17 +57,17 @@ public class ActivityServiceImpl implements ActivityService {
 	}
 
 	@Override
-	public void update(Collection<Activity> activities) {
-		if (CollectionUtils.isNotEmpty(activities)) {
-			for (Activity activity : activities) {
-				activityDao.update(activity);
-			}
-		}
+	public void merge(Activity activity) {
+		activityDao.merge(activity);
 	}
 
 	@Override
-	public void merge(Activity activity) {
-		activityDao.merge(activity);
+	public void merge(Collection<Activity> activities) {
+		if (CollectionUtils.isNotEmpty(activities)) {
+			for (Activity activity : activities) {
+				activityDao.merge(activity);
+			}
+		}
 	}
 
 	@Override

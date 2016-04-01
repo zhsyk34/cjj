@@ -39,7 +39,7 @@ import com.baiyi.order.vo.TemplateStatusVO;
 import com.baiyi.order.vo.TerminalVO;
 
 @Service
-public class TerminalServiceImpl implements TerminalService {
+public class TerminalServiceImpl implements TerminalService {// TODO
 
 	@Resource
 	private TerminalDao terminalDao;
@@ -142,13 +142,7 @@ public class TerminalServiceImpl implements TerminalService {
 	@Override
 	public boolean exist(Integer id, String terminalNo) {
 		Terminal terminal = this.find(terminalNo);
-		if (terminal == null) {
-			return false;
-		}
-		if (!ValidateUtil.isPK(id)) {
-			return true;
-		}
-		return !terminal.getId().equals(id);
+		return terminal == null ? false : !terminal.getId().equals(id);
 	}
 
 	@Override
@@ -260,7 +254,7 @@ public class TerminalServiceImpl implements TerminalService {
 
 	@Override
 	public int countRecord(String terminalNo, Date begin, Date end, Boolean online) {
-		return terminalConnectDao.countVO(terminalNo, begin, end, online);
+		return terminalConnectDao.count(terminalNo, begin, end, online);
 	}
 
 	@Override

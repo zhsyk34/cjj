@@ -3,7 +3,7 @@ define([ "jquery", "modal", "page" ], function() {
 		page : function(data, callback, target) {// 翻页控件
 			var options = {
 				onChangePage : function(pageNo, pageSize) {
-					callback();
+					typeof callback == "function" && callback();
 				}
 			};
 			if (data) {
@@ -11,13 +11,10 @@ define([ "jquery", "modal", "page" ], function() {
 				options.pageSize = data.pageSize;
 				options.dataCount = data.count;
 			}
-			if (target) {
-				target.page(options);
-			} else {
-				$("#page").page(options);
-			}
+			(target || $("#page")).page(options);
 		},
 		merge : function(url, params, callback) {
+			console.log(url, params);
 			$.ajax({
 				url : url,
 				async : false,
@@ -37,21 +34,22 @@ define([ "jquery", "modal", "page" ], function() {
 					case "disable":
 						$.alert("禁用成功");
 						break;
+					case "deal":
+						$.alert("已处理");
+						break;
 					case "revoke":
-						$.alert("撤销成功");
+						$.alert("已撤销");
 						break;
 					case "error":
 						$.alert("出错了");
 						return;
 					}
-					callback && callback();
+					typeof callback == "function" && callback();
 				}
 			});
 		},
 		del : function(url, ids, callback) {
-			if (typeof ids == "number") {
-				ids = [ ids ];
-			}
+			typeof ids == "number" && (ids = [ ids ]);
 			if (ids.length == 0) {
 				$.alert("请选择要删除的数据");
 				return;
@@ -66,8 +64,7 @@ define([ "jquery", "modal", "page" ], function() {
 							ids : ids
 						},
 						success : function(data) {
-							var result = data.result;
-							switch (result) {
+							switch (data.result) {
 							case "relate":
 								$.alert("数据正被使用中,不能删除");
 								return;
@@ -81,9 +78,7 @@ define([ "jquery", "modal", "page" ], function() {
 							$("#page").page({
 								pageNo : 1
 							});
-							if (typeof callback == "function") {
-								callback();
-							}
+							typeof callback == "function" && callback();
 						}
 					});
 				}

@@ -9,11 +9,12 @@ import org.apache.commons.lang.StringUtils;
 
 public class FormatUtil {
 
-	public static Boolean intToBol(Integer key) {
-		if (key == null) {
-			return null;
-		}
-		return key > 0;
+	public static Boolean intToBoolean(Integer key) {
+		return key == null ? null : key > 0;
+	}
+
+	public static boolean intToboolean(Integer key) {
+		return key != null && key > 0;
 	}
 
 	// 根据 Integer 获取枚举值

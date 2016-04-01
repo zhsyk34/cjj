@@ -45,7 +45,7 @@ public interface ActivityDao {
 
 	public List<ActivityVO> findVOList(String kitchen, String food, ActivityTypeEnum type, Boolean used, String sort, String order, int pageNo, int pageSize);
 
-	/* VO with extra */
+	/* VO with extra(囊括未参与活动的数据) */
 	public List<ActivityVO> findVOList(boolean extra);
 
 	public List<ActivityVO> findVOList(String kitchen, String food, ActivityTypeEnum type, Boolean used, boolean extra);
