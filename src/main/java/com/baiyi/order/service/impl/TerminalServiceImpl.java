@@ -65,7 +65,7 @@ public class TerminalServiceImpl implements TerminalService {// TODO
 		terminalDao.save(terminal);
 		Integer terminalId = terminal.getId();
 
-		// 币值存量
+		// 币值存量:TODO
 		Cashbox cashbox = new Cashbox();
 		cashbox.setTerminalId(terminalId);
 		cashboxDao.save(cashbox);

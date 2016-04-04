@@ -14,12 +14,10 @@ import com.baiyi.order.dao.ActivityDao;
 import com.baiyi.order.dao.TerminalConnectDao;
 import com.baiyi.order.dao.TerminalDao;
 import com.baiyi.order.dao.TerminalTemplateDao;
-import com.baiyi.order.model.Activity;
 import com.baiyi.order.model.Terminal;
 import com.baiyi.order.model.TerminalConnect;
 import com.baiyi.order.model.TerminalTemplate;
 import com.baiyi.order.service.TerminalService;
-import com.baiyi.order.util.EnumList.ActivityTypeEnum;
 import com.baiyi.order.util.EnumList.TerminalTypeEnum;
 import com.baiyi.order.util.FormatUtil;
 import com.baiyi.order.util.RandomUtil;
@@ -143,27 +141,14 @@ public class TerminalTest {
 
 	@Test
 	public void save() {
-		for (int i = 0; i < 5; i++) {
+		for (int i = 1; i < 5; i++) {
 			Terminal terminal = new Terminal();
 			terminal.setTerminalNo("tno1000" + i);
 			terminal.setType(FormatUtil.getEnum(TerminalTypeEnum.class, RandomUtil.randomInteger(0, 1)));
-			terminal.setLocation("xm001");
+			terminal.setLocation("xm00" + i);
 			terminal.setCreatetime(new Date());
 			terminal.setUserId(1);
 			terminalDao.save(terminal);
-		}
-
-		for (int i = 1; i < 5; i++) {
-			for (int j = 1; j < 7;) {
-				Activity a = new Activity();
-				a.setType(ActivityTypeEnum.values()[RandomUtil.randomInteger(0, 2)]);
-
-				a.setKitchenId(i);
-				a.setFoodId(j);
-
-				activityDao.save(a);
-				j += RandomUtil.randomInteger(1, 3);
-			}
 		}
 
 		List<Terminal> list = terminalDao.findList();

@@ -22,6 +22,14 @@ public class TerminalTemplateDaoImpl extends CommonsDaoImpl<TerminalTemplate> im
 
 	@SuppressWarnings("unchecked")
 	@Override
+	public TerminalTemplate find(Integer terminalId, Integer templateId) {
+		String queryString = "from TerminalTemplate as terminalTemplate where terminalTemplate.terminalId = ? and terminalTemplate.templateId = ?";
+		List<TerminalTemplate> list = (List<TerminalTemplate>) hibernateTemplate.find(queryString, terminalId, templateId);
+		return CollectionUtils.isEmpty(list) ? null : list.get(0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
 	public TerminalTemplate findUsed(Integer terminalId) {
 		String queryString = "from TerminalTemplate as terminalTemplate where terminalTemplate.terminalId = ? and terminalTemplate.used = ?";
 		List<TerminalTemplate> list = (List<TerminalTemplate>) hibernateTemplate.find(queryString, terminalId, true);
@@ -56,61 +64,5 @@ public class TerminalTemplateDaoImpl extends CommonsDaoImpl<TerminalTemplate> im
 
 		return super.findList(queryString.toString(), map);
 	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public TerminalTemplate find(Integer terminalId, Integer templateId) {
-		String queryString = "from TerminalTemplate as terminalTemplate where terminalTemplate.terminalId = ? and terminalTemplate.templateId = ?";
-		List<TerminalTemplate> list = (List<TerminalTemplate>) hibernateTemplate.find(queryString, terminalId, templateId);
-		return CollectionUtils.isEmpty(list) ? null : list.get(0);
-	}
-
-	// @Override
-	// public List<TemplateStatusVO> findVOList(Integer terminalId, String
-	// templateName) {
-	// return this.findVOList(terminalId, templateName, null, null, -1, -1);
-	// }
-	//
-	// @SuppressWarnings("unchecked")
-	// @Override
-	// public List<TemplateStatusVO> findVOList(Integer terminalId, String
-	// templateName, String sort, String order, int pageNo, int pageSize) {
-	// StringBuffer queryString = new StringBuffer("select terminalTemplate.*,
-	// terminal.terminalNO as terminalNo, template.name as templateName");
-	// queryString.append(" from Template as template left join TerminalTemplate
-	// as terminalTemplate on template.id = terminalTemplate.templateId");
-	// queryString.append(" left join Terminal as terminal on
-	// terminalTemplate.terminalId = terminal.id");
-	// queryString.append(" where 1 = 1");
-	//
-	// Map<String, Object> map = new HashMap<>();
-	//
-	// if (ValidateUtil.isPK(terminalId)) {
-	// queryString.append(" and terminal.id = :terminalId");
-	// map.put("terminalId", terminalId);
-	// }
-	// if (StringUtils.isNotBlank(templateName)) {
-	// queryString.append(" and template.name like :templateName");
-	// map.put("templateName", "%" + templateName + "%");
-	// }
-	// if (StringUtils.isBlank(sort)) {
-	// sort = "templateId";
-	// }
-	// if (StringUtils.isNotBlank(order)) {
-	// queryString.append(" order by template." + sort + " " + order);
-	// }
-	//
-	// Session session =
-	// hibernateTemplate.getSessionFactory().getCurrentSession();
-	// Query query = session.createSQLQuery(queryString.toString());
-	// query.setResultTransformer(Transformers.aliasToBean(TemplateStatusVO.class));
-	// query.setProperties(map);
-	//
-	// if (pageNo >= 0 && pageSize > 0) {
-	// query.setFirstResult((pageNo - 1) * pageSize).setMaxResults(pageSize);
-	// }
-	//
-	// return query.list();
-	// }
 
 }

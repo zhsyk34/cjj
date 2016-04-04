@@ -72,6 +72,8 @@ public class TerminalAction extends CommonsAction {
 		jsonData.put("count", count);
 		jsonData.put("pageNo", pageNo);
 		jsonData.put("pageSize", pageSize);
+
+		jsonData.put("version", WebContext.version);
 		return SUCCESS;
 	}
 

@@ -122,6 +122,7 @@ require([ "jquery", "modal", "page", "crud", "intercept", "validate" ], function
 				pageSize : options.pageSize
 			},
 			success : function(data) {
+				console.log(data);// TODO
 				load(data);
 				crud.page(data, find);
 			}

@@ -31,8 +31,4 @@ public interface TerminalTemplateDao {
 
 	public List<TerminalTemplate> findList(Integer terminalId, Integer templateId, TemplateDownEnum status, Boolean renew, Boolean used);
 
-	// public List<TemplateStatusVO> findVOList(Integer terminalId, String
-	// templateName);
-	//
-	// public List<TemplateStatusVO> findVOList(Integer terminalId, String templateName, String sort, String order, int pageNo, int pageSize);
 }

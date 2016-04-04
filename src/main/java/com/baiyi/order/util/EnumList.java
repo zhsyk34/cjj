@@ -39,7 +39,7 @@ public interface EnumList {
 		SHOP, KITCHEN
 	}
 
-	public enum TemplateDownEnum {// 模板下载状态
+	public enum TemplateDownEnum {// 模板下载状态 TODO
 		// 待下载,已下载,取消下载,待删除,已删除
 		WAITDOWN, HASDOWN, CANCELDOWN, WAITDELETE, HASDELETE
 	}

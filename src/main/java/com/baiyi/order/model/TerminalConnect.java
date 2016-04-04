@@ -15,7 +15,7 @@ public class TerminalConnect {
 
 	private String ip;
 
-	private String image;
+	private String image;// TODO
 
 	private boolean online;
 

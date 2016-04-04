@@ -191,7 +191,6 @@ public class ActivityDaoImpl extends CommonsDaoImpl<Activity> implements Activit
 		return this.findVOList(kitchen, food, type, used, extra, null, null, -1, -1);
 	}
 
-	// TODO
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ActivityVO> findVOList(String kitchen, String food, ActivityTypeEnum type, Boolean used, boolean extra, String sort, String order, int pageNo, int pageSize) {
