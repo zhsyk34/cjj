@@ -18,6 +18,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.baiyi.order.util.WebContext;
 
+//截图上传?
 @SuppressWarnings("serial")
 public class UploadFileServlet extends HttpServlet {
 

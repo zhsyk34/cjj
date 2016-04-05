@@ -10,6 +10,10 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 		var str = "<li class='inline'><label><input type='checkbox'><span></span></lable></li>";
 		$.ajax({
 			url : "json/Seat_find",
+			data : {
+				pageNo : -1,
+				pageSize : -1
+			},
 			success : function(data) {
 				$.each(data.list || [], function(index, seat) {
 					var li = $(str);

@@ -2,6 +2,7 @@ package com.baiyi.order.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
 
+import com.baiyi.order.model.Terminal;
 import com.baiyi.order.model.User;
 import com.baiyi.order.service.TerminalService;
 import com.baiyi.order.service.UserService;
@@ -33,6 +35,9 @@ public class WebContext implements ServletContextAware, InitializingBean {
 	public static String rootPath;// 项目根目录
 	public static String version;
 	public static String serverid;
+	public static String mirror;// validate serverid
+
+	public static boolean isDog = false;// 是否有加密狗
 
 	/* 托管对象 */
 	@Resource
@@ -93,6 +98,19 @@ public class WebContext implements ServletContextAware, InitializingBean {
 			user.setPassword(Encryption.encrypt("root"));
 			userService.save(user);
 		}
+
+		// TODO:测试
+		Record record = new Record();
+		Terminal t = terminalService.find(1);
+		record.setTerminalId(t.getId());
+		record.setTerminalNo(t.getTerminalNo());
+		record.setLocation(t.getLocation());
+		record.setIp("127.0.0.1");
+		record.setOnline(true);
+		record.setImage("abc");
+		record.setDate(new Date());
+
+		WebContext.ConnectMap.put(t.getTerminalNo(), record);
 	}
 
 	private ServletContext servletContext;

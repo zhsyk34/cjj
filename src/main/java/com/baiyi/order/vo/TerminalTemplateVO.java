@@ -2,7 +2,7 @@ package com.baiyi.order.vo;
 
 import java.util.Date;
 
-public class TemplateStatusVO {
+public class TerminalTemplateVO {
 
 	private Integer id;
 
@@ -14,15 +14,15 @@ public class TemplateStatusVO {
 
 	private String templateName;// VO
 
-	private String status;// 状态
+	private String status;
 
-	/* 下载进度 */
-	private long total;// 总大小
-	private long down;// 已下载
+	private long total;
+	
+	private long down;
 
-	private boolean renew;// 更新
+	private boolean renew;
 
-	private boolean used;// 启用
+	private boolean used;
 
 	private Date date;
 

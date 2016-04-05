@@ -61,7 +61,7 @@ require([ "jquery", "modal", "page", "progress", "checkctrl", "crud", "intercept
 
 		// TODO
 		$("#template").on("click", "button", function() {
-			var url = "json/Terminal_saveTemplate";
+			var url = "json/Terminal_mergeTemplate";
 			var row = $(this).parents("tr").data("row");
 
 			var params = {

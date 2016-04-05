@@ -24,6 +24,9 @@ public interface OrderDetailTasteDao {
 
 	public List<OrderDetailTaste> findList();
 
-	public List<OrderDetailTaste> findList(Integer orderDetailId, Integer tasteId);
+	// public List<OrderDetailTaste> findList(Integer orderDetailId, Integer
+	// tasteId);
+
+	public List<OrderDetailTaste> findList(Integer orderDetailId, String name);
 
 }

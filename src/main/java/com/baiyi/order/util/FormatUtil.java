@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 public class FormatUtil {
@@ -89,5 +91,14 @@ public class FormatUtil {
 			e.printStackTrace();
 		}
 		return date;
+	}
+
+	/**/
+	public static <T> List<T> subList(List<T> list, int fromIndex, int toIndex) {
+		return CollectionUtils.isEmpty(list) || fromIndex >= toIndex ? null : list.subList(Math.max(fromIndex, 0), Math.min(toIndex, list.size()));
+	}
+
+	public static <T> int count(List<T> list) {
+		return CollectionUtils.isEmpty(list) ? 0 : list.size();
 	}
 }

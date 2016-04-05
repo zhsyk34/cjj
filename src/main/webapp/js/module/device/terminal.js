@@ -122,7 +122,6 @@ require([ "jquery", "modal", "page", "crud", "intercept", "validate" ], function
 				pageSize : options.pageSize
 			},
 			success : function(data) {
-				console.log(data);// TODO
 				load(data);
 				crud.page(data, find);
 			}
@@ -130,6 +129,8 @@ require([ "jquery", "modal", "page", "crud", "intercept", "validate" ], function
 
 		function load(data) {
 			$("#data").empty();
+
+			var version = data.version.replace("v", "");
 
 			var str = "<tr>";
 			str += "<td class='terminalNo'></td>";
@@ -146,7 +147,9 @@ require([ "jquery", "modal", "page", "crud", "intercept", "validate" ], function
 				tr.find(".terminalNo").text(row.terminalNo);
 				tr.find(".type").text(row.type == "SHOP" ? "客户端" : "厨房端");
 				tr.find(".location").text(row.location);
-				tr.find(".version").text(row.version || "");
+
+				var color = version == row.version ? "green" : "red";
+				tr.find(".version").text(row.version || "").css("color", color);
 
 				$("#data").append(tr);
 			});

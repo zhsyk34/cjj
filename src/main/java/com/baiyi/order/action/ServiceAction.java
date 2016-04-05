@@ -3,7 +3,10 @@ package com.baiyi.order.action;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -11,10 +14,13 @@ import org.apache.commons.lang.StringUtils;
 import com.baiyi.order.model.Activity;
 import com.baiyi.order.model.Cashbox;
 import com.baiyi.order.model.Config;
+import com.baiyi.order.model.Marquee;
+import com.baiyi.order.model.Material;
 import com.baiyi.order.model.OrderInfo;
 import com.baiyi.order.model.OrderRule;
 import com.baiyi.order.model.Refund;
 import com.baiyi.order.model.Seat;
+import com.baiyi.order.model.Taste;
 import com.baiyi.order.model.Template;
 import com.baiyi.order.model.Terminal;
 import com.baiyi.order.model.TerminalTemplate;
@@ -23,9 +29,11 @@ import com.baiyi.order.util.EnumList.ActivityTypeEnum;
 import com.baiyi.order.util.EnumList.OrderStatus;
 import com.baiyi.order.util.EnumList.RefundReasonEnum;
 import com.baiyi.order.util.EnumList.RefundTypeEnum;
+import com.baiyi.order.util.EnumList.TemplateContentEnum;
 import com.baiyi.order.util.EnumList.TemplateDownEnum;
 import com.baiyi.order.util.Feedback;
 import com.baiyi.order.util.FormatUtil;
+import com.baiyi.order.vo.FoodVO;
 import com.baiyi.order.vo.OrderDetailVO;
 import com.baiyi.order.vo.TemplateVO;
 
@@ -42,6 +50,7 @@ public class ServiceAction extends CommonsAction {
 
 	// 下载模板:terminalNo TODO
 	public String downTemplate() {
+		Map<String, Object> data = new HashMap<>();
 		Terminal terminal = terminalService.find(terminalNo);
 		if (terminal == null) {
 			jsonData.put(result, Feedback.ERROR.toString());
@@ -51,17 +60,111 @@ public class ServiceAction extends CommonsAction {
 		List<TerminalTemplate> terminalTemplates = terminalService.findTemplateList(terminalId, null, TemplateDownEnum.WAITDOWN, null, null);
 		if (CollectionUtils.isEmpty(terminalTemplates)) {
 			jsonData.put(result, "not need");
+			return SUCCESS;
 		}
-		List<TemplateVO> list = new ArrayList<>();
-		for (TerminalTemplate terminalTemplate : terminalTemplates) {
-			Integer templateId = terminalTemplate.getTemplateId();
-			TemplateVO templateVO = templateService.findVO(templateId);
-			if (templateVO == null) {
-				continue;
+		// 第一个待下载模板
+		TerminalTemplate terminalTemplate = terminalTemplates.get(0);
+		TemplateVO tv = templateService.findVO(terminalTemplate.getTemplateId());
+		// base
+		data.put("id", tv.getId());
+		data.put("type", tv.getType().name().toLowerCase());
+		data.put("size", tv.getRowcount() + "x" + tv.getColcount());
+
+		// logo
+		Material logo = tv.getLogo();
+		data.put("titleLogo", logo == null ? "default" : logo.getPath());
+
+		// marquee
+		List<Marquee> marqueeList = tv.getMarqueeList();
+		if (CollectionUtils.isNotEmpty(marqueeList)) {
+			data.put("isMarquee", true);
+			for (Marquee marquee : marqueeList) {// TODO
 			}
-			list.add(templateVO);
+		} else {
+			data.put("isMarquee", false);
 		}
-		jsonData.put(result, list);
+
+		TemplateContentEnum contentEnum = tv.getContent();
+		data.put("banner", "default");
+		// number video picture
+		switch (contentEnum) {
+		case NUMBER:
+			data.put("showCtrl", "numberCtrl");
+			Material number = tv.getNumber();
+			data.put("banner", number.getPath());
+			break;
+		case PICTURE:
+			data.put("showCtrl", "pictureCtrl");
+			List<Material> pictureList = tv.getPictureList();
+			List<String> pictures = new ArrayList<>();
+			for (Material material : pictureList) {
+				pictures.add(material.getPath());
+			}
+			data.put("picture", "pictures");
+			break;
+		case VIDEO:
+			data.put("showCtrl", "videoCtrl");
+			List<Material> videoList = tv.getVideoList();
+			List<String> videos = new ArrayList<>();
+			for (Material material : videoList) {
+				videos.add(material.getPath());
+			}
+			data.put("video", "videos");
+			break;
+		}
+
+		// food(taste type style)
+		List<FoodVO> foodList = tv.getFoodList();
+		List<Map<String, Object>> cakeArray = new ArrayList<>();
+
+		Map<Integer, Integer> typeMap = new LinkedHashMap<Integer, Integer>();
+		List<Map<String, Object>> typeArray = new ArrayList<>();
+
+		Map<Integer, Integer> tasteMap = new LinkedHashMap<Integer, Integer>();
+		List<Map<String, Object>> tasteArray = new ArrayList<>();
+		for (FoodVO fv : foodList) {
+			Map<String, Object> cake = new HashMap<>();
+			cake.put("id", fv.getId());
+			cake.put("name", fv.getName());
+			cake.put("shortname", fv.getAbbreviation());
+			cake.put("alias", fv.getNickname());
+
+			cake.put("price", fv.getPrice());
+			cake.put("necessary", fv.getStyleList());// TODO
+			cake.put("introduce", fv.getIntroduction());
+			cake.put("image", fv.getPath());
+
+			// type
+			Integer typeId = fv.getTypeId();
+			if (typeMap.containsKey(typeId)) {
+				typeMap.put(typeId, typeMap.get(typeId) + 1);
+			} else {
+				typeMap.put(typeId, 1);
+			}
+			cake.put("type", typeId);
+
+			// taste
+			List<Taste> tasteList = fv.getTasteList();// TODO
+			List<Integer> tastes = new ArrayList<>();
+			if (CollectionUtils.isNotEmpty(tasteList)) {
+				for (Taste taste : tasteList) {
+					Integer tasteId = taste.getId();
+					tastes.add(tasteId);
+					if (tasteMap.containsKey(tasteId)) {
+						tasteMap.put(tasteId, tasteMap.get(tasteId) + 1);
+					} else {
+						tasteMap.put(tasteId, 1);
+					}
+				}
+			}
+			cake.put("taste", tastes);
+			cakeArray.add(cake);
+		}
+
+		data.put("cakeArray", cakeArray);
+		data.put("typeArray", typeArray);// TODO
+		data.put("tasteArray", tasteArray);// TODO
+		jsonData.put(result, data);
 		return SUCCESS;
 	}
 

@@ -14,10 +14,10 @@ import javax.servlet.http.HttpSession;
 
 import com.baiyi.order.model.User;
 
-//jsp过滤器
+//jsp过滤
 public class LogonFilter implements Filter {
 
-	private final static String passuri = "/jsp/(logon|error|)\\.jsp.*";
+	private final static String passuri = "/jsp/(logon|error)\\.jsp.*";
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {

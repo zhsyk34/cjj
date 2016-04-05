@@ -2,9 +2,10 @@ package com.baiyi.order.vo;
 
 import java.util.Date;
 
+//终端连线记录
 public class Record {
 
-	private Integer id;//
+	private Integer id;
 
 	private Integer terminalId;
 

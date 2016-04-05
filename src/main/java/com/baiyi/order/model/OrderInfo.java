@@ -29,9 +29,9 @@ public class OrderInfo {// 终端不能删除...
 
 	private Date createtime;// 下单时间
 
-	private Date updatetime;// 后台修改订单时间,保持原有下单时间
+	private Date updatetime;// 后台修改订单时间(保持原有下单时间)
 
-	private Integer userId;// 订单来源:0||null为终端数据
+	private Integer userId;// 订单来源:0 或者 null 为终端数据
 
 	private OrderStatus status;
 

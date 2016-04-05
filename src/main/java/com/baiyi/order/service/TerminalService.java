@@ -11,7 +11,7 @@ import com.baiyi.order.model.TerminalTime;
 import com.baiyi.order.util.EnumList.TemplateDownEnum;
 import com.baiyi.order.util.EnumList.TerminalTypeEnum;
 import com.baiyi.order.vo.Record;
-import com.baiyi.order.vo.TemplateStatusVO;
+import com.baiyi.order.vo.TerminalTemplateVO;
 import com.baiyi.order.vo.TerminalVO;
 
 public interface TerminalService {
@@ -56,23 +56,19 @@ public interface TerminalService {
 	public void update(Terminal terminal, List<Date> boots, List<Date> shuts, Integer[] seatIds);// 全部关联更新
 
 	/* 终端连线 */
-	public void saveConnect(TerminalConnect terminalConnect);// 连线记录
+	public void saveConnect(TerminalConnect terminalConnect);// 保存记录
 
-	public List<Terminal> findOnLine(int pageNo, int pageSize);// 在线终端
-
-	public int countOnLine();
-
-	public List<Record> findRecordList(String terminalNo, Date begin, Date end, Boolean online);
+	public List<Record> findRecordList(String terminalNo, Date begin, Date end, Boolean online);// 历史记录查询
 
 	public List<Record> findRecordList(String terminalNo, Date begin, Date end, Boolean online, String sort, String order, int pageNo, int pageSize);
 
 	public int countRecord(String terminalNo, Date begin, Date end, Boolean online);
 
-	public Record findLastRecord(Integer terminalId);// 最后连线
+	public Record findLastRecord(Integer terminalId);// 历史记录中的最后连线
 
-	public List<Record> findLastRecord(String terminalNo, Boolean online, int pageNo, int pageSize);// 最后连线
+	public List<Terminal> findOnLine();// 当前在线终端,内存中读取
 
-	public int countLastRecord(String terminalNo, Boolean online);
+	public List<Record> findRecord(String terminalNo, Boolean online);// 当前连线信息
 
 	/* 座位 */
 	public void updateSeat(Integer terminalId, Integer[] seatIds);// 座位
@@ -93,9 +89,7 @@ public interface TerminalService {
 
 	public List<TerminalTemplate> findTemplateList(Integer terminalId, Integer templateId, TemplateDownEnum status, Boolean renew, Boolean used);// 模板状态
 
-	public List<TemplateStatusVO> findTemplateList(Integer terminalId, String templateName, int pageNo, int pageSize);// 模板状态
-
-	public int countTemplate(Integer terminalId, String templateName);
+	public List<TerminalTemplateVO> findTemplateList(Integer terminalId, String templateName);// 模板状态
 
 	public void setUsedTemplate(Integer terminalId, Integer templateId);// 启用模板
 

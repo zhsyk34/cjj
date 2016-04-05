@@ -11,14 +11,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.baiyi.order.dao.ActivityDao;
+import com.baiyi.order.dao.TemplateDao;
 import com.baiyi.order.dao.TerminalConnectDao;
 import com.baiyi.order.dao.TerminalDao;
 import com.baiyi.order.dao.TerminalTemplateDao;
+import com.baiyi.order.model.Template;
 import com.baiyi.order.model.Terminal;
-import com.baiyi.order.model.TerminalConnect;
 import com.baiyi.order.model.TerminalTemplate;
 import com.baiyi.order.service.TerminalService;
-import com.baiyi.order.util.EnumList.TerminalTypeEnum;
+import com.baiyi.order.util.EnumList.TemplateDownEnum;
 import com.baiyi.order.util.FormatUtil;
 import com.baiyi.order.util.RandomUtil;
 import com.baiyi.order.vo.ActivityVO;
@@ -36,6 +37,8 @@ public class TerminalTest {
 	private TerminalTemplateDao terminalTemplateDao;
 	@Resource
 	private TerminalDao terminalDao;
+	@Resource
+	private TemplateDao templateDao;
 	@Resource
 	private TerminalConnectDao terminalConnectDao;
 	@Resource
@@ -141,30 +144,43 @@ public class TerminalTest {
 
 	@Test
 	public void save() {
-		for (int i = 1; i < 5; i++) {
-			Terminal terminal = new Terminal();
-			terminal.setTerminalNo("tno1000" + i);
-			terminal.setType(FormatUtil.getEnum(TerminalTypeEnum.class, RandomUtil.randomInteger(0, 1)));
-			terminal.setLocation("xm00" + i);
-			terminal.setCreatetime(new Date());
-			terminal.setUserId(1);
-			terminalDao.save(terminal);
-		}
+		// for (int i = 1; i < 5; i++) {
+		// Terminal terminal = new Terminal();
+		// terminal.setTerminalNo("tno1000" + i);
+		// terminal.setType(FormatUtil.getEnum(TerminalTypeEnum.class,
+		// RandomUtil.randomInteger(0, 1)));
+		// terminal.setLocation("xm00" + i);
+		// terminal.setCreatetime(new Date());
+		// terminal.setUserId(1);
+		// terminalDao.save(terminal);
+		// }
 
 		List<Terminal> list = terminalDao.findList();
-		for (Terminal t : list) {
-			for (int i = 0; i < 10;) {
-				TerminalConnect tc = new TerminalConnect();
-				tc.setTerminalId(t.getId());
-				tc.setDate(null);
-				tc.setImage(t.getTerminalNo() + i);
-				tc.setOnline(RandomUtil.randomInteger(1, 10) > 5);
-
-				i += RandomUtil.randomInteger(1, 4);
-
-				terminalConnectDao.save(tc);
+		List<Template> templates = templateDao.findList();
+		for (Terminal terminal : list) {
+			Integer terminalId = terminal.getId();
+			for (Template template : templates) {
+				Integer templateId = template.getId();
+				TerminalTemplate tt = new TerminalTemplate();
+				tt.setTerminalId(terminalId);
+				tt.setTemplateId(templateId);
+				tt.setStatus(TemplateDownEnum.values()[RandomUtil.randomInteger(0, 4)]);
+				terminalTemplateDao.save(tt);
 			}
 		}
+		// for (Terminal t : list) {
+		// for (int i = 0; i < 10;) {
+		// TerminalConnect tc = new TerminalConnect();
+		// tc.setTerminalId(t.getId());
+		// tc.setDate(null);
+		// tc.setImage(t.getTerminalNo() + i);
+		// tc.setOnline(RandomUtil.randomInteger(1, 10) > 5);
+		//
+		// i += RandomUtil.randomInteger(1, 4);
+		//
+		// terminalConnectDao.save(tc);
+		// }
+		// }
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.baiyi.order.dao.OrderDetailTasteDao;
@@ -19,7 +20,7 @@ public class OrderDetailTasteDaoImpl extends CommonsDaoImpl<OrderDetailTaste> im
 	}
 
 	@Override
-	public List<OrderDetailTaste> findList(Integer orderDetailId, Integer tasteId) {
+	public List<OrderDetailTaste> findList(Integer orderDetailId, String name) {
 		StringBuffer queryString = new StringBuffer("from OrderDetailTaste as orderDetailTaste where 1 = 1");
 		Map<String, Object> map = new HashMap<>();
 
@@ -27,11 +28,30 @@ public class OrderDetailTasteDaoImpl extends CommonsDaoImpl<OrderDetailTaste> im
 			queryString.append(" and orderDetailTaste.orderDetailId = :orderDetailId");
 			map.put("orderDetailId", orderDetailId);
 		}
-		if (ValidateUtil.isPK(tasteId)) {
-			queryString.append(" and orderDetailTaste.tasteId = :tasteId");
-			map.put("tasteId", tasteId);
+		if (StringUtils.isNotBlank(name)) {
+			queryString.append(" and orderDetailTaste.name = :name");
+			map.put("name", name);
 		}
 		return super.findList(queryString.toString(), map);
 	}
+
+	// @Override
+	// public List<OrderDetailTaste> findList(Integer orderDetailId, Integer
+	// tasteId) {
+	// StringBuffer queryString = new StringBuffer("from OrderDetailTaste as
+	// orderDetailTaste where 1 = 1");
+	// Map<String, Object> map = new HashMap<>();
+	//
+	// if (ValidateUtil.isPK(orderDetailId)) {
+	// queryString.append(" and orderDetailTaste.orderDetailId =
+	// :orderDetailId");
+	// map.put("orderDetailId", orderDetailId);
+	// }
+	// if (ValidateUtil.isPK(tasteId)) {
+	// queryString.append(" and orderDetailTaste.tasteId = :tasteId");
+	// map.put("tasteId", tasteId);
+	// }
+	// return super.findList(queryString.toString(), map);
+	// }
 
 }

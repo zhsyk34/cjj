@@ -15,7 +15,7 @@ import com.baiyi.order.util.FormatUtil;
 import com.baiyi.order.util.ValidateUtil;
 import com.baiyi.order.util.WebContext;
 import com.baiyi.order.vo.Record;
-import com.baiyi.order.vo.TemplateStatusVO;
+import com.baiyi.order.vo.TerminalTemplateVO;
 import com.baiyi.order.vo.TerminalVO;
 
 @SuppressWarnings("serial")
@@ -23,7 +23,7 @@ public class TerminalAction extends CommonsAction {
 
 	public String save() {
 		if (terminalService.exist(null, terminalNo)) {
-			jsonData.put("result", Feedback.EXIST.toString());
+			jsonData.put(result, Feedback.EXIST.toString());
 			return SUCCESS;
 		}
 		Terminal terminal = new Terminal();
@@ -33,19 +33,19 @@ public class TerminalAction extends CommonsAction {
 		terminal.setCreatetime(new Date());
 		terminal.setUserId(userId);
 		terminalService.save(terminal);
-		jsonData.put("result", Feedback.CREATE.toString());
+		jsonData.put(result, Feedback.CREATE.toString());
 		return SUCCESS;
 	}
 
 	public String delete() {
 		terminalService.delete(ids);
-		jsonData.put("result", Feedback.DELETE.toString());
+		jsonData.put(result, Feedback.DELETE.toString());
 		return SUCCESS;
 	}
 
 	public String update() {
 		if (terminalService.exist(id, terminalNo)) {
-			jsonData.put("result", Feedback.EXIST.toString());
+			jsonData.put(result, Feedback.EXIST.toString());
 			return SUCCESS;
 		}
 		Terminal terminal = terminalService.find(id);
@@ -55,7 +55,7 @@ public class TerminalAction extends CommonsAction {
 		terminal.setUpdatetime(new Date());
 		terminal.setUserId(userId);
 		terminalService.update(terminal);
-		jsonData.put("result", Feedback.UPDATE.toString());
+		jsonData.put(result, Feedback.UPDATE.toString());
 		return SUCCESS;
 	}
 
@@ -91,8 +91,9 @@ public class TerminalAction extends CommonsAction {
 
 	// 在线查询
 	public String search() {
-		List<Terminal> list = terminalService.findOnLine(pageNo, pageSize);
-		int count = terminalService.countOnLine();
+		List<Terminal> terminals = terminalService.findOnLine();
+		List<Terminal> list = FormatUtil.subList(terminals, (pageNo - 1) * pageSize, pageNo * pageSize);
+		int count = FormatUtil.count(terminals);
 		jsonData.put("list", list);
 		jsonData.put("count", count);
 		jsonData.put("pageNo", pageNo);
@@ -123,14 +124,14 @@ public class TerminalAction extends CommonsAction {
 		}
 
 		terminalService.update(terminal, boottimes, shuttimes, null);
-		jsonData.put("result", Feedback.UPDATE.toString());
+		jsonData.put(result, Feedback.UPDATE.toString());
 		return SUCCESS;
 	}
 
 	// 座位设置
 	public String seat() {
 		terminalService.updateSeat(id, seatIds);
-		jsonData.put("result", Feedback.UPDATE.toString());
+		jsonData.put(result, Feedback.UPDATE.toString());
 		return SUCCESS;
 	}
 
@@ -149,8 +150,9 @@ public class TerminalAction extends CommonsAction {
 
 	// 终端监控/一览
 	public String monitor() {
-		List<Record> list = terminalService.findLastRecord(terminalNo, online, pageNo, pageSize);
-		int count = terminalService.countLastRecord(terminalNo, online);
+		List<Record> records = terminalService.findRecord(terminalNo, online);
+		List<Record> list = FormatUtil.subList(records, (pageNo - 1) * pageSize, pageNo * pageSize);
+		int count = FormatUtil.count(records);
 		jsonData.put("list", list);
 		jsonData.put("count", count);
 		jsonData.put("pageNo", pageNo);
@@ -160,8 +162,9 @@ public class TerminalAction extends CommonsAction {
 
 	// 模板列表
 	public String findTemplate() {
-		List<TemplateStatusVO> list = terminalService.findTemplateList(terminalId, templateName, pageNo, pageSize);
-		int count = terminalService.countTemplate(terminalId, templateName);
+		List<TerminalTemplateVO> ttVos = terminalService.findTemplateList(terminalId, templateName);
+		List<TerminalTemplateVO> list = FormatUtil.subList(ttVos, (pageNo - 1) * pageSize, pageNo * pageSize);
+		int count = FormatUtil.count(ttVos);
 		jsonData.put("list", list);
 		jsonData.put("count", count);
 		jsonData.put("pageNo", pageNo);
@@ -169,12 +172,12 @@ public class TerminalAction extends CommonsAction {
 		return SUCCESS;
 	}
 
-	// 模板下载状态
-	public String saveTemplate() {
+	// 更新模板下载状态
+	public String mergeTemplate() {
 		TemplateDownEnum statusEnum = FormatUtil.getEnum(TemplateDownEnum.class, status);
 		TerminalTemplate terminalTemplate = terminalService.findTemplate(terminalId, templateId);
 		if (terminalTemplate != null && terminalTemplate.isUsed()) {// 当前正在使用
-			jsonData.put("result", Feedback.ERROR.toString());
+			jsonData.put(result, Feedback.ERROR.toString());
 			return SUCCESS;
 		}
 		if (terminalTemplate == null) {
@@ -189,50 +192,22 @@ public class TerminalAction extends CommonsAction {
 		terminalTemplate.setDate(new Date());
 
 		terminalService.mergeTemplate(terminalTemplate);
-		jsonData.put("result", Feedback.SUCCESS.toString());
+		jsonData.put(result, Feedback.SUCCESS.toString());
 		return SUCCESS;
 	}
 
 	// 启用模板
 	public String useTemplate() {
 		terminalService.setUsedTemplate(terminalId, templateId);
-		jsonData.put("result", Feedback.SUCCESS.toString());
+		jsonData.put(result, Feedback.SUCCESS.toString());
 		return SUCCESS;
 	}
-
-	// 下载进度
-	// public String progress() {
-	// if (!ValidateUtil.isPK(terminalId) && !ValidateUtil.isPK(templateId)) {
-	// jsonData.put("result", Feedback.ERROR.toString());
-	// return SUCCESS;
-	// }
-	// TerminalTemplate terminalTemplate =
-	// terminalService.findTemplate(terminalId, templateId);
-	// if (terminalTemplate == null) {
-	// jsonData.put("status", TemplateDownEnum.CANCELDOWN);
-	// return SUCCESS;
-	// }
-	// TemplateDownEnum status = terminalTemplate.getStatus();
-	// jsonData.put("status", status.toString());
-	//
-	// if (status == TemplateDownEnum.HASDOWN) {
-	// jsonData.put("progress", 100);
-	// }
-	//
-	// if (status == TemplateDownEnum.WAITDOWN) {
-	// int percent = terminalTemplate.getTotal() > 0 ? (int)
-	// (terminalTemplate.getDown() * 100 / terminalTemplate.getTotal()) : 0;
-	// percent = Math.max(0, Math.min(100, percent));
-	// jsonData.put("progress", percent);
-	// }
-	// return SUCCESS;
-	// }
 
 	//
 	public String remote() {
 		RemoteEnum remoteEnum = FormatUtil.getEnum(RemoteEnum.class, status);
 		if (ValidateUtil.isEmpty(ids) || remoteEnum == null) {
-			jsonData.put("result", Feedback.ERROR.toString());
+			jsonData.put(result, Feedback.ERROR.toString());
 			return SUCCESS;
 		}
 
@@ -262,7 +237,7 @@ public class TerminalAction extends CommonsAction {
 			}
 		}
 
-		jsonData.put("result", Feedback.SUCCESS.toString());
+		jsonData.put(result, Feedback.SUCCESS.toString());
 		return SUCCESS;
 	}
 

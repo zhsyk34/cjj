@@ -4,12 +4,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.baiyi.order.dao.ActivityDao;
@@ -34,8 +36,9 @@ import com.baiyi.order.util.EnumList.TemplateDownEnum;
 import com.baiyi.order.util.EnumList.TerminalTypeEnum;
 import com.baiyi.order.util.FormatUtil;
 import com.baiyi.order.util.ValidateUtil;
+import com.baiyi.order.util.WebContext;
 import com.baiyi.order.vo.Record;
-import com.baiyi.order.vo.TemplateStatusVO;
+import com.baiyi.order.vo.TerminalTemplateVO;
 import com.baiyi.order.vo.TerminalVO;
 
 @Service
@@ -73,7 +76,7 @@ public class TerminalServiceImpl implements TerminalService {// TODO
 
 	@Override
 	public void delete(Integer id) {
-		// TODO 禁止删除
+		// TODO 禁止删除终端,涉及到钱箱管理,模板管理(客户端),活动管理(厨房端)等相关数据...
 	}
 
 	@Override
@@ -100,7 +103,8 @@ public class TerminalServiceImpl implements TerminalService {// TODO
 	}
 
 	@Override
-	public void update(Terminal terminal) {// TODO 禁止修改终端类型
+	public void update(Terminal terminal) {
+		// TODO 禁止修改终端类型,涉及到钱箱管理,模板管理(客户端),活动管理(厨房端)等相关数据...
 		terminalDao.update(terminal);
 	}
 
@@ -217,32 +221,6 @@ public class TerminalServiceImpl implements TerminalService {// TODO
 	}
 
 	@Override
-	public List<Terminal> findOnLine(int pageNo, int pageSize) {
-		List<Terminal> terminals = terminalDao.findList();
-		if (CollectionUtils.isEmpty(terminals)) {
-			return null;
-		}
-		List<Terminal> list = new ArrayList<>();
-		for (Terminal terminal : terminals) {
-			TerminalConnect terminalConnect = terminalConnectDao.findLast(terminal.getId());
-			if (terminalConnect != null && terminalConnect.isOnline()) {
-				list.add(terminal);
-			}
-		}
-		int count = CollectionUtils.isEmpty(list) ? 0 : list.size();
-		if (pageNo > 0 && pageSize > 0) {
-			list = list.subList((pageNo - 1) * pageSize, Math.min(count, pageNo * pageSize));
-		}
-		return list;
-	}
-
-	@Override
-	public int countOnLine() {
-		List<Terminal> list = this.findOnLine(-1, -1);
-		return CollectionUtils.isEmpty(list) ? 0 : list.size();
-	}
-
-	@Override
 	public List<Record> findRecordList(String terminalNo, Date begin, Date end, Boolean online) {
 		return terminalConnectDao.findVOList(terminalNo, begin, end, online);
 	}
@@ -274,6 +252,37 @@ public class TerminalServiceImpl implements TerminalService {// TODO
 		record.setLocation(terminal.getLocation());
 
 		return record;
+	}
+
+	@Override
+	public List<Terminal> findOnLine() {// 内存数据
+		List<Terminal> list = new ArrayList<>();
+		for (Entry<String, Record> entry : WebContext.ConnectMap.entrySet()) {
+			Record record = entry.getValue();
+			Integer terminalId = record.getTerminalId();
+
+			Terminal terminal = terminalDao.find(terminalId);
+			if (terminal != null) {
+				list.add(terminal);
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<Record> findRecord(String terminalNo, Boolean online) {
+		List<Record> list = new ArrayList<>();
+		for (Entry<String, Record> entry : WebContext.ConnectMap.entrySet()) {
+			Record record = entry.getValue();
+			if (StringUtils.isNotBlank(terminalNo) && !record.getTerminalNo().contains(terminalNo)) {
+				continue;
+			}
+			if (online != null && record.isOnline() != online) {
+				continue;
+			}
+			list.add(record);
+		}
+		return list;
 	}
 
 	@Override
@@ -361,18 +370,19 @@ public class TerminalServiceImpl implements TerminalService {// TODO
 	}
 
 	@Override
-	public List<TemplateStatusVO> findTemplateList(Integer terminalId, String templateName, int pageNo, int pageSize) {
+	public List<TerminalTemplateVO> findTemplateList(Integer terminalId, String templateName) {
 		Terminal terminal = terminalDao.find(terminalId);
 		List<Template> templates = templateDao.findList(templateName, null, null);
 
-		if (CollectionUtils.isEmpty(templates) || terminal == null || terminal.getType() != TerminalTypeEnum.KITCHEN) {
+		// terminal.getType() != TerminalTypeEnum.KITCHEN
+		if (terminal == null || CollectionUtils.isEmpty(templates)) {
 			return null;
 		}
 
-		List<TemplateStatusVO> list = new ArrayList<>();
+		List<TerminalTemplateVO> list = new ArrayList<>();
 		for (Template template : templates) {
 			Integer templateId = template.getId();
-			TemplateStatusVO templateStatus = new TemplateStatusVO();
+			TerminalTemplateVO templateStatus = new TerminalTemplateVO();
 			templateStatus.setTerminalId(terminalId);
 			templateStatus.setTerminalNo(terminal.getTerminalNo());
 			templateStatus.setTemplateId(templateId);
@@ -389,16 +399,24 @@ public class TerminalServiceImpl implements TerminalService {// TODO
 			}
 			list.add(templateStatus);
 		}
-		int count = CollectionUtils.isEmpty(list) ? 0 : list.size();
-		if (pageNo > 0 && pageSize > 0) {
-			list = list.subList((pageNo - 1) * pageSize, Math.min(count, pageNo * pageSize));
-		}
+
 		return list;
 	}
 
 	@Override
 	public void setUsedTemplate(Integer terminalId, Integer templateId) {
+		// List<TerminalTemplate> list =
+		// terminalTemplateDao.findList(terminalId, templateId, null, null,
+		// null);
+		// if (CollectionUtils.isNotEmpty(list)) {
+		// for (TerminalTemplate terminalTemplate : list) {
+		// terminalTemplate.setUsed(terminalTemplate.getTemplateId().equals(templateId));
+		// terminalTemplateDao.update(terminalTemplate);
+		// }
+		// }
+
 		TerminalTemplate current = terminalTemplateDao.find(terminalId, templateId);
+
 		if (current == null || current.isUsed() || current.getStatus() != TemplateDownEnum.HASDOWN) {
 			return;
 		}
@@ -410,37 +428,7 @@ public class TerminalServiceImpl implements TerminalService {// TODO
 		}
 		current.setUsed(true);
 		terminalTemplateDao.update(current);
-	}
 
-	@Override
-	public List<Record> findLastRecord(String terminalNo, Boolean online, int pageNo, int pageSize) {
-		List<Terminal> terminals = terminalDao.findList(terminalNo, null, null);
-		if (CollectionUtils.isEmpty(terminals)) {
-			return null;
-		}
-		List<Record> list = new ArrayList<>();
-		for (Terminal terminal : terminals) {
-			Record record = this.findLastRecord(terminal.getId());
-			if (online == null || record.isOnline() == online) {
-				list.add(record);
-			}
-		}
-		int count = CollectionUtils.isEmpty(list) ? 0 : list.size();
-		if (pageNo > 0 && pageSize > 0) {
-			list = list.subList((pageNo - 1) * pageSize, Math.min(count, pageNo * pageSize));
-		}
-		return list;
-	}
-
-	@Override
-	public int countLastRecord(String terminalNo, Boolean online) {
-		List<Record> list = this.findLastRecord(terminalNo, online, -1, -1);
-		return CollectionUtils.isEmpty(list) ? 0 : list.size();
-	}
-
-	@Override
-	public int countTemplate(Integer terminalId, String templateName) {
-		return this.findTemplateList(terminalId, templateName, -1, -1).size();
 	}
 
 }

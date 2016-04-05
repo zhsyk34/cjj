@@ -64,5 +64,6 @@ public class TemplateTest {
 		List<TemplateVO> tvs = templateDao.findVOList();		
 		System.out.println(JSONArray.fromObject(tvs));
 	}
+	
 
 }
