@@ -37,7 +37,8 @@ public class WebContext implements ServletContextAware, InitializingBean {
 	public static String serverid;
 	public static String mirror;// validate serverid
 
-	public static boolean isDog = false;// 是否有加密狗
+	// public static boolean isDog = false;// 是否有加密狗
+	public static boolean empower = false;// 获得授权
 
 	/* 托管对象 */
 	@Resource

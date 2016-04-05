@@ -18,49 +18,29 @@ import org.apache.commons.lang3.StringUtils;
  * @author Administrator
  * 
  */
-public class ValidateRunnable implements Runnable {
+public class Authorize implements Runnable {
 
-	// 配置中的信息
 	private String availableMachine;
 
-	private ServletContext servletContext;
-
-	// private YT88Tool tool;//加密狗工具
-
-	public ValidateRunnable(String availableMachine, ServletContext servletContext) {
+	public Authorize(String availableMachine) {
 		this.availableMachine = availableMachine;
-		this.servletContext = servletContext;
-		// tool = new YT88ToolImpl();
 	}
 
-	/**
-	 * 比较配置中的机器信息与实际获得的配置信息是否一致
-	 */
 	public void run() {
-		try {
-			while (true) {
-				WebContext.isDog = false;// 加密狗是否驗證成功
-
-				if (StringUtils.isNotBlank(WebContext.serverid)) {
-					// 先用網絡檢查
-					boolean isConfirm = confirmServerId();
-					if (!isConfirm) {
-						WebContext.isAvailableMachine = false;
-						System.out.println("====server confirm error3====");
-					} else {
-						WebContext.isAvailableMachine = true;
-						System.out.println("====server confirm success====");
-					}
-				} else {
-					WebContext.isAvailableMachine = false;
-					System.out.println("====server confirm error2====");
-				}
-
-				// 半小時驗證一次
-				Thread.sleep(30 * 60 * 1000);
+		while (true) {
+			System.out.println("====server confirm ");
+			if (StringUtils.isNotBlank(WebContext.serverid)) {
+				WebContext.empower = confirm();
+				System.out.println(confirm() ? "success====" : "error3====");
+			} else {
+				WebContext.empower = false;
+				System.out.println("error2====");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			try {
+				Thread.sleep(30 * 60 * 1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -71,12 +51,7 @@ public class ValidateRunnable implements Runnable {
 		// confirmTerminal();
 	}
 
-	/**
-	 * 到客戶管理後臺驗證服務端 先检查序列化文件是否存在，如果不存在就到客户管理后台验证 (验证分第一次和第二次验证)
-	 * 文件不存在可能是第一次安装需要验证，验证完就序列化。 还有一种可能是被恶意删除了需要验证，这种情况下须由验证信息确认是否要让该服务端通过认证
-	 */
-	@SuppressWarnings("unchecked")
-	public boolean confirmServerId() {
+	public boolean confirm() {
 		boolean flag = false;
 		try {
 			// 服务端序列化文件路径
@@ -91,9 +66,9 @@ public class ValidateRunnable implements Runnable {
 				// String filePath = WebContext.path+"serverid.txt";
 				// String serverid = IOUtil.readerFile(filePath);
 				String param = "serverid=" + URLEncoder.encode(WebContext.serverid, "utf-8") + "&type=1";
-				String confirmResult = Utility.sendRequest2(WebContext.cusurl + "checkServer.do", param);
-				if (confirmResult != null && confirmResult.length() > 0) {
-					JSONObject object = (JSONObject) JSONValue.parse(confirmResult);
+				String response = Utility.sendRequest2(WebContext.mirror + "checkServer.do", param);
+				if (response != null && response.length() > 0) {
+					JSONObject object = (JSONObject) JSONValue.parse(response);
 					if (object.get("success") != null && object.get("success").toString().equals("true")) {
 						String isOpen = object.get("isOpen").toString();
 						if (isOpen.equals("true")) {
@@ -152,8 +127,6 @@ public class ValidateRunnable implements Runnable {
 			flag = false;
 			e.printStackTrace();
 		}
-		// flag = true;// TODO:测试
 		return flag;
 	}
-
 }
