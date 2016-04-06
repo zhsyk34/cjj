@@ -38,7 +38,7 @@ public class MaterialAction extends CommonsAction {
 
 		// ServletContext servletContext =
 		// ServletActionContext.getServletContext();
-		String rootPath = WebContext.rootPath;
+		String rootPath = WebContext.webRootPath;
 		String saveDir = WebContext.UPLOAD;// 存放上传文件目录
 
 		for (int i = 0; i < upload.size(); i++) {

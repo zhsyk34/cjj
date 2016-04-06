@@ -40,13 +40,13 @@ public class UploadFileServlet extends HttpServlet {
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String tempStr = WebContext.rootPath + WebContext.TEMP;
+		String tempStr = WebContext.webRootPath + WebContext.TEMP;
 		File tempFile = new File(tempStr);
 		if (!tempFile.exists()) {
 			tempFile.mkdirs();
 		}
 
-		String captureStr = WebContext.rootPath + WebContext.CAPTURE;
+		String captureStr = WebContext.webRootPath + WebContext.CAPTURE;
 		File uploadFile = new File(captureStr);
 		if (!uploadFile.exists()) {
 			uploadFile.mkdirs();

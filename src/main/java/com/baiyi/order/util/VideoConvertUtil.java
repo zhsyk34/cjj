@@ -12,9 +12,9 @@ import com.baiyi.order.util.EnumList.MaterialConvertEnum;
 
 public class VideoConvertUtil {
 
-	private static String FFMPEG = WebContext.rootPath + WebContext.FFMPEG;
+	private static String FFMPEG = WebContext.webRootPath + WebContext.FFMPEG;
 
-	private static String MENCODER = WebContext.rootPath + WebContext.MENCODER;
+	private static String MENCODER = WebContext.webRootPath + WebContext.MENCODER;
 
 	public static void convert(String src) throws Exception {
 		convert(src, null);

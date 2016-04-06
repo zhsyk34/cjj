@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
@@ -23,6 +25,12 @@ import com.baiyi.order.vo.Record;
 @Component
 public class WebContext implements ServletContextAware, InitializingBean {
 
+	/* 托管对象 */
+	@Resource
+	private UserService userService;
+	@Resource
+	private TerminalService terminalService;
+
 	/* 系统配置 */
 	public final static String UPLOAD = "upload";// 上传素材目录
 	public final static String FFMPEG = "tool" + File.separator + "convert" + File.separator + "ffmpeg.exe";// ffmpeg
@@ -32,25 +40,19 @@ public class WebContext implements ServletContextAware, InitializingBean {
 
 	/* 初始化数据 */
 	public static String os;// 系统
-	public static String rootPath;// 项目根目录
-	public static String version;
-	public static String serverid;
-	public static String mirror;// validate serverid
+	public static String webRootPath;// 项目根目录
+	public static String classRootPath;// 项目根目录
+	public static String version;// 版本
+	public static String serverid;// 授权码
+	public static String mirror;// 授权地址
 
-	// public static boolean isDog = false;// 是否有加密狗
-	public static boolean empower = false;// 获得授权
-
-	/* 托管对象 */
-	@Resource
-	private UserService userService;
-	@Resource
-	private TerminalService terminalService;
+	public static boolean empower = false;// 是否取得授权
+	public static int maxCount = 0;// 最大连接数
+	public static boolean isDog = false;// 是否有加密狗(未启用)
+	
 
 	/* 容器全局变量 */
-	// 终端连线 key:terminalNo
-	public final static Map<String, Record> ConnectMap = new HashMap<>();
-	// 终端下载 key:terminalNo+templateId
-	// public final static Map<String, DownProgress> downMap = new HashMap<>();
+	public final static Map<String, Record> ConnectMap = new HashMap<>();// 终端连线key:terminalNo
 	// 远程控制
 	public final static Map<String, Boolean> checkTimeMap = new HashMap<>();
 	public final static Map<String, Boolean> rebootMap = new HashMap<>();
@@ -60,7 +62,7 @@ public class WebContext implements ServletContextAware, InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		// 系统
+		// OS
 		os = System.getProperty("os.name");
 		System.out.println(os);
 		if (os.toLowerCase().startsWith("windows")) {
@@ -69,34 +71,37 @@ public class WebContext implements ServletContextAware, InitializingBean {
 			os = "linux";
 		}
 
-		// WEB rootPath
+		// webRootPath
 		if (servletContext != null) {
-			rootPath = servletContext.getRealPath("/");
-			System.out.println("rootPath: " + rootPath);
+			webRootPath = servletContext.getRealPath("/");
+			System.out.println("webRootPath: " + webRootPath);
 		}
 
-		// read file to set prop
-		// String rootFile = rootPath + "WEB-INF" + File.separator + "classes";
-		// String rootFile = ClassLoader.getSystemResource("").getFile();//error
-		String rootFile = this.getClass().getClassLoader().getResource("").getFile();
-		File versionFile = new File(rootFile, "version.txt");
-		File serveridFile = new File(rootFile, "serverid.txt");
+		// classRootPath = rootPath + "WEB-INF" + File.separator + "classes";
+		classRootPath = this.getClass().getClassLoader().getResource("").getFile();
+		System.out.println("classRootPath: " + classRootPath);
 		try {
-			version = FileUtils.readFileToString(versionFile);
-			serverid = FileUtils.readFileToString(serveridFile);
-			servletContext.setAttribute("version", version);
-			servletContext.setAttribute("serverid", serverid);
+			version = FileUtils.readFileToString(new File(classRootPath, "version.txt"));
+			serverid = FileUtils.readFileToString(new File(classRootPath, "serverid.txt"));
 			System.out.printf("version: %s, server: %s", version, serverid);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		// read prop
+		Configuration config = new PropertiesConfiguration("config.properties");
+		mirror = config.getString("mirror");
+		System.out.println("mirror: " + mirror);
+
+		// empower = HttpSend.sendRequest(mirror, serverid);
+		// FileUtils.writeStringToFile(file, data);
 
 		// base user
 		User user = userService.find("root");
 		if (user == null) {
 			user = new User();
 			user.setName("root");
-			user.setPassword(Encryption.encrypt("root"));
+			user.setPassword(DESPlus.encrypt("root"));
 			userService.save(user);
 		}
 

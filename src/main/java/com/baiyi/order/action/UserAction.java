@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import com.baiyi.order.model.User;
-import com.baiyi.order.util.Encryption;
+import com.baiyi.order.util.DESPlus;
 import com.baiyi.order.util.Feedback;
 import com.baiyi.order.util.ValidateUtil;
 
@@ -20,7 +20,7 @@ public class UserAction extends CommonsAction {
 
 		User user = new User();
 		user.setName(name);
-		password = Encryption.encrypt(password);
+		password = DESPlus.digest(password);
 		user.setPassword(password);
 
 		userService.save(user);
@@ -48,7 +48,7 @@ public class UserAction extends CommonsAction {
 		user.setName(name);
 
 		if (StringUtils.isNotBlank(password)) {
-			password = Encryption.encrypt(password);
+			password = DESPlus.digest(password);
 			user.setPassword(password);
 		}
 
@@ -66,13 +66,13 @@ public class UserAction extends CommonsAction {
 		User user = userService.find(id);
 
 		// 验证原密码
-		original = Encryption.encrypt(original);
+		original = DESPlus.digest(original);
 		if (!original.equals(user.getPassword())) {
 			jsonData.put(result, Feedback.NOTEXIST.toString());
 			return SUCCESS;
 		}
 
-		password = Encryption.encrypt(password);
+		password = DESPlus.digest(password);
 		user.setPassword(password);
 
 		userService.update(user);
@@ -101,7 +101,7 @@ public class UserAction extends CommonsAction {
 			return SUCCESS;
 		}
 
-		password = Encryption.encrypt(password);
+		password = DESPlus.digest(password);
 		User user = userService.login(name, password);
 		if (user == null) {
 			jsonData.put(result, Feedback.FAIL.toString());

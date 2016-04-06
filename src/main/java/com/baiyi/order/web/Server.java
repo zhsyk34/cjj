@@ -29,7 +29,7 @@ public class Server extends Thread {
 	private TerminalService terminalService = null;
 	/* ServerSocket */
 	private ServerSocket server = null;
-	private final static int SERVERPORT = 5199;
+	private final static int SERVERPORT = 5599;// TODO
 	private final static int POOLSIZE = 10;
 
 	// private final Map<String, String> hostMap = new HashMap<>();
@@ -265,7 +265,7 @@ class Contact implements Runnable {
 						Record record = new Record();
 						record.setTerminalId(terminalId);
 						record.setTerminalNo(terminalNo);
-						record.setLocation(terminal.getLocation());						
+						record.setLocation(terminal.getLocation());
 						record.setDate(new Date());
 
 						WebContext.ConnectMap.put(terminalNo, record);
