@@ -81,21 +81,20 @@
 	width: 280px;
 }
 
-#taste dl {
-	height: 36px;
-	padding: 3px;
+#taste ul:after {
+	display: block;
+	content: '';
+	clear: both;
 }
 
-#taste dt {
-	display: none;
+#taste ul{
+	margin-bottom: 6px;
 }
 
-#taste dd {
-	width: 90px;
-	height: 100%;
+#taste li {
+	float: left;
+	width: 60px;
+	height:24px;
 	overflow: hidden;
-}
-
-#taste label {
-	height: 100%;
+	margin: 3px 0;
 }

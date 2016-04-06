@@ -93,7 +93,11 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 
 				// taste array
 				$.each(row.tasteList || [], function(index, taste) {
-					$("#taste").find(":checkbox[value='" + taste.id + "']").prop("checked", true);
+					$("#taste").find("li.taste :checkbox[value='" + taste.id + "']").prop("checked", true);
+				});
+				// style array
+				$.each(row.styleList || [], function(index, style) {
+					$("#taste").find("li.style :checkbox[value='" + style.id + "']").prop("checked", true);
 				});
 				// show
 				$("#show").find("img").attr({
@@ -123,8 +127,14 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 		var materialId = parseInt($("#materialId").val());
 		var introduction = $.trim($("#introduction").val());
 
+		var styleIds = [];
+		$("#taste").find("li.style :checkbox:checked").each(function() {
+			var styleId = $(this).val();
+			styleIds.push(styleId);
+		});
+
 		var tasteIds = [];
-		$("#taste").find(":checkbox:checked").each(function() {
+		$("#taste").find("li.taste :checkbox:checked").each(function() {
 			var tasteId = $(this).val();
 			tasteIds.push(tasteId);
 		});
@@ -151,9 +161,11 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			price : price,
 			materialId : materialId,
 			introduction : introduction,
-			tasteIds : tasteIds
+			tasteIds : tasteIds,
+			styleIds : styleIds
 		};
 
+		console.log(params)
 		var url = id ? "json/Food_update" : "json/Food_save";
 
 		var exist = true;
@@ -219,8 +231,6 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			pageNo : options.pageNo,
 			pageSize : options.pageSize
 		};
-
-		console.log(params);
 
 		$.ajax({
 			url : "json/Food_find",
@@ -345,6 +355,8 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 		var map = {};
 		var div = $("#taste").empty();
 
+		var str = "<li><label><input type='checkbox'></label></li>";
+
 		$.ajax({
 			url : "json/Food_findTaste",
 			success : function(data) {
@@ -353,18 +365,23 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 					map[key] = map[key] || [];
 					map[key].push(taste);
 				});
-				$.each(map, function(index, list) {
-					var dl = $("<dl></dl>");
-					$("<dt></dt>").text(index).appendTo(dl);
-					$.each(list, function(id, taste) {
-						var dd = "<dd class='inline'>";
-						dd += "<label class='inline'>";
-						dd += "<input type='checkbox' value='" + taste.id + "'>";
-						dd += taste.name;
-						dd += "</label></dd>";
-						dl.append(dd);
+
+				console.log(map)
+				$.each(map, function(style, tastes) {
+					var ul = $("<ul></ul>");
+
+					console.log(this);
+
+					var li = $(str).addClass("style");
+					li.find("input").val(style).after("必选");
+					ul.append(li);
+
+					$.each(tastes, function(index, taste) {
+						var li = $(str).addClass("taste");
+						li.find("input").val(taste.id).after(taste.name);
+						ul.append(li);
 					});
-					div.append(dl);
+					div.append(ul);
 				});
 			}
 		});
