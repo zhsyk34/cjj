@@ -8,8 +8,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 
 	function dialog() {
 		$("#editor").modal({
-			width : 500,
-			top : 120,
+			width : 400,
 			before : function() {
 				return merge();
 			},

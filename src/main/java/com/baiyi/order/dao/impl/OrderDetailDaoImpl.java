@@ -20,7 +20,23 @@ public class OrderDetailDaoImpl extends CommonsDaoImpl<OrderDetail> implements O
 	}
 
 	@Override
-	public List<OrderDetail> findList(Integer orderId, String food) {
+	public List<OrderDetail> findList(Integer orderId, Integer foodId) {
+		StringBuffer queryString = new StringBuffer("from OrderDetail as orderDetail where 1 = 1");
+		Map<String, Object> map = new HashMap<>();
+
+		if (ValidateUtil.isPK(orderId)) {
+			queryString.append(" and orderDetail.orderId = :orderId");
+			map.put("orderId", orderId);
+		}
+		if (ValidateUtil.isPK(foodId)) {
+			queryString.append(" and orderDetail.foodId = :foodId");
+			map.put("foodId", foodId);
+		}
+		return super.findList(queryString.toString(), map);
+	}
+
+	@Override
+	public List<OrderDetail> findList(Integer orderId, String name) {
 		StringBuffer queryString = new StringBuffer("from OrderDetail as orderDetail where 1 = 1");
 		Map<String, Object> map = new HashMap<>();
 
@@ -29,16 +45,16 @@ public class OrderDetailDaoImpl extends CommonsDaoImpl<OrderDetail> implements O
 			map.put("orderId", orderId);
 		}
 
-		if (StringUtils.isNotBlank(food)) {
-			queryString.append(" and orderDetail.food = :food");
-			map.put("food", food);
+		if (StringUtils.isNotBlank(name)) {
+			queryString.append(" and orderDetail.name = :name");
+			map.put("name", name);
 		}
 
 		return super.findList(queryString.toString(), map);
 	}
 
 	@Override
-	public int count(Integer orderId, String food) {
+	public int count(Integer orderId, String name) {
 		StringBuffer queryString = new StringBuffer("select count(*) from OrderDetail as orderDetail where 1 = 1");
 		Map<String, Object> map = new HashMap<>();
 
@@ -47,25 +63,18 @@ public class OrderDetailDaoImpl extends CommonsDaoImpl<OrderDetail> implements O
 			map.put("orderId", orderId);
 		}
 
-		if (StringUtils.isNotBlank(food)) {
-			queryString.append(" and orderDetail.food = :food");
-			map.put("food", food);
+		if (StringUtils.isNotBlank(name)) {
+			queryString.append(" and orderDetail.name = :name");
+			map.put("name", name);
 		}
 		return super.count(queryString.toString(), map);
-	}
-
-	@Override
-	public void deleteByOrderId(Integer orderId) {
-		String queryString = "delete from OrderDetail where orderDetail.orderId = :orderId";
-		Map<String, Object> map = new HashMap<>();
-		map.put("orderId", orderId);
-		super.batch(queryString, map);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> findTaste(Integer id) {
-		String queryString = "select orderDetailTaste.name from OrderDetailTaste as orderDetailTaste where orderDetailTaste.orderDetailId = ?";
+		String queryString = "select orderDetailTaste.tasteName from OrderDetailTaste as orderDetailTaste where orderDetailTaste.orderDetailId = ?";
 		return (List<String>) hibernateTemplate.find(queryString, id);
 	}
+
 }

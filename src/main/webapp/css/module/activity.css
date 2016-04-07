@@ -1,5 +1,5 @@
-nav>div+div {
-	margin-top: 8px;
+nav>div>#check-ctrl {
+	margin-left: 100px;
 }
 
 #percent+span {

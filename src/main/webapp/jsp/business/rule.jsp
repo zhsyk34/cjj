@@ -2,7 +2,7 @@
 <%@ include file="/jsp/commons.jsp"%>
 <html>
 <head>
-<title>订单规则</title>
+<title><s:text name="index-rule" /></title>
 <link rel="stylesheet" href="css/util/layout.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/modal.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/page.css">
@@ -10,45 +10,72 @@
 </head>
 <body>
 	<header>
-		<h3>订单规则</h3>
+		<h3>
+			<s:text name="index-rule" />
+		</h3>
 		<nav>
 			<div class="inline">
-				<button class="btn btn-success btn-small" id="add">增加</button>
+				<button class="btn btn-success btn-small" id="add">
+					<s:text name="create" />
+				</button>
 			</div>
 			<ul class="inline" id="check-ctrl">
-				<li class="inline"><button class="btn btn-info btn-small" id="check-all">全选</button></li>
-				<li class="inline"><button class="btn btn-info btn-small" id="check-inverse">反选</button></li>
-				<li class="inline"><button class="btn btn-info btn-small" id="check-cancel">取消选择</button></li>
-				<li class="inline"><button class="btn btn-danger btn-small" id="del-all">删除所选</button></li>
+				<li class="inline">
+					<button class="btn btn-info btn-small" id="check-all">
+						<s:text name="check-all" />
+					</button>
+				</li>
+				<li class="inline">
+					<button class="btn btn-info btn-small" id="check-inverse">
+						<s:text name="check-inverse" />
+					</button>
+				</li>
+				<li class="inline">
+					<button class="btn btn-info btn-small" id="check-cancel">
+						<s:text name="check-cancel" />
+					</button>
+				</li>
+				<li class="inline">
+					<button class="btn btn-danger btn-small" id="del-all">
+						<s:text name="delete-all" />
+					</button>
+				</li>
 			</ul>
 		</nav>
 	</header>
 
-	<!-- data -->
 	<div class="main">
 		<table class="table table-hover">
 			<thead>
 				<tr>
 					<th width="10%"><input id="check-parent" type="checkbox"></th>
-					<th width="10%">序号</th>
-					<th width="40%">订单编号规则</th>
-					<th width="10%">启/禁用</th>
-					<th width="30%">编辑</th>
+					<th width="10%"><s:text name="index" /></th>
+					<th width="40%"><s:text name="rule-encode" /></th>
+					<th width="10%"><s:text name="rule-status" /></th>
+					<th width="30%"><s:text name="edit" /></th>
 				</tr>
 			</thead>
-			<tbody id="data">
-			</tbody>
+			<tbody id="data"></tbody>
 		</table>
 	</div>
 
-	<!-- edit dialog -->
 	<div id="editor">
-		<div>
-			<input type="hidden" id="id"> <span>订单编号以</span> <input class="text" id="prefix"><span>开头,共</span><input class="text" id="length"><span>位,起始值为</span><input class="text" id="start">
-		</div>
+		<table class="table table-hover table-edit">
+			<tr>
+				<th><s:text name="rule-prefix" /><input type="hidden" id="id"></th>
+				<td><input class="text" id="prefix"></td>
+			</tr>
+			<tr>
+				<th><s:text name="rule-length" /></th>
+				<td><input class="text" id="length"></td>
+			</tr>
+			<tr>
+				<th><s:text name="rule-start" /></th>
+				<td><input class="text" id="start"></td>
+			</tr>
+		</table>
 	</div>
 
-	<!-- page -->
 	<footer>
 		<div id="page"></div>
 	</footer>

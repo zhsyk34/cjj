@@ -11,7 +11,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 	find();
 	remove();
 
-	// show();TODO
+	// TODO
 	function show() {
 		$("#data").on("click", ".info", function() {
 			var img = $(this).find("img");
@@ -30,7 +30,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 	}
 
 	function dialog() {
-		$("#material").modal({
+		$("#material-dialog").modal({
 			top : 100,
 			title : "图片选择",
 			zIndex : 2020,
@@ -39,7 +39,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 		});
 		$("#load-material").on("click", function() {
 			loadMaterial();
-			$("#material").modal("open");
+			$("#material-dialog").modal("open");
 		});
 
 		//
@@ -139,6 +139,17 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			tasteIds.push(tasteId);
 		});
 
+		var flag = false;
+		$("#taste").find("ul").each(function() {
+			var parent = $(this).find("li.style :checkbox:checked").length;
+			var child = $(this).find("li.taste :checkbox:checked").length;
+
+			if (parent > 0 && child == 0) {
+				flag = true;
+				return false;
+			}
+		});
+
 		if (validate.isEmpty(name)) {
 			$.alert("餐点名称不能为空");
 			return false;
@@ -149,6 +160,11 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 		}
 		if (!validate.isNatural(materialId)) {
 			$.alert("请选择素材");
+			return false;
+		}
+
+		if (flag) {
+			$.alert("指定必选调味不能为空");
 			return false;
 		}
 
@@ -165,7 +181,6 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			styleIds : styleIds
 		};
 
-		console.log(params)
 		var url = id ? "json/Food_update" : "json/Food_save";
 
 		var exist = true;
@@ -282,7 +297,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			loadMaterial();
 		});
 
-		$("#material").on("click", ":radio", function() {
+		$("#material-dialog").on("click", ":radio", function() {
 			var material = $(this).parents("tr").data("row");
 			$("#materialId").val(material.id);
 			$("#show").find("img").attr({
@@ -327,8 +342,6 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 					tr.find("img").attr("src", material.path);
 					tbody.append(tr);
 				}
-				// tbody.find(":radio[value='" + materialId +
-				// "']").prop("checked", true);
 				crud.page(data, loadMaterial, $("#material-page"));
 			}
 		});
@@ -366,11 +379,8 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 					map[key].push(taste);
 				});
 
-				console.log(map)
 				$.each(map, function(style, tastes) {
 					var ul = $("<ul></ul>");
-
-					console.log(this);
 
 					var li = $(str).addClass("style");
 					li.find("input").val(style).after("必选");

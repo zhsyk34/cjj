@@ -35,23 +35,4 @@ public class OrderDetailTasteDaoImpl extends CommonsDaoImpl<OrderDetailTaste> im
 		return super.findList(queryString.toString(), map);
 	}
 
-	// @Override
-	// public List<OrderDetailTaste> findList(Integer orderDetailId, Integer
-	// tasteId) {
-	// StringBuffer queryString = new StringBuffer("from OrderDetailTaste as
-	// orderDetailTaste where 1 = 1");
-	// Map<String, Object> map = new HashMap<>();
-	//
-	// if (ValidateUtil.isPK(orderDetailId)) {
-	// queryString.append(" and orderDetailTaste.orderDetailId =
-	// :orderDetailId");
-	// map.put("orderDetailId", orderDetailId);
-	// }
-	// if (ValidateUtil.isPK(tasteId)) {
-	// queryString.append(" and orderDetailTaste.tasteId = :tasteId");
-	// map.put("tasteId", tasteId);
-	// }
-	// return super.findList(queryString.toString(), map);
-	// }
-
 }

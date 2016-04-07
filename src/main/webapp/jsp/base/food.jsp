@@ -2,61 +2,83 @@
 <%@ include file="/jsp/commons.jsp"%>
 <html>
 <head>
+<title><s:text name="index-food" /></title>
 <link rel="stylesheet" href="css/util/layout.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/modal.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/page.css">
 <link rel="stylesheet" href="css/module/food.css">
-<title>餐点</title>
 </head>
 <body>
 	<header>
-		<h3>餐点</h3>
+		<h3>
+			<s:text name="index-food" />
+		</h3>
 		<nav>
 			<div class="inline group">
-				<label class="addon" for="search-name">名称</label><input id="search-name" class="text">
+				<label class="addon" for="search-name"><s:text name="name" /></label><input id="search-name" class="text">
 			</div>
 			<div class="inline group">
-				<label class="addon" for="search-type">类型</label> <select class="text" id="search-type">
-				</select>
+				<label class="addon" for="search-type"><s:text name="type" /></label> <select class="text" id="search-type"></select>
 			</div>
 			<div class="inline">
-				<button class="btn btn-primary btn-small" id="find">查询</button>
-				<button class="btn btn-success btn-small" id="add">增加</button>
+				<button class="btn btn-primary btn-small" id="find">
+					<s:text name="find" />
+				</button>
+				<button class="btn btn-success btn-small" id="add">
+					<s:text name="create" />
+				</button>
 			</div>
-
 			<ul class="inline" id="check-ctrl">
-				<li class="inline"><button class="btn btn-info btn-small" id="check-all">全选</button></li>
-				<li class="inline"><button class="btn btn-info btn-small" id="check-inverse">反选</button></li>
-				<li class="inline"><button class="btn btn-info btn-small" id="check-cancel">取消选择</button></li>
-				<li class="inline"><button class="btn btn-danger btn-small" id="del-all">删除所选</button></li>
+				<li class="inline">
+					<button class="btn btn-info btn-small" id="check-all">
+						<s:text name="check-all" />
+					</button>
+				</li>
+				<li class="inline">
+					<button class="btn btn-info btn-small" id="check-inverse">
+						<s:text name="check-inverse" />
+					</button>
+				</li>
+				<li class="inline">
+					<button class="btn btn-info btn-small" id="check-cancel">
+						<s:text name="check-cancel" />
+					</button>
+				</li>
+				<li class="inline">
+					<button class="btn btn-danger btn-small" id="del-all">
+						<s:text name="delete-all" />
+					</button>
+				</li>
 			</ul>
 		</nav>
 	</header>
+
 	<div class="main">
 		<div id="data"></div>
 	</div>
-	<!-- page -->
+
 	<footer>
 		<div id="page"></div>
 	</footer>
 
-	<!-- material dialog-->
-	<div id="material">
-		<div class="inline dialog-nav">
+	<div id="material-dialog">
+		<div class="dialog-nav">
 			<div class="inline group">
-				<label class="addon" for="material-name">名称</label><input id="material-name" class="text">
+				<label class="addon" for="material-name"><s:text name="name" /></label><input id="material-name" class="text">
 			</div>
 			<div class="inline">
-				<button class="btn btn-primary btn-small" id="find-material">查询</button>
+				<button class="btn btn-primary btn-small" id="find-material">
+					<s:text name="find" />
+				</button>
 			</div>
 		</div>
 		<div class="dialog-main">
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th width="20%">选择</th>
-						<th width="45%">名称</th>
-						<th width="35%">图片</th>
+						<th width="20%"><s:text name="select" /></th>
+						<th width="45%"><s:text name="name" /></th>
+						<th width="35%"><s:text name="picture" /></th>
 					</tr>
 				</thead>
 				<tbody id="material-data"></tbody>
@@ -86,37 +108,40 @@
 						<table class="table table-edit table-hover">
 							<tbody>
 								<tr>
-									<th width="15%">名称</th>
+									<th width="15%"><s:text name="name" /></th>
 									<td><input id="id" type="hidden"><input class="text" id="name"></td>
 								</tr>
 								<tr>
-									<th>简称</th>
+									<th><s:text name="food-abbreviation" /></th>
 									<td><input class="text" id="abbreviation"></td>
 								</tr>
 								<tr>
-									<th>别名</th>
+									<th><s:text name="food-nickname" /></th>
 									<td><input class="text" id="nickname"></td>
 								</tr>
 								<tr>
-									<th>类型</th>
+									<th><s:text name="type" /></th>
 									<td><select class="text" id="typeId">
 									</select></td>
 								</tr>
 								<tr>
-									<th>单价</th>
+									<th><s:text name="food-price" /></th>
 									<td><input class="text" id="price"></td>
 								</tr>
 								<tr>
-									<th>图片</th>
-									<td><input type="hidden" id="materialId">
-										<button class="btn btn-primary" id="load-material">选择</button></td>
+									<th><s:text name="picture" /><input type="hidden" id="materialId"></th>
+									<td>
+										<button class="btn btn-primary" id="load-material">
+											<s:text name="select" />
+										</button>
+									</td>
 								</tr>
 								<tr>
-									<th>介绍</th>
+									<th><s:text name="food-introduction" /></th>
 									<td><textarea class="text" id="introduction" rows="5" cols="30"></textarea></td>
 								</tr>
 								<tr>
-									<th>调味</th>
+									<th><s:text name="food-taste" /></th>
 									<td><div id="taste"></div></td>
 								</tr>
 							</tbody>

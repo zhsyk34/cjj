@@ -1,7 +1,3 @@
-#check-ctrl {
-	margin: 0;
-}
-
 #data {
 	width: 100%;
 	padding: 5px;
@@ -9,8 +5,8 @@
 
 #data:after {
 	display: block;
-	clear: both;
 	content: '';
+	clear: both;
 }
 
 .info {

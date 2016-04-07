@@ -113,8 +113,6 @@ public class OrderInfoDaoImpl extends CommonsDaoImpl<OrderInfo> implements Order
 			queryString.append(" and orderInfo.status = :status");
 			map.put("status", status);
 		}
-
 		return super.count(queryString.toString(), map);
 	}
-
 }

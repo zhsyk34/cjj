@@ -20,24 +20,3 @@
 .switch, .update, .del {
 	margin: 0 15px;
 }
-
-#editor>div {
-	padding: 10px 5px;
-}
-
-#prefix, #length, #start {
-	height: 28px;
-	margin: 0 4px;
-}
-
-#prefix {
-	width: 70px;
-}
-
-#length {
-	width: 50px;
-}
-
-#start {
-	width: 50px;
-}

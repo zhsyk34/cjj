@@ -24,12 +24,11 @@ public interface OrderDetailDao {
 
 	public List<OrderDetail> findList();
 
-	public List<OrderDetail> findList(Integer orderId, String food);
+	public List<OrderDetail> findList(Integer orderId, Integer foodId);
 
-	public int count(Integer orderId, String food);
+	public List<OrderDetail> findList(Integer orderId, String name);
 
-	/* 删除订单明细数据:目前采取备份数据方法,未使用... */
-	public void deleteByOrderId(Integer orderId);
+	public int count(Integer orderId, String name);
 
 	public List<String> findTaste(Integer id);
 }

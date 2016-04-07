@@ -2,7 +2,7 @@
 <%@ include file="/jsp/commons.jsp"%>
 <html>
 <head>
-<title>赠品管理</title>
+<title><s:text name="index-gift" /></title>
 <link rel="stylesheet" href="css/util/layout.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/modal.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/page.css">
@@ -10,95 +10,123 @@
 </head>
 <body>
 	<header>
-		<h3>赠品管理</h3>
+		<h3>
+			<s:text name="index-gift" />
+		</h3>
 		<nav>
 			<div>
 				<div class="inline group">
-					<label class="addon" for="search-kitchen">厨房编号</label><input id="search-kitchen" class="text">
+					<label class="addon" for="search-kitchen"><s:text name="activity-kitchen" /></label><input id="search-kitchen" class="text">
 				</div>
 				<div class="inline group">
-					<label class="addon" for="search-food">餐点名称</label><input id="search-food" class="text">
+					<label class="addon" for="search-food"><s:text name="activity-food" /></label><input id="search-food" class="text">
 				</div>
 				<div class="inline group">
-					<label class="addon">活动状态</label>
+					<label class="addon"><s:text name="activity-status" /></label>
 					<div class="text" id="search-used">
-						<label><input type="radio" name="search-used" value="" checked>全部</label> <label><input type="radio" name="search-used" value="0">未活动</label> <label><input type="radio" name="search-used" value="1">进行中</label>
+						<label><input type="radio" name="search-used" value="" checked> <s:text name="all" /></label><label><input type="radio" name="search-used" value="0"> <s:text name="activity-notdone" /></label><label><input type="radio" name="search-used" value="1"> <s:text name="activity-already" /></label>
 					</div>
 				</div>
 				<div class="inline">
-					<button class="btn btn-primary btn-small" id="find">查询</button>
+					<button class="btn btn-primary btn-small" id="find">
+						<s:text name="find" />
+					</button>
 				</div>
 			</div>
 			<div>
 				<ul class="inline">
-					<li class="inline"><button class="btn btn-success btn-small" id="used-all">批量启用</button></li>
-					<li class="inline"><button class="btn btn-warning btn-small" id="unused-all">批量禁用</button></li>
-					<li class="inline"><button class="btn btn-primary btn-small" id="update-all">批量设置</button></li>
-					<li class="inline"><button class="btn btn-danger btn-small" id="revoke-all">批量撤销</button></li>
+					<li class="inline">
+						<button class="btn btn-success btn-small" id="used-all">
+							<s:text name="activity-used-all" />
+						</button>
+					</li>
+					<li class="inline">
+						<button class="btn btn-warning btn-small" id="unused-all">
+							<s:text name="activity-unused-all" />
+						</button>
+					</li>
+					<li class="inline">
+						<button class="btn btn-primary btn-small" id="update-all">
+							<s:text name="activity-setup-all" />
+						</button>
+					</li>
+					<li class="inline">
+						<button class="btn btn-danger btn-small" id="revoke-all">
+							<s:text name="activity-revoke-all" />
+						</button>
+					</li>
 				</ul>
 				<ul class="inline" id="check-ctrl">
-					<li class="inline"><button class="btn btn-info btn-small" id="check-all">全选</button></li>
-					<li class="inline"><button class="btn btn-info btn-small" id="check-inverse">反选</button></li>
-					<li class="inline"><button class="btn btn-info btn-small" id="check-cancel">取消选择</button></li>
+					<li class="inline">
+						<button class="btn btn-info btn-small" id="check-all">
+							<s:text name="check-all" />
+						</button>
+					</li>
+					<li class="inline">
+						<button class="btn btn-info btn-small" id="check-inverse">
+							<s:text name="check-inverse" />
+						</button>
+					</li>
+					<li class="inline">
+						<button class="btn btn-info btn-small" id="check-cancel">
+							<s:text name="check-cancel" />
+						</button>
+					</li>
 				</ul>
 			</div>
 		</nav>
 	</header>
 
-	<!-- data -->
 	<div class="main">
 		<table class="table table-hover">
 			<thead>
 				<tr>
 					<th width="5%"><input id="check-parent" type="checkbox"></th>
-					<th width="5%">序号</th>
-					<th width="10%">厨房编号</th>
-					<th width="10%">厨房位置</th>
-					<th width="10%">餐点</th>
-					<th width="18%">停售时间</th>
-					<th width="7%">数量</th>
-					<th width="5%">每份</th>
-					<th width="10%">启用</th>
-					<th width="10%">设置</th>
-					<th width="10%">撤销</th>
+					<th width="5%"><s:text name="index" /></th>
+					<th width="10%"><s:text name="activity-kitchen" /></th>
+					<th width="10%"><s:text name="activity-location" /></th>
+					<th width="10%"><s:text name="activity-food" /></th>
+					<th width="18%"><s:text name="activity-time" /></th>
+					<th width="7%"><s:text name="activity-count" /></th>
+					<th width="5%"><s:text name="activity-unit" /></th>
+					<th width="10%"><s:text name="activity-used" /></th>
+					<th width="10%"><s:text name="setup" /></th>
+					<th width="10%"><s:text name="revoke" /></th>
 				</tr>
 			</thead>
-			<tbody id="data">
-			</tbody>
+			<tbody id="data"></tbody>
 		</table>
 	</div>
 
-	<!-- page -->
 	<footer>
 		<div id="page"></div>
 	</footer>
 
-	<!-- edit dialog -->
 	<div id="editor">
 		<table class="table table-hover table-edit">
 			<tr>
-				<th>开始日期</th>
+				<th><s:text name="activity-begin" /></th>
 				<td><input class="text" id="begin"></td>
 			</tr>
 			<tr>
-				<th>结束日期</th>
+				<th><s:text name="activity-end" /></th>
 				<td><input class="text" id="end"></td>
 			</tr>
 			<tr>
-				<th>赠送数量</th>
+				<th><s:text name="activity-gift-count" /></th>
 				<td><input class="text" id="count"></td>
 			</tr>
 			<tr>
-				<th>每份赠送</th>
+				<th><s:text name="activity-gift-unit" /></th>
 				<td><input class="text" id="unit"></td>
 			</tr>
 			<tr>
-				<th>是否启用</th>
-				<td id="used"><label><input type="radio" name="used" value="1" checked>是</label> <label><input type="radio" name="used" value="0">否</label></td>
+				<th><s:text name="activity-isused" /></th>
+				<td id="used"><label><input type="radio" name="used" value="1" checked> <s:text name="yes" /></label> <label><input type="radio" name="used" value="0"> <s:text name="no" /></label></td>
 			</tr>
 		</table>
 	</div>
+
 	<script src="js/lib/require.js" data-main="module/business/activity"></script>
 </body>
 </html>
-

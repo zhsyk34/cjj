@@ -136,7 +136,7 @@ public class OrderServiceImpl implements OrderService {
 			Integer orderId = orderInfo.getId();
 
 			OrderInfoVO orderInfoVO = new OrderInfoVO();
-			// for null date
+
 			BeanUtilsBean.getInstance().getConvertUtils().register(false, false, 0);
 			try {
 				BeanUtils.copyProperties(orderInfoVO, orderInfo);

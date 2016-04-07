@@ -1,11 +1,10 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ include file="/jsp/commons.jsp"%>
-<%@ taglib prefix="s" uri="/struts-tags"%>
 <html>
 <head>
-<title><s:text name="index-title" /></title>
 <link rel="stylesheet" href="css/lib/init.css">
 <link rel="stylesheet" href="css/module/index.css">
+<title><s:text name="index-title" /></title>
 </head>
 <body>
 	<div id="container">
@@ -17,44 +16,44 @@
 				<s:text name="index-logon" />
 			</div>
 			<div class="accordion">
-				<p>数据管理</p>
+				<p><s:text name="index-base" /></p>
 				<ul>
-					<li><a href="jsp/base/food.jsp">餐点管理</a></li>
-					<li><a href="jsp/base/taste.jsp">口味管理</a></li>
-					<li><a href="jsp/base/style.jsp">口味类型</a></li>
-					<li><a href="jsp/base/type.jsp">类型管理</a></li>
-					<li><a href="jsp/base/material.jsp">素材管理</a></li>
-					<li><a href="jsp/base/marquee.jsp">跑 马 灯</a></li>
-					<li><a href="jsp/base/template.jsp">模板管理</a></li>
-					<li><a href="jsp/base/seat.jsp">座位管理</a></li>
+					<li><a href="jsp/base/food.jsp"><s:text name="index-food" /></a></li>
+					<li><a href="jsp/base/taste.jsp"><s:text name="index-taste" /></a></li>
+					<li><a href="jsp/base/style.jsp"><s:text name="index-style" /></a></li>
+					<li><a href="jsp/base/type.jsp"><s:text name="index-type" /></a></li>
+					<li><a href="jsp/base/material.jsp"><s:text name="index-material" /></a></li>
+					<li><a href="jsp/base/marquee.jsp"><s:text name="index-marquee" /></a></li>
+					<li><a href="jsp/base/template.jsp"><s:text name="index-template" /></a></li>
+					<li><a href="jsp/base/seat.jsp"><s:text name="index-seat" /></a></li>
 				</ul>
-				<p>营业管理</p>
+				<p><s:text name="index-business" /></p>
 				<ul>
-					<li><a href="jsp/business/rule.jsp">订单规则</a></li>
-					<li><a href="jsp/business/order.jsp">订单明细</a></li>
-					<li><a href="jsp/business/sell.jsp">销售统计</a></li>
-					<li><a href="jsp/business/refund.jsp">退币管理</a></li>
-					<li><a href="jsp/business/stop.jsp">停售管理</a></li>
-					<li><a href="jsp/business/gift.jsp">赠品管理</a></li>
-					<li><a href="jsp/business/discount.jsp">促销管理</a></li>
+					<li><a href="jsp/business/rule.jsp"><s:text name="index-rule" /></a></li>
+					<li><a href="jsp/business/order.jsp"><s:text name="index-order" /></a></li>
+					<li><a href="jsp/business/sell.jsp"><s:text name="index-sell" /></a></li>
+					<li><a href="jsp/business/refund.jsp"><s:text name="index-refund" /></a></li>
+					<li><a href="jsp/business/stop.jsp"><s:text name="index-stop" /></a></li>
+					<li><a href="jsp/business/gift.jsp"><s:text name="index-gift" /></a></li>
+					<li><a href="jsp/business/discount.jsp"><s:text name="index-discount" /></a></li>
 				</ul>
-				<p>终端管理</p>
+				<p><s:text name="index-device" /></p>
 				<ul>
-					<li><a href="jsp/device/terminal.jsp">终端信息</a></li>
-					<li><a href="jsp/device/setting.jsp">终端设置</a></li>
-					<li><a href="jsp/device/list.jsp">终端一览</a></li>
-					<li><a href="jsp/device/monitor.jsp">监控画面</a></li>
-					<li><a href="jsp/device/record.jsp">连线记录</a></li>
-					<li><a href="jsp/device/remote.jsp">远程管理</a></li>
+					<li><a href="jsp/device/terminal.jsp"><s:text name="index-terminal" /></a></li>
+					<li><a href="jsp/device/setting.jsp"><s:text name="index-setting" /></a></li>
+					<li><a href="jsp/device/list.jsp"><s:text name="index-list" /></a></li>
+					<li><a href="jsp/device/monitor.jsp"><s:text name="index-monitor" /></a></li>
+					<li><a href="jsp/device/record.jsp"><s:text name="index-record" /></a></li>
+					<li><a href="jsp/device/remote.jsp"><s:text name="index-remote" /></a></li>
 				</ul>
-				<p>系统管理</p>
+				<p><s:text name="index-system" /></p>
 				<ul>
-					<li><a href="jsp/system/config.jsp">系统设置</a></li>
-					<li><a href="jsp/system/cashbox.jsp">钱箱设置</a></li>
-					<li><a href="jsp/system/payset.jsp">支付设置</a></li>
-					<li><a href="jsp/system/user.jsp">用户管理</a></li>
-					<li><a href="jsp/system/password.jsp">密码修改</a></li>
-					<li id="logout">安全退出</li>
+					<li><a href="jsp/system/config.jsp"><s:text name="index-config" /></a></li>
+					<li><a href="jsp/system/cashbox.jsp"><s:text name="index-cashbox" /></a></li>
+					<li><a href="jsp/system/payset.jsp"><s:text name="index-payset" /></a></li>
+					<li><a href="jsp/system/user.jsp"><s:text name="index-user" /></a></li>
+					<li><a href="jsp/system/password.jsp"><s:text name="index-password" /></a></li>
+					<li id="logout"><s:text name="index-logout" /></li>
 				</ul>
 			</div>
 		</nav>
@@ -65,11 +64,11 @@
 
 	<div id="footer">
 		<div id="version">
-			<span>版本:</span>
+			<span><s:text name="index-version" /></span>
 			<s:property value="#application.version" />
 		</div>
 		<div id="serverId">
-			<span>编号:</span>
+			<span><s:text name="index-serverid" /></span>
 			<s:property value="#application.serverid" />
 		</div>
 		<span id="date"></span>

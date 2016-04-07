@@ -11,7 +11,9 @@ public class OrderDetail {
 
 	private Integer orderId;// 父订单编号
 
-	private String food;// 生成订单时的餐点名称
+	private Integer foodId;// 冗余信息
+
+	private String name;// 生成订单时的餐点名称
 
 	private double price;// 最终价格
 
@@ -37,12 +39,20 @@ public class OrderDetail {
 		this.orderId = orderId;
 	}
 
-	public String getFood() {
-		return food;
+	public Integer getFoodId() {
+		return foodId;
 	}
 
-	public void setFood(String food) {
-		this.food = food;
+	public void setFoodId(Integer foodId) {
+		this.foodId = foodId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public double getPrice() {
@@ -68,4 +78,5 @@ public class OrderDetail {
 	public void setTotal(double total) {
 		this.total = total;
 	}
+
 }

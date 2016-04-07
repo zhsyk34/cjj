@@ -4,7 +4,9 @@ import java.util.List;
 
 public class OrderDetailVO {
 
-	private String food;
+	private Integer foodId;
+
+	private String name;
 
 	private List<String> tasteList;
 
@@ -14,12 +16,20 @@ public class OrderDetailVO {
 
 	private double total;
 
-	public String getFood() {
-		return food;
+	public Integer getFoodId() {
+		return foodId;
 	}
 
-	public void setFood(String food) {
-		this.food = food;
+	public void setFoodId(Integer foodId) {
+		this.foodId = foodId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public List<String> getTasteList() {

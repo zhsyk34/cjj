@@ -83,6 +83,8 @@ public class WebContext implements ServletContextAware, InitializingBean {
 		try {
 			version = FileUtils.readFileToString(new File(classRootPath, "version.txt"));
 			serverid = FileUtils.readFileToString(new File(classRootPath, "serverid.txt"));
+			servletContext.setAttribute("version", version);
+			servletContext.setAttribute("serverid", serverid);
 			System.out.printf("version: %s, server: %s", version, serverid);
 		} catch (IOException e) {
 			e.printStackTrace();

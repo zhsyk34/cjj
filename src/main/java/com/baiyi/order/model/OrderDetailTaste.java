@@ -9,9 +9,11 @@ public class OrderDetailTaste {
 
 	private Integer id;
 
-	private Integer orderDetailId;// 订单明细
+	private Integer orderDetailId;// 子订单
 
-	private String name;// 直接采用名称,防止删除数据
+	// private Integer tasteId;
+
+	private String name;// 调味名称
 
 	@Id
 	@GeneratedValue

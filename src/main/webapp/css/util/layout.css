@@ -24,6 +24,10 @@ nav>div {
 	margin: 8px 0;
 }
 
+nav>table td {
+	padding: 4px 8px;
+}
+
 #find {
 	margin-left: 5px;
 }
@@ -36,8 +40,12 @@ nav>div {
 	margin-left: 200px;
 }
 
+nav>div>#check-ctrl {
+	margin: 0;
+}
+
 #check-ctrl li {
-	margin-left: 10px;
+	margin-right: 10px;
 }
 
 /*content*/
@@ -86,4 +94,9 @@ select, select option {
 
 .dialog-page>div {
 	float: right;
+}
+
+/*table editor*/
+.table-edit td {
+	height: 40px;
 }

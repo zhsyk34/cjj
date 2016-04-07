@@ -2,7 +2,7 @@
 <%@ include file="/jsp/commons.jsp"%>
 <html>
 <head>
-<title>跑马灯</title>
+<title><s:text name="index-marquee" /></title>
 <link rel="stylesheet" href="css/util/layout.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/modal.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/page.css">
@@ -12,28 +12,50 @@
 </head>
 <body>
 	<header>
-		<h3>跑马灯</h3>
+		<h3>
+			<s:text name="index-marquee" />
+		</h3>
 		<nav>
 			<div>
 				<div class="inline group">
-					<label class="addon" for="search-title">标题</label><input id="search-title" class="text">
+					<label class="addon" for="search-title"><s:text name="title" /></label><input id="search-title" class="text">
 				</div>
 				<div class="inline group">
-					<label class="addon" for="search-content">内容</label><input id="search-content" class="text">
+					<label class="addon" for="search-content"><s:text name="content" /></label><input id="search-content" class="text">
 				</div>
 				<div class="inline">
-					<button class="btn btn-primary btn-small" id="find">查询</button>
+					<button class="btn btn-primary btn-small" id="find">
+						<s:text name="find" />
+					</button>
 				</div>
 				<div class="inline">
-					<button class="btn btn-success btn-small" id="add">增加</button>
+					<button class="btn btn-success btn-small" id="add">
+						<s:text name="create" />
+					</button>
 				</div>
 			</div>
 			<div>
 				<ul class="inline" id="check-ctrl">
-					<li class="inline"><button class="btn btn-info btn-small" id="check-all">全选</button></li>
-					<li class="inline"><button class="btn btn-info btn-small" id="check-inverse">反选</button></li>
-					<li class="inline"><button class="btn btn-info btn-small" id="check-cancel">取消选择</button></li>
-					<li class="inline"><button class="btn btn-danger btn-small" id="del-all">删除所选</button></li>
+					<li class="inline">
+						<button class="btn btn-info btn-small" id="check-all">
+							<s:text name="check-all" />
+						</button>
+					</li>
+					<li class="inline">
+						<button class="btn btn-info btn-small" id="check-inverse">
+							<s:text name="check-inverse" />
+						</button>
+					</li>
+					<li class="inline">
+						<button class="btn btn-info btn-small" id="check-cancel">
+							<s:text name="check-cancel" />
+						</button>
+					</li>
+					<li class="inline">
+						<button class="btn btn-danger btn-small" id="del-all">
+							<s:text name="delete-all" />
+						</button>
+					</li>
 				</ul>
 			</div>
 		</nav>
@@ -45,27 +67,26 @@
 			<thead>
 				<tr>
 					<th width=""><input id="check-parent" type="checkbox"></th>
-					<th width="">序号</th>
-					<th width="">标题</th>
-					<th width="">内容</th>
-					<th width="">方向</th>
-					<th width="">速度</th>
-					<th width="">字体</th>
-					<th width="">字号</th>
-					<th width="">颜色</th>
-					<th width="">背景色</th>
-					<th width="">编辑</th>
+					<th width=""><s:text name="index" /></th>
+					<th width=""><s:text name="title" /></th>
+					<th width=""><s:text name="content" /></th>
+					<th width=""><s:text name="marquee-direction" /></th>
+					<th width=""><s:text name="marquee-speed" /></th>
+					<th width=""><s:text name="marquee-font" /></th>
+					<th width=""><s:text name="marquee-size" /></th>
+					<th width=""><s:text name="marquee-color" /></th>
+					<th width=""><s:text name="marquee-background" /></th>
+					<th width=""><s:text name="edit" /></th>
 				</tr>
 			</thead>
-			<tbody id="data">
-			</tbody>
+			<tbody id="data"></tbody>
 		</table>
 	</div>
 
 	<div id="editor">
 		<table class="table table-hover table-edit">
 			<tr>
-				<th>预览</th>
+				<th><s:text name="preview" /></th>
 				<td>
 					<div id="wrap">
 						<div id="preview"></div>
@@ -73,23 +94,23 @@
 				</td>
 			</tr>
 			<tr>
-				<th width="20%">标题<input id="id" type="hidden"></th>
+				<th width="20%"><s:text name="title" /><input id="id" type="hidden"></th>
 				<td width="80%"><input class="text" id="title"></td>
 			</tr>
 			<tr>
-				<th>内容</th>
+				<th><s:text name="content" /></th>
 				<td><textarea id="content" rows="3" cols="60" class="text"></textarea></td>
 			</tr>
 			<tr>
-				<th>方向</th>
-				<td id="direction"><label><input type="radio" name="dir" value="left" checked>左</label> <label><input type="radio" name="dir" value="right">右</label></td>
+				<th><s:text name="marquee-direction" /></th>
+				<td id="direction"><label><input type="radio" name="dir" value="left" checked> <s:text name="marquee-left" /></label> <label><input type="radio" name="dir" value="right"> <s:text name="marquee-right" /></label></td>
 			</tr>
 			<tr>
-				<th>速度</th>
+				<th><s:text name="marquee-speed" /></th>
 				<td><div id="speed"></div></td>
 			</tr>
 			<tr>
-				<th>字体</th>
+				<th><s:text name="marquee-font" /></th>
 				<td><select id="font" class="text">
 						<option value="标楷体" selected>标楷体</option>
 						<option value="华康俪特圆">华康俪特圆</option>
@@ -106,15 +127,15 @@
 				</select></td>
 			</tr>
 			<tr>
-				<th>字号</th>
+				<th><s:text name="marquee-size" /></th>
 				<td><div id="size"></div></td>
 			</tr>
 			<tr>
-				<th>颜色</th>
+				<th><s:text name="marquee-color" /></th>
 				<td><input id="color"></td>
 			</tr>
 			<tr>
-				<th>背景</th>
+				<th><s:text name="marquee-background" /></th>
 				<td><input id="background"></td>
 			</tr>
 		</table>

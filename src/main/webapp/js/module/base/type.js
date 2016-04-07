@@ -5,9 +5,6 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "message"
 	find();
 	remove();
 
-	var aaa = $.prop("name");
-	console.log(aaa)
-
 	function dialog() {
 		$("#editor").modal({
 			width : 300,
