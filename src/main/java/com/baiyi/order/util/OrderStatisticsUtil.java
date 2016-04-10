@@ -172,7 +172,7 @@ public class OrderStatisticsUtil {
 			int index = -1;
 			for (int i = 0; i < list.size(); i++) {
 				OrderDetail original = list.get(i);
-				if (original.getFood().equals(orderDetail.getFood())) {
+				if (original.getName().equals(orderDetail.getName())) {
 					index = i;
 					break;
 				}
@@ -180,7 +180,7 @@ public class OrderStatisticsUtil {
 			if (index != -1) {
 				OrderDetail update = new OrderDetail();
 				OrderDetail exist = list.get(index);
-				update.setFood(orderDetail.getFood());
+				update.setName(orderDetail.getName());
 				update.setCount(orderDetail.getCount() + exist.getCount());
 				update.setTotal(orderDetail.getTotal() + exist.getTotal());
 				list.set(index, update);

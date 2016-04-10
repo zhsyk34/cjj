@@ -28,10 +28,10 @@ public interface OrderInfoDao {
 
 	public List<OrderInfo> findList(String orderNo);
 
-	public List<OrderInfo> findList(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status);
+	public List<OrderInfo> findList(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status);
 
-	public List<OrderInfo> findList(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status, String sort, String order, int pageNo, int pageSize);
+	public List<OrderInfo> findList(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status, String sort, String order, int pageNo, int pageSize);
 
-	public int count(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status);
+	public int count(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status);
 
 }

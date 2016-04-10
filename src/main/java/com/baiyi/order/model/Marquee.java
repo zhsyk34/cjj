@@ -30,9 +30,9 @@ public class Marquee {
 	private String background;
 
 	private Integer userId;
-	
+
 	private Date createtime;
-	
+
 	private Date updatetime;
 
 	@Id

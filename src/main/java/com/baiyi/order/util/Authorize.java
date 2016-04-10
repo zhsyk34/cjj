@@ -37,14 +37,18 @@ public class Authorize implements Runnable {
 		String success = null;
 		String isOpen = null;
 
-		String dir = WebContext.classRootPath + File.separator + "authorize";
-		String target = dir + File.separator + WebContext.serverid + ".properties";
+		String path = WebContext.classRootPath + File.separator + "authorize" + File.separator + WebContext.serverid + ".properties";
 
-		File file = new File(target);
+		File file = new File(path);
+		PropertiesConfiguration config = null;
+		try {
+			config = new PropertiesConfiguration(path);
+		} catch (ConfigurationException e) {
+			e.printStackTrace();
+		}
 
 		if (file.exists()) {
 			try {
-				Configuration config = new PropertiesConfiguration(target);
 				serverid = config.getString("serverid");
 				count = DESPlus.decrypt(config.getString("maxCount"));
 			} catch (Exception e) {
@@ -70,7 +74,7 @@ public class Authorize implements Runnable {
 					count = json.getString("terminalNum");
 
 					try {// TODO
-						PropertiesConfiguration config = new PropertiesConfiguration(target);
+
 						config.setProperty("serverid", serverid);
 						config.setProperty("maxCount", count);
 

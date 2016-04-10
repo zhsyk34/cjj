@@ -2,19 +2,40 @@ package com.baiyi.order.vo;
 
 import java.util.List;
 
+//子订单详细信息
 public class OrderDetailVO {
+
+	private Integer id;
+
+	private Integer orderId;
 
 	private Integer foodId;
 
 	private String name;
 
-	private List<String> tasteList;
+	private List<String> tasteList;// VO
 
 	private double price;
 
 	private int count;
 
 	private double total;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(Integer orderId) {
+		this.orderId = orderId;
+	}
 
 	public Integer getFoodId() {
 		return foodId;

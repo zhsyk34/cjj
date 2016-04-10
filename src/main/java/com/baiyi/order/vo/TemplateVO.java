@@ -30,12 +30,12 @@ public class TemplateVO {
 	private Date updatetime;
 
 	private List<FoodVO> foodList;// VO
-	
+
 	private Material logo;// VO
 	private Material number;// VO
 	private List<Material> videoList;// VO
 	private List<Material> pictureList;// VO
-	
+
 	private List<Marquee> marqueeList;// VO
 
 	public Integer getId() {

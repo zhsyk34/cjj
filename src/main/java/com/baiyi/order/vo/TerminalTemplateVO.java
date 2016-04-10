@@ -17,7 +17,7 @@ public class TerminalTemplateVO {
 	private String status;
 
 	private long total;
-	
+
 	private long down;
 
 	private boolean renew;

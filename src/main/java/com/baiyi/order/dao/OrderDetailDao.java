@@ -24,8 +24,6 @@ public interface OrderDetailDao {
 
 	public List<OrderDetail> findList();
 
-	public List<OrderDetail> findList(Integer orderId, Integer foodId);
-
 	public List<OrderDetail> findList(Integer orderId, String name);
 
 	public int count(Integer orderId, String name);

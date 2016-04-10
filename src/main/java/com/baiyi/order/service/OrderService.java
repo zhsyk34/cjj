@@ -12,34 +12,48 @@ import com.baiyi.order.vo.OrderVO;
 
 public interface OrderService {
 
-	public void save(OrderInfo orderInfo, List<OrderDetailVO> orderDetails);
+	public void save(OrderInfo orderInfo);
 
-	public void revoke(Integer id);// 撤销订单,不删除...
+	public void save(OrderInfo orderInfo, List<OrderDetailVO> orderDetails);// 子订单明细
 
-	public void update(OrderInfo orderInfo, List<OrderDetailVO> orderDetails);
+	public void delete(Integer id);
+
+	public void delete(OrderInfo orderInfo);
+
+	public void delete(Integer[] ids);
+
+	public void delete(List<OrderInfo> orderInfos);
+
+	public void revoke(Integer id);// 撤销订单,修改状态
+
+	public void update(OrderInfo orderInfo);
+
+	public void update(OrderInfo orderInfo, List<OrderDetailVO> orderDetails);// 子订单明细
+
+	public void merge(OrderInfo orderInfo);
 
 	public OrderInfo find(Integer id);
 
 	public List<OrderInfo> findList();
 
-	public List<OrderInfo> findList(String orderNo);// 修改订单时保留原订单,编号一致
+	public List<OrderInfo> findList(String orderNo);
 
-	public List<OrderInfo> findList(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status);
+	public List<OrderInfo> findList(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status);
 
-	public List<OrderInfo> findList(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status, String sort, String order, int pageNo, int pageSize);
+	public List<OrderInfo> findList(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status, String sort, String order, int pageNo, int pageSize);
 
-	public int count(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status);
+	public int count(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status);
 
-	/* join search */
+	/* VO */
 	public List<OrderInfoVO> findVOList();
 
-	public List<OrderInfoVO> findVOList(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status);
+	public List<OrderInfoVO> findVOList(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status);
 
-	public List<OrderInfoVO> findVOList(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status, String sort, String order, int pageNo, int pageSize);
+	public List<OrderInfoVO> findVOList(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status, String sort, String order, int pageNo, int pageSize);
 
 	/* detail */
-	public List<OrderDetail> findDetail(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status);
+	public List<OrderDetail> findDetailList(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status);
 
-	public List<OrderVO> findOrderList(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status);
+	public List<OrderVO> findOrderList(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status);
 
 }

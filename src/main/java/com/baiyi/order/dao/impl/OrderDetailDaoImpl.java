@@ -20,22 +20,6 @@ public class OrderDetailDaoImpl extends CommonsDaoImpl<OrderDetail> implements O
 	}
 
 	@Override
-	public List<OrderDetail> findList(Integer orderId, Integer foodId) {
-		StringBuffer queryString = new StringBuffer("from OrderDetail as orderDetail where 1 = 1");
-		Map<String, Object> map = new HashMap<>();
-
-		if (ValidateUtil.isPK(orderId)) {
-			queryString.append(" and orderDetail.orderId = :orderId");
-			map.put("orderId", orderId);
-		}
-		if (ValidateUtil.isPK(foodId)) {
-			queryString.append(" and orderDetail.foodId = :foodId");
-			map.put("foodId", foodId);
-		}
-		return super.findList(queryString.toString(), map);
-	}
-
-	@Override
 	public List<OrderDetail> findList(Integer orderId, String name) {
 		StringBuffer queryString = new StringBuffer("from OrderDetail as orderDetail where 1 = 1");
 		Map<String, Object> map = new HashMap<>();

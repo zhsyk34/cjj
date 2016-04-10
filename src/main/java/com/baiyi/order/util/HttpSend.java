@@ -24,7 +24,7 @@ public class HttpSend {
 			connection.setDoInput(true);
 			connection.setRequestMethod("POST");
 			connection.setUseCaches(false);
-			connection.setInstanceFollowRedirects(true);			
+			connection.setInstanceFollowRedirects(true);
 			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
 			connection.connect();

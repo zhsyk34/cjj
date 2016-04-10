@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.baiyi.order.util.EnumList.OrderStatus;
 
-//订单详细信息(调味)
+//订单详细信息
 public class OrderInfoVO {
 
 	private Integer id;
@@ -16,7 +16,7 @@ public class OrderInfoVO {
 
 	private String kitchen;
 
-	private List<OrderDetailVO> detailList;
+	private List<OrderDetailVO> detailList;// VO
 
 	private double total;
 

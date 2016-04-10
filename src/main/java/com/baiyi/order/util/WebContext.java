@@ -49,7 +49,6 @@ public class WebContext implements ServletContextAware, InitializingBean {
 	public static boolean empower = false;// 是否取得授权
 	public static int maxCount = 0;// 最大连接数
 	public static boolean isDog = false;// 是否有加密狗(未启用)
-	
 
 	/* 容器全局变量 */
 	public final static Map<String, Record> ConnectMap = new HashMap<>();// 终端连线key:terminalNo

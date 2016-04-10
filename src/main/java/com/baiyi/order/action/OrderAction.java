@@ -40,7 +40,7 @@ public class OrderAction extends CommonsAction {
 		List<OrderDetailVO> orderDetails = new ArrayList<>();
 		for (int i = 0; i < foods.size(); i++) {
 			OrderDetailVO orderDetailVO = new OrderDetailVO();
-			orderDetailVO.setFood(foods.get(i));
+			orderDetailVO.setName(foods.get(i));
 			orderDetailVO.setPrice(prices.get(i));
 			orderDetailVO.setCount(counts.get(i));
 
@@ -75,7 +75,7 @@ public class OrderAction extends CommonsAction {
 		List<OrderDetailVO> orderDetails = new ArrayList<>();
 		for (int i = 0; i < foods.size(); i++) {
 			OrderDetailVO orderDetailVO = new OrderDetailVO();
-			orderDetailVO.setFood(foods.get(i));
+			orderDetailVO.setName(foods.get(i));
 			orderDetailVO.setPrice(prices.get(i));
 			orderDetailVO.setCount(counts.get(i));
 
@@ -99,9 +99,10 @@ public class OrderAction extends CommonsAction {
 		Date beginDate = FormatUtil.stringToDate(begin, null);
 		Date endDate = FormatUtil.stringToDate(end, null);
 		OrderStatus orderStatus = FormatUtil.getEnum(OrderStatus.class, status);
+		Boolean original = null;// TODO
 		// 0:终端,-1:后台
-		List<OrderInfoVO> list = orderService.findVOList(orderNo, shop, kitchen, beginDate, endDate, userId, orderStatus, sort, order, pageNo, pageSize);
-		int count = orderService.count(orderNo, shop, kitchen, beginDate, endDate, userId, orderStatus);
+		List<OrderInfoVO> list = orderService.findVOList(orderNo, shop, kitchen, beginDate, endDate, original, orderStatus, sort, order, pageNo, pageSize);
+		int count = orderService.count(orderNo, shop, kitchen, beginDate, endDate, original, orderStatus);
 		jsonData.put("list", list);
 		jsonData.put("count", count);
 		jsonData.put("pageNo", pageNo);

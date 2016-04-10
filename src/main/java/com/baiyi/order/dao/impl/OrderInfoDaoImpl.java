@@ -27,12 +27,12 @@ public class OrderInfoDaoImpl extends CommonsDaoImpl<OrderInfo> implements Order
 	}
 
 	@Override
-	public List<OrderInfo> findList(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status) {
-		return this.findList(orderNo, shop, kitchen, begin, end, userId, status, null, null, -1, -1);
+	public List<OrderInfo> findList(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status) {
+		return this.findList(orderNo, shop, kitchen, begin, end, original, status, null, null, -1, -1);
 	}
 
 	@Override
-	public List<OrderInfo> findList(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status, String sort, String order, int pageNo, int pageSize) {
+	public List<OrderInfo> findList(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status, String sort, String order, int pageNo, int pageSize) {
 		StringBuffer queryString = new StringBuffer("from OrderInfo as orderInfo where 1 = 1");
 		Map<String, Object> map = new HashMap<>();
 
@@ -56,14 +56,9 @@ public class OrderInfoDaoImpl extends CommonsDaoImpl<OrderInfo> implements Order
 			queryString.append(" and orderInfo.createtime <= :end");
 			map.put("end", end);
 		}
-		if (userId == null) {
-		} else if (userId == 0) {// 所有终端订单
-			queryString.append(" and orderInfo.userId is null");
-		} else if (userId == -1) {// 后台修改订单
-			queryString.append(" and orderInfo.userId is not null");
-		} else {
-			queryString.append(" and orderInfo.userId = :userId");
-			map.put("userId", userId);
+		if (original != null) {
+			queryString.append(" and orderInfo.userId is");
+			queryString.append(original ? " null" : " not null");
 		}
 		if (status != null) {
 			queryString.append(" and orderInfo.status = :status");
@@ -76,7 +71,7 @@ public class OrderInfoDaoImpl extends CommonsDaoImpl<OrderInfo> implements Order
 	}
 
 	@Override
-	public int count(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status) {
+	public int count(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status) {
 		StringBuffer queryString = new StringBuffer("select count(*) from OrderInfo as orderInfo where 1 = 1");
 		Map<String, Object> map = new HashMap<>();
 
@@ -100,19 +95,15 @@ public class OrderInfoDaoImpl extends CommonsDaoImpl<OrderInfo> implements Order
 			queryString.append(" and orderInfo.createtime <= :end");
 			map.put("end", end);
 		}
-		if (userId == null) {
-		} else if (userId == 0) {
-			queryString.append(" and orderInfo.userId is null");
-		} else if (userId == -1) {
-			queryString.append(" and orderInfo.userId is not null");
-		} else {
-			queryString.append(" and orderInfo.userId = :userId");
-			map.put("userId", userId);
+		if (original != null) {
+			queryString.append(" and orderInfo.userId is");
+			queryString.append(original ? " null" : " not null");
 		}
 		if (status != null) {
 			queryString.append(" and orderInfo.status = :status");
 			map.put("status", status);
 		}
+
 		return super.count(queryString.toString(), map);
 	}
 }

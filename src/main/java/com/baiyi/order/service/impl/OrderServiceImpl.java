@@ -20,6 +20,7 @@ import com.baiyi.order.model.OrderDetailTaste;
 import com.baiyi.order.model.OrderInfo;
 import com.baiyi.order.service.OrderService;
 import com.baiyi.order.util.EnumList.OrderStatus;
+import com.baiyi.order.util.ValidateUtil;
 import com.baiyi.order.vo.OrderDetailVO;
 import com.baiyi.order.vo.OrderInfoVO;
 import com.baiyi.order.vo.OrderVO;
@@ -33,6 +34,11 @@ public class OrderServiceImpl implements OrderService {
 	private OrderDetailDao orderDetailDao;
 	@Resource
 	private OrderDetailTasteDao orderDetailTasteDao;
+
+	@Override
+	public void save(OrderInfo orderInfo) {
+		orderInfoDao.save(orderInfo);
+	}
 
 	@Override
 	public void save(OrderInfo orderInfo, List<OrderDetailVO> orderDetails) {
@@ -70,10 +76,53 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+	public void delete(Integer id) {
+		List<OrderDetail> orderDetails = orderDetailDao.findList(id, null);
+		if (CollectionUtils.isNotEmpty(orderDetails)) {
+			for (OrderDetail orderDetail : orderDetails) {
+				Integer orderDetailId = orderDetail.getId();
+				orderDetailTasteDao.delete(orderDetailTasteDao.findList(orderDetailId, null));
+			}
+		}
+
+		orderDetailDao.delete(orderDetails);
+
+		orderInfoDao.delete(id);
+	}
+
+	@Override
+	public void delete(OrderInfo orderInfo) {
+		this.delete(orderInfo.getId());
+	}
+
+	@Override
+	public void delete(Integer[] ids) {
+		if (ValidateUtil.isNotEmpty(ids)) {
+			for (Integer id : ids) {
+				this.delete(id);
+			}
+		}
+	}
+
+	@Override
+	public void delete(List<OrderInfo> orderInfos) {
+		if (CollectionUtils.isNotEmpty(orderInfos)) {
+			for (OrderInfo orderInfo : orderInfos) {
+				this.delete(orderInfo);
+			}
+		}
+	}
+
+	@Override
 	public void revoke(Integer id) {
 		OrderInfo orderInfo = orderInfoDao.find(id);
 		orderInfo.setStatus(OrderStatus.NULLIFY);
-		orderInfoDao.save(orderInfo);
+		orderInfoDao.update(orderInfo);
+	}
+
+	@Override
+	public void update(OrderInfo orderInfo) {
+		orderInfoDao.update(orderInfo);
 	}
 
 	@Override
@@ -82,6 +131,11 @@ public class OrderServiceImpl implements OrderService {
 		this.revoke(id);
 		orderInfo.setId(null);
 		this.save(orderInfo, orderDetails);
+	}
+
+	@Override
+	public void merge(OrderInfo orderInfo) {
+		orderInfoDao.merge(orderInfo);
 	}
 
 	@Override
@@ -100,18 +154,18 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<OrderInfo> findList(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status) {
-		return orderInfoDao.findList(orderNo, shop, kitchen, begin, end, userId, status);
+	public List<OrderInfo> findList(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status) {
+		return orderInfoDao.findList(orderNo, shop, kitchen, begin, end, original, status);
 	}
 
 	@Override
-	public List<OrderInfo> findList(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status, String sort, String order, int pageNo, int pageSize) {
-		return orderInfoDao.findList(orderNo, shop, kitchen, begin, end, userId, status, sort, order, pageNo, pageSize);
+	public List<OrderInfo> findList(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status, String sort, String order, int pageNo, int pageSize) {
+		return orderInfoDao.findList(orderNo, shop, kitchen, begin, end, original, status, sort, order, pageNo, pageSize);
 	}
 
 	@Override
-	public int count(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status) {
-		return orderInfoDao.count(orderNo, shop, kitchen, begin, end, userId, status);
+	public int count(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status) {
+		return orderInfoDao.count(orderNo, shop, kitchen, begin, end, original, status);
 	}
 
 	@Override
@@ -120,21 +174,19 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<OrderInfoVO> findVOList(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status) {
-		return this.findVOList(orderNo, shop, kitchen, begin, end, userId, status, null, null, -1, -1);
+	public List<OrderInfoVO> findVOList(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status) {
+		return this.findVOList(orderNo, shop, kitchen, begin, end, original, status, null, null, -1, -1);
 	}
 
 	@Override
-	public List<OrderInfoVO> findVOList(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status, String sort, String order, int pageNo, int pageSize) {
-		List<OrderInfo> orderInfoList = orderInfoDao.findList(orderNo, shop, kitchen, begin, end, userId, status, sort, order, pageNo, pageSize);
+	public List<OrderInfoVO> findVOList(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status, String sort, String order, int pageNo, int pageSize) {
+		List<OrderInfo> orderInfoList = orderInfoDao.findList(orderNo, shop, kitchen, begin, end, original, status, sort, order, pageNo, pageSize);
 		if (CollectionUtils.isEmpty(orderInfoList)) {
 			return null;
 		}
 
 		List<OrderInfoVO> orderInfoVOList = new ArrayList<>();
 		for (OrderInfo orderInfo : orderInfoList) {
-			Integer orderId = orderInfo.getId();
-
 			OrderInfoVO orderInfoVO = new OrderInfoVO();
 
 			BeanUtilsBean.getInstance().getConvertUtils().register(false, false, 0);
@@ -144,13 +196,10 @@ public class OrderServiceImpl implements OrderService {
 				e.printStackTrace();
 			}
 
-			orderInfoVO.setId(orderId);
-
-			List<OrderDetail> orderDetailList = orderDetailDao.findList(orderId, null);
 			List<OrderDetailVO> detailList = new ArrayList<>();
-			for (OrderDetail orderDetail : orderDetailList) {
-				Integer orderDetailId = orderDetail.getId();
 
+			List<OrderDetail> orderDetailList = orderDetailDao.findList(orderInfo.getId(), null);
+			for (OrderDetail orderDetail : orderDetailList) {
 				OrderDetailVO orderDetailVO = new OrderDetailVO();
 				try {
 					BeanUtils.copyProperties(orderDetailVO, orderDetail);
@@ -158,7 +207,7 @@ public class OrderServiceImpl implements OrderService {
 					e.printStackTrace();
 				}
 
-				orderDetailVO.setTasteList(orderDetailDao.findTaste(orderDetailId));
+				orderDetailVO.setTasteList(orderDetailDao.findTaste(orderDetail.getId()));
 				detailList.add(orderDetailVO);
 			}
 
@@ -170,32 +219,29 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<OrderDetail> findDetail(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status) {
-		List<OrderInfo> orderInfoList = orderInfoDao.findList(orderNo, shop, kitchen, begin, end, userId, status);
+	public List<OrderDetail> findDetailList(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status) {
+		List<OrderInfo> orderInfoList = orderInfoDao.findList(orderNo, shop, kitchen, begin, end, original, status);
 		if (CollectionUtils.isEmpty(orderInfoList)) {
 			return null;
 		}
 
 		List<OrderDetail> list = new ArrayList<>();
 		for (OrderInfo orderInfo : orderInfoList) {
-			Integer orderId = orderInfo.getId();
-			List<OrderDetail> orderDetailList = orderDetailDao.findList(orderId, null);
+			List<OrderDetail> orderDetailList = orderDetailDao.findList(orderInfo.getId(), null);
 			list.addAll(orderDetailList);
 		}
 		return list;
 	}
 
 	@Override
-	public List<OrderVO> findOrderList(String orderNo, String shop, String kitchen, Date begin, Date end, Integer userId, OrderStatus status) {
-		List<OrderInfo> orderInfoList = orderInfoDao.findList(orderNo, shop, kitchen, begin, end, userId, status);
+	public List<OrderVO> findOrderList(String orderNo, String shop, String kitchen, Date begin, Date end, Boolean original, OrderStatus status) {
+		List<OrderInfo> orderInfoList = orderInfoDao.findList(orderNo, shop, kitchen, begin, end, original, status);
 		if (CollectionUtils.isEmpty(orderInfoList)) {
 			return null;
 		}
 
 		List<OrderVO> list = new ArrayList<>();
 		for (OrderInfo orderInfo : orderInfoList) {
-			Integer orderId = orderInfo.getId();
-
 			OrderVO orderVO = new OrderVO();
 			BeanUtilsBean.getInstance().getConvertUtils().register(false, false, 0);
 			try {
@@ -204,11 +250,12 @@ public class OrderServiceImpl implements OrderService {
 				e.printStackTrace();
 			}
 
-			List<OrderDetail> orderDetailList = orderDetailDao.findList(orderId, null);
+			List<OrderDetail> orderDetailList = orderDetailDao.findList(orderInfo.getId(), null);
 			orderVO.setDetailList(orderDetailList);
 
 			list.add(orderVO);
 		}
 		return list;
 	}
+
 }
