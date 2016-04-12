@@ -20,13 +20,14 @@
 	<package name="" extends="json-default" namespace="/json">
 		<!-- 拦截器 -->
 		<interceptors>
-			<interceptor name="oauth" class="com.baiyi.order.filter.OauthInterceptor"></interceptor>
+			<interceptor name="oauth" class="com.baiyi.order.web.OauthInterceptor"></interceptor>
 			<interceptor-stack name="control">
 				<interceptor-ref name="oauth"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
 			</interceptor-stack>
 		</interceptors>
-		<!-- <default-interceptor-ref name="control"></default-interceptor-ref> -->
+		<!-- 启用 -->
+		<default-interceptor-ref name="control"></default-interceptor-ref>
 
 		<global-results>
 			<result name="login">/jsp/login.jsp</result>

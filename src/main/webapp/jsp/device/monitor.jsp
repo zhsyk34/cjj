@@ -5,24 +5,28 @@
 <link rel="stylesheet" href="css/util/layout.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/page.css">
 <link rel="stylesheet" href="css/module/monitor.css">
-<title>监控画面</title>
+<title><s:text name="index-monitor" /></title>
 </head>
 <body>
 	<header>
-		<h3>监控画面</h3>
+		<h3>
+			<s:text name="index-monitor" />
+		</h3>
 		<nav>
 			<div>
 				<div class="inline group">
-					<label class="addon" for="terminalNo">终端编号</label><input class="text" id="terminalNo">
+					<label class="addon" for="terminalNo"><s:text name="monitor-terminalNo" /></label><input class="text" id="terminalNo">
 				</div>
 				<div class="inline group">
-					<label class="addon">连线状态</label>
+					<label class="addon"><s:text name="monitor-status" /></label>
 					<div class="text" id="online">
-						<label><input type="radio" name="online" value="" checked>全部</label> <label><input type="radio" name="online" value="true">在线</label> <label><input type="radio" name="online" value="false">离线</label>
+						<label><input type="radio" name="online" value="" checked> <s:text name="all" /></label> <label><input type="radio" name="online" value="true"> <s:text name="monitor-online" /></label> <label><input type="radio" name="online" value="false"> <s:text name="monitor-offline" /></label>
 					</div>
 				</div>
 				<div class="inline">
-					<button class="btn btn-primary btn-small" id="find">查询</button>
+					<button class="btn btn-primary btn-small" id="find">
+						<s:text name="find" />
+					</button>
 				</div>
 			</div>
 		</nav>

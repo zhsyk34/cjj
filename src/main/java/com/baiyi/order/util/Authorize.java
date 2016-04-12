@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang3.StringUtils;
@@ -32,15 +31,18 @@ public class Authorize implements Runnable {
 
 	public boolean confirm() {
 		boolean flag = false;
+
+		String path = WebContext.classRootPath + File.separator + "authorize.properties";
+		PropertiesConfiguration config = null;
+
+		// result/prop key
 		String serverid = null;
 		String count = null;
 		String success = null;
 		String isOpen = null;
 
-		String path = WebContext.classRootPath + File.separator + "authorize" + File.separator + WebContext.serverid + ".properties";
-
 		File file = new File(path);
-		PropertiesConfiguration config = null;
+
 		try {
 			config = new PropertiesConfiguration(path);
 		} catch (ConfigurationException e) {
@@ -50,7 +52,11 @@ public class Authorize implements Runnable {
 		if (file.exists()) {
 			try {
 				serverid = config.getString("serverid");
-				count = DESPlus.decrypt(config.getString("maxCount"));
+				String maxCount = config.getString("maxCount");
+				System.out.println(maxCount);
+				if (StringUtils.isNotBlank(maxCount)) {
+					count = DESPlus.decrypt(maxCount);// 加密过
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -73,11 +79,9 @@ public class Authorize implements Runnable {
 					serverid = json.getString("serverId");
 					count = json.getString("terminalNum");
 
-					try {// TODO
-
+					try {
 						config.setProperty("serverid", serverid);
 						config.setProperty("maxCount", count);
-
 						config.save();
 					} catch (ConfigurationException e) {
 						e.printStackTrace();

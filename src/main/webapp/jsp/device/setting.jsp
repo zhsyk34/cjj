@@ -6,11 +6,13 @@
 <link rel="stylesheet" href="js/lib/zhsy/css/modal.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/page.css">
 <link rel="stylesheet" href="css/module/remote.css">
-<title>终端设置</title>
+<title><s:text name="index-setting" /></title>
 </head>
 <body>
 	<header>
-		<h3>终端设置</h3>
+		<h3>
+			<s:text name="index-setting" />
+		</h3>
 	</header>
 
 	<!-- data -->
@@ -18,14 +20,14 @@
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th width="10%">终端编号</th>
-					<th width="10%">列印发票</th>
-					<th width="10%">远端</th>
-					<th width="20%">开机时间</th>
-					<th width="20%">关机时间</th>
-					<th width="10%">启用关机</th>
-					<th width="10%">编辑</th>
-					<th width="10%">座位管理</th>
+					<th width="10%"><s:text name="setting-terminalNo" /></th>
+					<th width="10%"><s:text name="setting-invoice" /></th>
+					<th width="10%"><s:text name="setting-teamViewer" /></th>
+					<th width="20%"><s:text name="setting-boots" /></th>
+					<th width="20%"><s:text name="setting-shuts" /></th>
+					<th width="10%"><s:text name="setting-shut" /></th>
+					<th width="10%"><s:text name="edit" /></th>
+					<th width="10%"><s:text name="setting-seat" /></th>
 				</tr>
 			</thead>
 			<tbody id="data"></tbody>
@@ -41,11 +43,11 @@
 	<div id="seat">
 		<table class="table table-edit table-hover">
 			<tr>
-				<th width="15%">终端编号</th>
-				<td width="85%"><span id="seat-terminal"></span> <label><input type="checkbox" id="seat-parent">全选</label></td>
+				<th width="15%"><s:text name="setting-terminalNo" /></th>
+				<td width="85%"><span id="seat-terminal"></span> <label><input type="checkbox" id="seat-parent"> <s:text name="all" /></label></td>
 			</tr>
 			<tr>
-				<th>座位选择</th>
+				<th><s:text name="setting-seat" /></th>
 				<td><ul></ul></td>
 			</tr>
 		</table>
@@ -55,45 +57,45 @@
 		<table class="table table-edit table-hover">
 			<tbody>
 				<tr>
-					<th width="20%">终端编号<input id="id" type="hidden"></th>
+					<th width="20%"><s:text name="setting-terminalNo" /><input id="id" type="hidden"></th>
 					<td width="80%"><span id="terminalNo"></span></td>
 				</tr>
 				<tr>
-					<th>列印发票</th>
+					<th><s:text name="setting-invoice" /></th>
 					<td>
 						<div id="invoice">
-							<label><input type="radio" name="invoice" value="0">否</label> <label><input type="radio" name="invoice" value="1">是</label>
+							<label><input type="radio" name="invoice" value="0"> <s:text name="no" /></label> <label><input type="radio" name="invoice" value="1"> <s:text name="yes" /></label>
 						</div>
 					</td>
 				</tr>
 				<tr>
-					<th>远端号码</th>
+					<th><s:text name="setting-teamViewer" /></th>
 					<td><input class="text" id="teamViewer"></td>
 				</tr>
 				<tr>
-					<th>时间设置</th>
+					<th><s:text name="setting-times" /></th>
 					<td>
 						<table class="table times">
 							<thead>
 								<tr>
-									<th width="30%">序号</th>
-									<th width="35%">开机时间</th>
-									<th width="35%">关机时间</th>
+									<th width="30%"><s:text name="index" /></th>
+									<th width="35%"><s:text name="setting-boots" /></th>
+									<th width="35%"><s:text name="setting-shuts" /></th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
-									<td>时间一</td>
+									<td><s:text name="setting-timeone" /></td>
 									<td><input class="text boots" readonly></td>
 									<td><input class="text shuts" readonly></td>
 								</tr>
 								<tr>
-									<td>时间二</td>
+									<td><s:text name="setting-timetwo" /></td>
 									<td><input class="text boots" readonly></td>
 									<td><input class="text shuts" readonly></td>
 								</tr>
 								<tr>
-									<td>时间三</td>
+									<td><s:text name="setting-timethree" /></td>
 									<td><input class="text boots" readonly></td>
 									<td><input class="text shuts" readonly></td>
 								</tr>
@@ -102,10 +104,10 @@
 					</td>
 				</tr>
 				<tr>
-					<th>启用关机</th>
+					<th><s:text name="setting-shut" /></th>
 					<td>
 						<div id="shut">
-							<label><input type="radio" name="shut" value="0">否</label> <label><input type="radio" name="shut" value="1">是</label>
+							<label><input type="radio" name="shut" value="0"> <s:text name="no" /></label> <label><input type="radio" name="shut" value="1"> <s:text name="yes" /></label>
 						</div>
 					</td>
 				</tr>

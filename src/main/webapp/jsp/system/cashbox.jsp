@@ -2,14 +2,16 @@
 <%@ include file="/jsp/commons.jsp"%>
 <html>
 <head>
-<title>钱箱设置</title>
+<title><s:text name="index-cashbox" /></title>
 <link rel="stylesheet" href="css/util/layout.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/modal.css">
 <link rel="stylesheet" href="css/module/system.css">
 </head>
 <body>
 	<header>
-		<h3>钱箱设置</h3>
+		<h3>
+			<s:text name="index-cashbox" />
+		</h3>
 	</header>
 
 	<!-- data -->
@@ -17,33 +19,33 @@
 		<table class="table table-edit table-hover">
 			<thead>
 				<tr>
-					<th width="15%" rowspan="2">机器类型</th>
-					<th colspan="3">相关配置</th>
+					<th width="15%" rowspan="2"><s:text name="cashbox-machine" /></th>
+					<th colspan="3"><s:text name="cashbox-configs" /></th>
 				</tr>
 				<tr>
-					<th width="15%">面值</th>
-					<th width="35%">最小值</th>
-					<th width="35%">最大值</th>
+					<th width="15%"><s:text name="cashbox-face" /></th>
+					<th width="35%"><s:text name="cashbox-min" /></th>
+					<th width="35%"><s:text name="cashbox-max" /></th>
 				</tr>
 			</thead>
 			<tbody>
 				<!-- nd100:tw -->
 				<tr class="nd100 tw">
-					<th>找钞机</th>
+					<th><s:text name="cashbox-vomit" /></th>
 					<th>5</th>
 					<th><input class="text" id="nd100tw100Min"></th>
 					<th><input class="text" value="600" readonly></th>
 				</tr>
 				<!-- nd100:cn -->
 				<tr class="nd100 cn">
-					<th>找钞机</th>
+					<th><s:text name="cashbox-vomit" /></th>
 					<th>5</th>
 					<th><input class="text" id="nd100cn10Min"></th>
 					<th><input class="text" value="600" readonly></th>
 				</tr>
 				<!-- nv9:tw -->
 				<tr class="nv9 tw">
-					<th rowspan="3">收钞机</th>
+					<th rowspan="3"><s:text name="cashbox-swallow" /></th>
 					<th>100</th>
 					<th><input class="text" id="nv9tw100Min" readonly></th>
 					<th><input class="text" id="nv9tw100Max"></th>
@@ -60,7 +62,7 @@
 				</tr>
 				<!-- nv9:cn -->
 				<tr class="nv9 cn">
-					<th rowspan="6">收钞机</th>
+					<th rowspan="6"><s:text name="cashbox-swallow" /></th>
 					<th>1</th>
 					<th><input class="text" id="nv9cn1Min" readonly></th>
 					<th><input class="text" id="nv9cn1Max"></th>
@@ -92,7 +94,7 @@
 				</tr>
 				<!-- hopper:tw -->
 				<tr class="hopper tw">
-					<th rowspan="4">硬币机</th>
+					<th rowspan="4"><s:text name="cashbox-coin" /></th>
 					<th>1</th>
 					<th><input class="text" id="hoppertw1Min"></th>
 					<th><input class="text" id="hoppertw1Max"></th>
@@ -114,7 +116,7 @@
 				</tr>
 				<!-- hopper:cn -->
 				<tr class="hopper cn">
-					<th rowspan="3">硬币机</th>
+					<th rowspan="3"><s:text name="cashbox-coin" /></th>
 					<th>0.1</th>
 					<th><input class="text" id="hoppercn01Min"></th>
 					<th><input class="text" id="hoppercn01Max"></th>
@@ -132,10 +134,14 @@
 			</tbody>
 		</table>
 	</div>
-	
+
 	<footer>
-		<button class="btn btn-success" id="sure">确定</button>
-		<button class="btn btn-info" id="reset">重置</button>
+		<button class="btn btn-success" id="sure">
+			<s:text name="sure" />
+		</button>
+		<button class="btn btn-info" id="reset">
+			<s:text name="reset" />
+		</button>
 	</footer>
 	<script src="js/lib/require.js" data-main="module/system/cashbox"></script>
 </body>

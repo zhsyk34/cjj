@@ -5,22 +5,23 @@
 <link rel="stylesheet" href="css/util/layout.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/page.css">
 <link rel="stylesheet" href="css/module/monitor.css">
-<title>终端一览</title>
+<title><s:text name="index-list" /></title>
 </head>
 <body>
 	<header>
-		<h3>终端一览</h3>
+		<h3>
+			<s:text name="index-list" />
+		</h3>
 	</header>
 
-	<!-- data -->
 	<div class="main">
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th width="20%">终端编号</th>
-					<th width="20%">终端位置</th>
-					<th width="25%">检测时间</th>
-					<th width="20%">连线状态</th>
+					<th width="20%"><s:text name="list-terminalNo" /></th>
+					<th width="20%"><s:text name="list-location" /></th>
+					<th width="25%"><s:text name="list-time" /></th>
+					<th width="20%"><s:text name="list-status" /></th>
 					<!-- <th width="15%">终端画面</th> -->
 				</tr>
 			</thead>

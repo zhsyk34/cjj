@@ -6,32 +6,36 @@
 <link rel="stylesheet" href="js/lib/zhsy/css/modal.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/page.css">
 <link rel="stylesheet" href="css/module/monitor.css">
-<title>连线记录</title>
+<title><s:text name="index-record" /></title>
 </head>
 <body>
 	<header>
-		<h3>连线记录</h3>
+		<h3>
+			<s:text name="index-record" />
+		</h3>
 		<nav>
 			<div>
 				<div class="inline group">
-					<label class="addon" for="begin">开始日期</label> <input class="text" id="begin" readonly>
+					<label class="addon" for="begin"><s:text name="record-begin" /></label> <input class="text" id="begin" readonly>
 				</div>
 				<div class="inline group">
-					<label class="addon" for="end">结束日期</label> <input class="text" id="end" readonly>
+					<label class="addon" for="end"><s:text name="record-end" /></label> <input class="text" id="end" readonly>
 				</div>
 			</div>
 			<div>
 				<div class="inline group">
-					<label class="addon" for="terminalNo">终端编号</label><input class="text" id="terminalNo">
+					<label class="addon" for="terminalNo"><s:text name="record-terminalNo" /></label><input class="text" id="terminalNo">
 				</div>
 				<div class="inline group">
-					<label class="addon">连线状态</label>
+					<label class="addon"><s:text name="record-status" /></label>
 					<div class="text" id="online">
-						<label><input type="radio" name="online" value="" checked>全部</label> <label><input type="radio" name="online" value="true">在线</label> <label><input type="radio" name="online" value="false">离线</label>
+						<label><input type="radio" name="online" value="" checked> <s:text name="all" /></label> <label><input type="radio" name="online" value="true"> <s:text name="record-online" /></label> <label><input type="radio" name="online" value="false"> <s:text name="record-offline" /></label>
 					</div>
 				</div>
 				<div class="inline">
-					<button class="btn btn-primary btn-small" id="find">查询</button>
+					<button class="btn btn-primary btn-small" id="find">
+						<s:text name="find" />
+					</button>
 				</div>
 			</div>
 		</nav>
@@ -42,11 +46,11 @@
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th width="20%">终端编号</th>
-					<th width="20%">终端位置</th>
-					<th width="20%">IP地址</th>
-					<th width="20%">检测时间</th>
-					<th width="20%">连线状态</th>
+					<th width="20%"><s:text name="record-terminalNo" /></th>
+					<th width="20%"><s:text name="record-location" /></th>
+					<th width="20%"><s:text name="record-host" /></th>
+					<th width="20%"><s:text name="record-time" /></th>
+					<th width="20%"><s:text name="record-status" /></th>
 				</tr>
 			</thead>
 			<tbody id="data"></tbody>

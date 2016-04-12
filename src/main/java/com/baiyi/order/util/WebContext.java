@@ -89,6 +89,10 @@ public class WebContext implements ServletContextAware, InitializingBean {
 			e.printStackTrace();
 		}
 
+		// empower
+		Thread authorize = new Thread(new Authorize());
+		authorize.start();
+
 		// read prop
 		Configuration config = new PropertiesConfiguration("config.properties");
 		mirror = config.getString("mirror");

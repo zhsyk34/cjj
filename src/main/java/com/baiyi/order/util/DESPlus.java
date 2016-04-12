@@ -136,6 +136,7 @@ public class DESPlus {
 	public static void main(String[] args) throws Exception {
 		// String s = digest("root");
 		// System.out.println(s);
+		System.out.println(encrypt("20"));
 
 		String test = "a923";
 

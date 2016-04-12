@@ -4,15 +4,16 @@ $.ajaxSetup({
 	type : "POST",
 	complete : function(XMLHttpRequest, textStatus) {
 		var data = XMLHttpRequest.responseText;
-		if (/^{/.test(data)) {
+		console.log(data)
+		if (/^{.*}$/.test(data)) {
 			data = eval("(" + data + ")");
-			// console.log("json", data);
+			console.log("json", data);
 		} else {
-			// console.log("normal", data);
+			console.log("normal", data);
 		}
 
 		if (data.result == "offline") {// TODO
-			// window.location.href = "login.jsp";
+			window.parent.location.href = "login.jsp";
 		}
 	}
 });

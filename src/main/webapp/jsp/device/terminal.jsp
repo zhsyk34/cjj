@@ -5,27 +5,33 @@
 <link rel="stylesheet" href="css/util/layout.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/modal.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/page.css">
-<title>终端信息</title>
+<title><s:text name="index-terminal" /></title>
 </head>
 <body>
 	<header>
-		<h3>终端信息</h3>
+		<h3>
+			<s:text name="index-terminal" />
+		</h3>
 		<nav>
 			<div>
 				<div class="inline group">
-					<label class="addon" for="search-terminalNo">终端编号</label><input class="text" id="search-terminalNo">
+					<label class="addon" for="search-terminalNo"><s:text name="terminal-number" /></label><input class="text" id="search-terminalNo">
 				</div>
 				<div class="inline group">
-					<label class="addon">终端类型</label>
+					<label class="addon"><s:text name="terminal-type" /></label>
 					<div class="text" id="search-type">
-						<label><input type="radio" name="search-type" value="" checked>全部</label> <label><input type="radio" name="search-type" value="shop">客户端</label> <label><input type="radio" name="search-type" value="kitchen">厨房端</label>
+						<label><input type="radio" name="search-type" value="" checked> <s:text name="all" /></label> <label><input type="radio" name="search-type" value="shop"> <s:text name="terminal-shop" /></label> <label><input type="radio" name="search-type" value="kitchen"> <s:text name="terminal-kitchen" /></label>
 					</div>
 				</div>
 				<div class="inline">
-					<button class="btn btn-primary btn-small" id="find">查询</button>
+					<button class="btn btn-primary btn-small" id="find">
+						<s:text name="find" />
+					</button>
 				</div>
 				<div class="inline">
-					<button class="btn btn-success btn-small" id="add">增加</button>
+					<button class="btn btn-success btn-small" id="add">
+						<s:text name="create" />
+					</button>
 				</div>
 			</div>
 		</nav>
@@ -36,10 +42,10 @@
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th width="20%">编号</th>
-					<th width="15%">类型</th>
-					<th width="20%">位置</th>
-					<th width="15%">版本</th>
+					<th width="20%"><s:text name="terminal-number" /></th>
+					<th width="15%"><s:text name="terminal-type" /></th>
+					<th width="20%"><s:text name="terminal-location" /></th>
+					<th width="15%"><s:text name="terminal-version" /></th>
 					<!-- <th width="30%">编辑</th> -->
 				</tr>
 			</thead>
@@ -56,19 +62,19 @@
 		<table class="table table-edit table-hover">
 			<tbody>
 				<tr>
-					<th width="25%">编号</th>
+					<th width="25%"><s:text name="terminal-number" /></th>
 					<td width="75%"><input id="id" type="hidden"><input class="text" id="terminalNo"></td>
 				</tr>
 				<tr>
-					<th>类型</th>
+					<th><s:text name="terminal-type" /></th>
 					<td>
 						<div id="type">
-							<label><input type="radio" name="type" value="shop">客户端</label> <label><input type="radio" name="type" value="kitchen">厨房端</label>
+							<label><input type="radio" name="type" value="shop"> <s:text name="terminal-shop" /></label> <label><input type="radio" name="type" value="kitchen"> <s:text name="terminal-kitchen" /></label>
 						</div>
 					</td>
 				</tr>
 				<tr>
-					<th>位置</th>
+					<th><s:text name="terminal-location" /></th>
 					<td><input class="text" id="location"></td>
 				</tr>
 			</tbody>

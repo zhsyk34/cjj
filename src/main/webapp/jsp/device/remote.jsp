@@ -7,24 +7,49 @@
 <link rel="stylesheet" href="js/lib/zhsy/css/page.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/progress.css">
 <link rel="stylesheet" href="css/module/remote.css">
-<title>远程管理</title>
+<title><s:text name="index-remote" /></title>
 </head>
 <body>
 	<header>
-		<h3>远程管理</h3>
+		<h3>
+			<s:text name="index-remote" />
+		</h3>
 		<nav>
 			<div class="inline" id="remote">
-				<button class="btn btn-success btn-small" id="correct">校正时间</button>
-
-				<button class="btn btn-primary btn-small" id="boot">重启终端</button>
-				<button class="btn btn-danger btn-small" id="shut">关闭终端</button>
-
-				<button class="btn btn-primary btn-small" id="open">启动远端</button>
-				<button class="btn btn-danger btn-small" id="close">关闭远端</button>
+				<button class="btn btn-success btn-small" id="correct">
+					<s:text name="remote-correct" />
+				</button>
+				<!--  -->
+				<button class="btn btn-primary btn-small" id="boot">
+					<s:text name="remote-boot" />
+				</button>
+				<button class="btn btn-danger btn-small" id="shut">
+					<s:text name="remote-shut" />
+				</button>
+				<!--  -->
+				<button class="btn btn-primary btn-small" id="open">
+					<s:text name="remote-open" />
+				</button>
+				<button class="btn btn-danger btn-small" id="close">
+					<s:text name="remote-close" />
+				</button>
 			</div>
 			<ul class="inline" id="check-ctrl">
-				<li class="inline"><button class="btn btn-info btn-small" id="check-all">全选</button></li>
-				<li class="inline"><button class="btn btn-info btn-small" id="check-inverse">反选</button></li>
+				<li class="inline">
+					<button class="btn btn-info btn-small" id="check-all">
+						<s:text name="check-all" />
+					</button>
+				</li>
+				<li class="inline">
+					<button class="btn btn-info btn-small" id="check-inverse">
+						<s:text name="check-inverse" />
+					</button>
+				</li>
+				<li class="inline">
+					<button class="btn btn-info btn-small" id="check-cancel">
+						<s:text name="check-cancel" />
+					</button>
+				</li>
 			</ul>
 		</nav>
 	</header>
@@ -35,10 +60,11 @@
 			<thead>
 				<tr>
 					<th width="%"><input id="check-parent" type="checkbox"></th>
-					<th width="%">终端编号</th>
-					<th width="%">终端位置</th>
-					<th width="%">终端类型</th>
-					<th width="%">模板管理</th>
+					<th width="%"><s:text name="remote-terminalNo" /></th>
+					<th width="%"><s:text name="remote-location" /></th>
+					<th width="%"><s:text name="remote-type" /></th>
+					<th width="%"><s:text name="remote-template-manage" /></th>
+
 				</tr>
 			</thead>
 			<tbody id="data"></tbody>
@@ -48,20 +74,22 @@
 	<div id="template">
 		<div class="inline dialog-nav">
 			<div class="inline group">
-				<label class="addon" for="template-name">名称</label><input id="template-name" class="text">
+				<label class="addon" for="template-name"><s:text name="name" /></label><input id="template-name" class="text">
 			</div>
 			<div class="inline">
-				<button class="btn btn-primary btn-small" id="find-template">查询</button>
+				<button class="btn btn-primary btn-small" id="find-template">
+					<s:text name="find" />
+				</button>
 			</div>
 		</div>
 		<div class="dialog-main">
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th width="30%">模板</th>
-						<th width="30%">状态</th>
-						<th width="20%">启用</th>
-						<th width="20%">操作</th>
+						<th width="30%"><s:text name="remote-template" /></th>
+						<th width="30%"><s:text name="remote-template-status" /></th>
+						<th width="20%"><s:text name="remote-template-used" /></th>
+						<th width="20%"><s:text name="operation" /></th>
 					</tr>
 				</thead>
 				<tbody id="template-data"></tbody>
