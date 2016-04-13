@@ -1,14 +1,18 @@
-$.message = function(key) {
-	var result;
-	$.i18n.properties({
-		name : "message",
-		path : "recources/",
-		mode : "map",
-		cache : true,
-		callback : function() {
-			result = $.i18n.prop(key);
-		}
-	});
-	console.log(result);
-	return result;
-}
+define([ "i18n" ], function() {
+	var map = {};
+	if ($.isEmptyObject(map)) {
+		$.i18n.properties({
+			name : "message",
+			path : "recources/",
+			language : navigator.language || navigator.userLanguage,
+			mode : "map",
+			cache : true,
+			callback : function() {
+				map = $.i18n.map;
+			}
+		});
+	}
+	$.message = function(key) {
+		return map[key];
+	}
+});

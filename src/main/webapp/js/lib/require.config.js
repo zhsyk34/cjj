@@ -13,7 +13,6 @@ var require = {
 		"datePicker" : [ "jquery" ],
 
 		"intercept" : [ "jquery" ],
-		"message" : [ "jquery", "i18n" ],
 		"tool" : [ "jquery" ],
 		"validate" : [ "jquery" ]
 	},
