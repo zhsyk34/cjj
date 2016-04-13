@@ -1,6 +1,6 @@
-define([ "jquery", "modal", "page" ], function() {
+define([ "jquery", "modal", "page", "message" ], function() {
 	return {
-		page : function(data, callback, target) {// 翻页控件
+		page : function(data, callback, target) {
 			var options = {
 				onChangePage : function(pageNo, pageSize) {
 					typeof callback == "function" && callback();
@@ -23,25 +23,25 @@ define([ "jquery", "modal", "page" ], function() {
 				success : function(data) {
 					switch (data.result) {
 					case "create":
-						$.alert("增加成功");
+						$.alert($.message("crud-create"));
 						break;
 					case "update":
-						$.alert("修改成功");
+						$.alert($.message("crud-update"));
 						break;
 					case "enable":
-						$.alert("启用成功");
+						$.alert($.message("crud-enable"));
 						break;
 					case "disable":
-						$.alert("禁用成功");
+						$.alert($.message("crud-disable"));
 						break;
 					case "deal":
-						$.alert("已处理");
+						$.alert($.message("crud-deal"));
 						break;
 					case "revoke":
-						$.alert("已撤销");
+						$.alert($.message("crud-revoke"));
 						break;
 					case "error":
-						$.alert("出错了");
+						$.alert($.message("crud-error"));
 						return;
 					}
 					typeof callback == "function" && callback();
@@ -51,7 +51,7 @@ define([ "jquery", "modal", "page" ], function() {
 		del : function(url, ids, callback) {
 			typeof ids == "number" && (ids = [ ids ]);
 			if (ids.length == 0) {
-				$.alert("请选择要删除的数据");
+				$.alert($.message("crud-select"));
 				return;
 			}
 			$.confirm({
@@ -66,13 +66,13 @@ define([ "jquery", "modal", "page" ], function() {
 						success : function(data) {
 							switch (data.result) {
 							case "relate":
-								$.alert("数据正被使用中,不能删除");
+								$.alert($.message("crud-relate"));
 								return;
 							case "delete":
-								$.alert("删除成功");
+								$.alert($.message("crud-delete"));
 								break;
 							case "revoke":
-								$.alert("撤销成功");
+								$.alert($.message("crud-revoke"));
 								break;
 							}
 							$("#page").page({
@@ -83,7 +83,7 @@ define([ "jquery", "modal", "page" ], function() {
 					});
 				}
 			});
-			$.confirm("确认删除");
+			$.confirm($.message("crud-delsure"));
 		}
 	};
 });

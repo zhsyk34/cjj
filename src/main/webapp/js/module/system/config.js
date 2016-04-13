@@ -1,4 +1,4 @@
-require([ "jquery", "modal", "crud", "intercept", "validate" ], function($, modal, crud, intercept, validate) {
+require([ "jquery", "modal", "crud", "intercept", "message", "validate" ], function($, modal, crud, intercept, message, validate) {
 
 	find();
 	view();
@@ -48,11 +48,11 @@ require([ "jquery", "modal", "crud", "intercept", "validate" ], function($, moda
 				var percent = parseInt($("#accessoryPercent").val());
 
 				if (validate.isEmpty(name)) {
-					$.alert("附加费名称不能为空");
+					$.alert($.message("config-accname"));
 					return false;
 				}
 				if (!validate.isNatural(percent)) {
-					$.alert("附加费比例必须为正整数");
+					$.alert($.message("config-accpercent"));
 					return false;
 				}
 				params.accessoryName = name;

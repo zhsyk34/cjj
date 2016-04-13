@@ -193,7 +193,7 @@
 						<th width=""><s:text name="index" /></th>
 						<th width=""><s:text name="name" /></th>
 						<th width=""><s:text name="picture" /></th>
-						<th width=""><s:text name="preview" /></th>
+						<!-- <th width=""><s:text name="preview" /></th> -->
 					</tr>
 				</thead>
 				<tbody id="material-data"></tbody>

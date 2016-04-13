@@ -16,7 +16,7 @@ require([ "jquery", "modal", "page", "progress", "checkctrl", "crud", "intercept
 				ids.push(id);
 			});
 			if (ids.length == 0) {
-				$.alert("请选择终端");
+				$.alert($.message("remote-select"));
 				return false;
 			}
 			params.ids = ids;
@@ -29,7 +29,7 @@ require([ "jquery", "modal", "page", "progress", "checkctrl", "crud", "intercept
 				data : params,
 				success : function(data) {
 					if (data.result == "success") {
-						$.alert("已发送");
+						$.alert($.message("remote-send"));
 					}
 				}
 			});
@@ -40,7 +40,7 @@ require([ "jquery", "modal", "page", "progress", "checkctrl", "crud", "intercept
 		$("#template").modal({
 			width : 650,
 			top : 100,
-			title : "终端模板管理",
+			title : $.message("remote-template"),
 			buttons : null
 		});
 
@@ -114,10 +114,10 @@ require([ "jquery", "modal", "page", "progress", "checkctrl", "crud", "intercept
 					str += "<td class='operation'></td>";
 					str += "</tr>";
 
-					var down = "<button class='btn btn-primary btn-small down'>下载</button>";
-					var use = "<button class='btn btn-success btn-small use'>启用</button>";
-					var del = "<button class='btn btn-danger btn-small del'>删除</button>";
-					var cancel = "<button class='btn btn-warning btn-small cancel'>取消</button>";
+					var down = "<button class='btn btn-primary btn-small down'>" + $.message("download") + "</button>";
+					var use = "<button class='btn btn-success btn-small use'>" + $.message("enable") + "</button>";
+					var del = "<button class='btn btn-danger btn-small del'>" + $.message("del") + "</button>";
+					var cancel = "<button class='btn btn-warning btn-small cancel'>" + $.message("cancel") + "</button>";
 
 					$.each(data.list || [], function(index, row) {
 						var tr = $(str).data("row", row);
@@ -125,16 +125,16 @@ require([ "jquery", "modal", "page", "progress", "checkctrl", "crud", "intercept
 
 						switch (row.status) {
 						case null:
-							tr.find(".status").text("未下载");
+							tr.find(".status").text($.message("remote-undown"));
 							tr.find(".operation").html(down);
 							break;
 						case "hasdown":
-							tr.find(".status").text("已下载");
-							tr.find(".used").html(row.used ? "已启用" : use);
+							tr.find(".status").text($.message("remote-down"));
+							tr.find(".used").html(row.used ? $.message("remote-used") : use);
 							row.used || tr.find(".operation").html(del);
 							break;
 						case "canceldown":
-							tr.find(".status").text("正在撤销...");
+							tr.find(".status").text($.message("remote-revoking"));
 							break;
 						case "waitdown":
 							var div = $("<div class='show'></div>");
@@ -150,11 +150,11 @@ require([ "jquery", "modal", "page", "progress", "checkctrl", "crud", "intercept
 							});
 							break;
 						case "hasdelete":
-							tr.find(".status").text("未下载");
+							tr.find(".status").text($.message("remote-undown"));
 							tr.find(".operation").html(down);
 							break;
 						case "waitdelete":
-							tr.find(".status").text("正在删除...");
+							tr.find(".status").text($.message("remote-deleting"));
 							break;
 						}
 						tbody.append(tr);
@@ -191,16 +191,16 @@ require([ "jquery", "modal", "page", "progress", "checkctrl", "crud", "intercept
 			str += "<td class='editor'></td>";
 			str += "</tr>";
 
-			var button = "<button class='btn btn-primary btn-small update'>设置</button>";
+			var button = "<button class='btn btn-primary btn-small update'>" + $.message("install") + "</button>";
 
 			$.each(data.list || [], function(index, row) {
 				var tr = $(str).data("row", row);
 				tr.find(".terminalNo").text(row.terminalNo);
 				tr.find(".location").text(row.location);
 				if (row.type == "SHOP") {
-					tr.find(".type").text("客户端");
+					tr.find(".type").text($.message("remote-shop"));
 				} else {
-					tr.find(".type").text("厨房端");
+					tr.find(".type").text($.message("remote-kitchen"));
 					tr.find(".editor").html(button);
 				}
 

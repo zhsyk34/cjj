@@ -29,7 +29,7 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 		$("#seat").modal({
 			width : 800,
 			top : 100,
-			title : "座位选择",
+			title : $.message("setting-seat"),
 			before : function() {
 				return updateSeat();
 			},
@@ -88,7 +88,7 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 		});
 
 		$("table").on("click", ".update", function() {
-			$("#editor").modal("title", "终端设置");
+			$("#editor").modal("title", $.message("mod"));
 			var row = $(this).parents("tr").data("row");
 			$("#editor").data("row", row);
 			loadDialog();
@@ -186,15 +186,17 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 			str += "<td><div class='boottime'></div></td>";
 			str += "<td><div class='shuttime'></div></td>";
 			str += "<td class='shut'></td>";
-			str += "<td><button class='btn btn-primary btn-small update'>修改</button></td>";
-			str += "<td><button class='btn btn-primary btn-small seat'>设置</button></td>";
+			str += "<td><button class='btn btn-primary btn-small update'>" + $.message("mod") + "</button></td>";
+			str += "<td><button class='btn btn-primary btn-small seat'>" + $.message("install") + "</button></td>";
 			str += "</tr>";
 
-			var shutable = "<button class='btn btn-small btn-success'>启用</button>";
-			var unshutable = "<button class='btn btn-small btn-warning'>禁用</button>";
+			// var shutable = "<button class='btn btn-small btn-success'>" +
+			// $.message("enable") + "</button>";
+			// var unshutable = "<button class='btn btn-small btn-warning'>" +
+			// $.message("disable") + "</button>";
 
-			var invoice = "<span class='enable'>是</span>";
-			var uninvoice = "<span class='disable'>否</span>";
+			var invoice = "<span class='enable'>" + $.message("yes") + "</span>";
+			var uninvoice = "<span class='disable'>" + $.message("no") + "</span>";
 
 			$.each(data.list || [], function(index, row) {
 				var tr = $(str).data("row", row);

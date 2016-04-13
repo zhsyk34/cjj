@@ -1,4 +1,4 @@
-require([ "jquery", "modal", "crud", "intercept", "validate" ], function($, modal, crud, intercept, validate) {
+require([ "jquery", "modal", "crud", "intercept", "message", "validate" ], function($, modal, crud, intercept, message, validate) {
 
 	find();
 	submit();
@@ -17,7 +17,7 @@ require([ "jquery", "modal", "crud", "intercept", "validate" ], function($, moda
 				$(".main tbody input:not([readonly])").each(function() {
 					var value = parseInt($(this).val());
 					if (!value) {
-						$.alert("面值存量的配置必须为正整数");
+						$.alert($.message("cashbox-count"));
 						flag = false;
 						return false;
 					}
@@ -32,7 +32,7 @@ require([ "jquery", "modal", "crud", "intercept", "validate" ], function($, moda
 					var min = parseInt($(this).find("input:first").val());
 					var max = parseInt($(this).find("input:last").val());
 					if (min > max) {
-						$.alert("面值存量的最小值超出最大值");
+						$.alert($.message("cashbox-minmax"));
 						flag = false;
 						return false;
 					}
@@ -48,7 +48,7 @@ require([ "jquery", "modal", "crud", "intercept", "validate" ], function($, moda
 						total += parseInt($(this).find("input:last").val());
 					});
 					if (total > max) {
-						$.alert("面值存量总数量必须在规定范围内");
+						$.alert($.message("cashbox-total"));
 					}
 					return total <= max;
 				}

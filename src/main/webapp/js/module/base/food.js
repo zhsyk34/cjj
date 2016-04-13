@@ -32,7 +32,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 	function dialog() {
 		$("#material-dialog").modal({
 			top : 100,
-			title : "图片选择",
+			title : $.message("picture-select"),
 			zIndex : 2020,
 			width : 500,
 			buttons : null
@@ -63,14 +63,14 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 		});
 
 		$("#add").on("click", function() {
-			$("#editor").modal("title", "增加餐点");
+			$("#editor").modal("title", $.message("add"));
 			$("#editor").removeData("row");
 			loadDialog();
 			$("#editor").modal("open");
 		});
 
 		$("#data").on("click", ".update", function() {
-			$("#editor").modal("title", "修改餐点");
+			$("#editor").modal("title", $.message("mod"));
 			var row = $(this).parents(".info").data("row");
 			$("#editor").data("row", row);
 			loadDialog();
@@ -151,20 +151,20 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 		});
 
 		if (validate.isEmpty(name)) {
-			$.alert("餐点名称不能为空");
+			$.alert($.message("name-required"));
 			return false;
 		}
 		if (!validate.isPositive(price, true)) {
-			$.alert("请填写正确的价格");
+			$.alert($.message("price-required"));
 			return false;
 		}
 		if (!validate.isNatural(materialId)) {
-			$.alert("请选择素材");
+			$.alert($.message("food-material"));
 			return false;
 		}
 
 		if (flag) {
-			$.alert("指定必选调味不能为空");
+			$.alert($.message("food-taste"));
 			return false;
 		}
 
@@ -193,7 +193,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			}
 		});
 		if (exist) {
-			$.alert("该名称已存在");
+			$.alert($.message("name-exist"));
 			return false;
 		}
 
@@ -270,9 +270,9 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			str += "</div>";
 
 			str += "<div class='operation'>";
-			str += "<label class='inline'><input type='checkbox'>选择</label>";
-			str += "<button class='btn btn-small btn-warning update'>修改</button>";
-			str += "<button class='btn btn-small btn-danger del'>删除</button>";
+			str += "<label class='inline'><input type='checkbox'>" + $.message("select") + "</label>";
+			str += "<button class='btn btn-small btn-warning update'>" + $.message("mod") + "</button>";
+			str += "<button class='btn btn-small btn-danger del'>" + $.message("del") + "</button>";
 			str += "</div>";
 
 			str += "</div>";
@@ -349,7 +349,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 
 	function loadType() {
 		var select = $("#search-type,#typeId").empty();
-		$("#search-type").append("<option value='0' selected>全部</option>");
+		$("#search-type").append("<option value='0' selected>" + $.message("all") + "</option>");
 
 		$.ajax({
 			url : "json/Food_findType",
@@ -383,7 +383,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 					var ul = $("<ul></ul>");
 
 					var li = $(str).addClass("style");
-					li.find("input").val(style).after("必选");
+					li.find("input").val(style).after($.message("food-must"));
 					ul.append(li);
 
 					$.each(tastes, function(index, taste) {

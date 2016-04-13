@@ -3,7 +3,7 @@ var require = {
 	shim : {
 		"drag" : [ "jquery" ],
 		"modal" : [ "jquery" ],
-		"page" : [ "jquery" ],
+		"page" : [ "jquery", "message" ],
 		"progress" : [ "jquery" ],
 		"slider" : [ "jquery" ],
 
@@ -15,8 +15,7 @@ var require = {
 		"intercept" : [ "jquery" ],
 		"message" : [ "jquery", "i18n" ],
 		"tool" : [ "jquery" ],
-		"validate" : [ "jquery" ],
-
+		"validate" : [ "jquery" ]
 	},
 	paths : {
 		/* lib */

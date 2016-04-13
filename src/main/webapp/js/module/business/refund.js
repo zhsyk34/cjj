@@ -91,8 +91,8 @@ require([ "jquery", "modal", "page", "datePicker", "crud", "intercept", "tool" ]
 			str += "<td class='deal'><button class=''></button></td>";
 			str += "</tr>";
 
-			var deal = "<button class='btn btn-small btn-primary'>处理</button>";
-			var revoke = "<button class='btn btn-small btn-danger'>撤销</button>";
+			var deal = "<button class='btn btn-small btn-primary'>" + $.message("deal") + "</button>";
+			var revoke = "<button class='btn btn-small btn-danger'>" + $.message("revoke") + "</button>";
 
 			$.each(data.list || [], function(index, row) {
 				var tr = $(str).data("row", row);
@@ -101,8 +101,8 @@ require([ "jquery", "modal", "page", "datePicker", "crud", "intercept", "tool" ]
 				tr.find(".authenticode").text(row.authenticode);
 				tr.find(".terminalNo").text(row.terminalNo);
 				tr.find(".orderNo").text(row.orderNo);
-				tr.find(".reason").text(row.reason == "MACHINE" ? "机器异常" : "余额不足");
-				tr.find(".type").text(row.type == "LACK" ? "找零失败" : "退币异常");
+				tr.find(".reason").text(row.reason == "MACHINE" ? $.message("rule-machine") : $.message("rule-balance"));
+				tr.find(".type").text(row.type == "LACK" ? $.message("rule-lack") : $.message("rule-error"));
 				tr.find(".amount").text(row.amount);
 				tr.find(".happentime").text(row.happentime.replace("T", " "));
 				tr.find(".dealtime").text(row.over ? row.dealtime.replace("T", " ") : "");

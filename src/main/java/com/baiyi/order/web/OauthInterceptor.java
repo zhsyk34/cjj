@@ -3,6 +3,7 @@ package com.baiyi.order.web;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -29,9 +30,9 @@ public class OauthInterceptor extends AbstractInterceptor {
 
 		// pass action
 		String actionName = context.getName();
-		System.out.println(actionName);
-		if (actionName.matches("^Feedback_.*|^User_login.*")) {
-			System.out.println("pass action");
+		System.out.println("访问地址:" + actionName);
+		if (actionName.matches("^User_logon.*")) {
+			System.out.println("logon action,pass");
 			return invocation.invoke();
 		}
 
@@ -45,14 +46,16 @@ public class OauthInterceptor extends AbstractInterceptor {
 
 		// check type
 		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		String type = request.getHeader("X-Requested-With");
 		if ("XMLHttpRequest".equalsIgnoreCase(type)) {
 			System.out.println("ajax visit");
-			// context.put(jsonData, jsonData);
-			return "redirect-login";
+			response.setHeader("sessionstatus", "timeout");
+			response.sendError(518, "session timeout.");
+			return null;
 		} else {
 			System.out.println("action redirect");
-			return "login";
+			return "logon";
 		}
 	}
 

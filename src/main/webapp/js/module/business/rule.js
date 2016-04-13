@@ -17,13 +17,13 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			}
 		});
 		$("#add").on("click", function() {
-			$("#editor").modal("title", "增加规则");
+			$("#editor").modal("title", $.message("add"));
 			$("#editor").removeData("row");
 			loadDialog();
 			$("#editor").modal("open");
 		});
 		$("table").on("click", ".update", function() {
-			$("#editor").modal("title", "修改规则");
+			$("#editor").modal("title", $.message("mod"));
 			var row = $(this).parents("tr").data("row");
 			$("#editor").data("row", row);
 			loadDialog();
@@ -51,16 +51,16 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 		var url = id ? "json/OrderRule_update" : "json/OrderRule_save";
 
 		if (validate.isEmpty(prefix)) {
-			$.alert("订单编号开头不能为空");
+			$.alert($.message("rule-prefix"));
 			return false;
 		}
 
 		if (!validate.isNatural(length)) {
-			$.alert("订单编号必须大于0位");
+			$.alert($.message("rule-length"));
 			return false;
 		}
 		if (!validate.isNatural(start)) {
-			$.alert("订单编号起始值必须为正整数");
+			$.alert($.message("rule-start"));
 			return false;
 		}
 
@@ -126,9 +126,9 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			var str = "<tr>";
 			str += "<td><input type='checkbox'></td>";
 			str += "<td class='index'></td>";
-			str += "<td><span>订单编号以<span><span class='prefix'></span><span>开头,共</span><span class='length'></span><span>位,起始值为</span><span class='start'></span></td>";
+			str += "<td><span>" + $.message("rule-prestr") + "<span><span class='prefix'></span><span>" + $.message("rule-lenstr") + "</span><span class='length'></span><span>" + $.message("rule-stastr") + "</span><span class='start'></span></td>";
 			str += "<td class='used'></td>";
-			str += "<td><button class='switch btn btn-small'></button><button class='btn btn-warning btn-small update'>修改</button><button class='btn btn-danger btn-small del'>删除</button></td>";
+			str += "<td><button class='switch btn btn-small'></button><button class='btn btn-warning btn-small update'>" + $.message("mod") + "</button><button class='btn btn-danger btn-small del'>" + $.message("del") + "</button></td>";
 			str += "</tr>";
 
 			$.each(data.list || [], function(index, row) {
@@ -138,8 +138,8 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 				tr.find(".prefix").text(row.prefix);
 				tr.find(".length").text(row.length);
 				tr.find(".start").text(row.start);
-				tr.find(".used").text(row.used ? "启用" : "禁用");
-				tr.find(".switch").addClass(row.used ? "btn-info" : "btn-success").text(row.used ? "禁用" : "启用");
+				tr.find(".used").text(row.used ? $.message("enable") : $.message("disable"));
+				tr.find(".switch").addClass(row.used ? "btn-info" : "btn-success").text(row.used ? $.message("disable") : $.message("enable"));
 
 				$("#data").append(tr);
 			});

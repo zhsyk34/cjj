@@ -27,14 +27,10 @@
 			</interceptor-stack>
 		</interceptors>
 		<!-- 启用 -->
-		<default-interceptor-ref name="control"></default-interceptor-ref>
+		<!-- <default-interceptor-ref name="control"></default-interceptor-ref> -->
 
 		<global-results>
-			<result name="login">/jsp/login.jsp</result>
-			<result name="redirect-login" type="redirect">/json/Feedback_login</result>
-			<result name="json-login" type="json">
-				<param name="root">jsonData</param>
-			</result>
+			<result name="logon">/jsp/logon.jsp</result>
 			<result name="error">/jsp/error.jsp</result>
 		</global-results>
 

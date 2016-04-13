@@ -1,4 +1,4 @@
-require([ "jquery", "modal", "intercept", "validate" ], function($, modal, intercept, validate) {
+require([ "jquery", "modal", "intercept", "message", "validate" ], function($, modal, intercept, message, validate) {
 
 	$("#sure").on("click", function() {
 		update();
@@ -14,20 +14,20 @@ require([ "jquery", "modal", "intercept", "validate" ], function($, modal, inter
 		var confirm = $("#confirm").val();
 
 		if (!id) {
-			$.alert("请重新登录");
+			$.alert($.message("password-reload"));
 			return false;
 		}
 
 		if (validate.isEmpty(original)) {
-			$.alert("请填写原密码");
+			$.alert($.message("password-original"));
 			return false;
 		}
 		if (validate.isEmpty(password)) {
-			$.alert("密码不能为空");
+			$.alert($.message("password-required"));
 			return false;
 		}
 		if (password != confirm) {
-			$.alert("两次输入的密码不一致,请重新确认");
+			$.alert($.message("password-confirm"));
 			return false;
 		}
 
@@ -41,11 +41,11 @@ require([ "jquery", "modal", "intercept", "validate" ], function($, modal, inter
 			},
 			success : function(data) {
 				if (data.result == "notexist") {
-					$.alert("原密码不正确");
+					$.alert($.message("password-wrong"));
 				} else if (data.result == "update") {
-					$.alert("修改成功");
+					$.alert($.message("crud-update"));
 				} else {
-					$.alert("出错了");
+					$.alert($.message("crud-error"));
 				}
 			}
 		});

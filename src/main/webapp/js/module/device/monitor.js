@@ -47,13 +47,14 @@ require([ "jquery", "page", "crud", "intercept" ], function($, page, crud, inter
 			str += "<div class='wrap'>";
 			str += "</div>";
 			str += "<div class='description'>";
-			str += "<div>连线状态: <span class='online'></span></div>";
-			str += "<div>终端编号: <span class='terminalNo'></span></div>";
-			str += "<div>终端位置: <span class='location'><span></div>";
+			str += "<div>" + $.message("monitor-status") + " <span class='online'></span></div>";
+			str += "<div>" + $.message("monitor-terminal") + " <span class='terminalNo'></span></div>";
+			str += "<div>" + $.message("monitor-location") + " <span class='location'><span></div>";
 			str += "</div>";
 			str += "</div>";
 
-			var online = "<span class='online'>连线中</span>", offline = "<span class='offline'>已离线</span>";
+			var online = "<span class='online'>" + $.message("online") + "</span>";
+			var offline = "<span class='offline'>" + $.message("offline") + "</span>";
 
 			$.each(data.list || [], function(index, row) {
 				var div = $(str);
@@ -61,7 +62,7 @@ require([ "jquery", "page", "crud", "intercept" ], function($, page, crud, inter
 				if (row.online) {
 					div.find(".wrap").html("<img src='" + row.image + "'>");
 				} else {
-					div.find(".wrap").html("画面传输中断").addClass("empty");
+					div.find(".wrap").html($.message("monitor-interrupt")).addClass("empty");
 				}
 				div.find(".online").html(row.online ? online : offline);
 				div.find(".terminalNo").text(row.terminalNo);

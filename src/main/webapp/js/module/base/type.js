@@ -1,4 +1,4 @@
-require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "message", "validate" ], function($, modal, page, checkctrl, crud, intercept, message, validate) {
+require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate" ], function($, modal, page, checkctrl, crud, intercept, validate) {
 	checkctrl.table($(".main table"));
 	dialog();
 	search();
@@ -17,13 +17,13 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "message"
 			}
 		});
 		$("#add").on("click", function() {
-			$("#editor").modal("title", "增加类型");
+			$("#editor").modal("title", $.message("add"));
 			$("#editor").removeData("row");
 			loadDialog();
 			$("#editor").modal("open");
 		});
 		$("table").on("click", ".update", function() {
-			$("#editor").modal("title", "修改类型");
+			$("#editor").modal("title", $.message("mod"));
 			var row = $(this).parents("tr").data("row");
 			$("#editor").data("row", row);
 			loadDialog();
@@ -47,7 +47,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "message"
 		var url = id ? "json/Type_update" : "json/Type_save";
 
 		if (validate.isEmpty(name)) {
-			$.alert("类型名称不能为空");
+			$.alert($.message("name-required"));
 			return false;
 		}
 
@@ -66,7 +66,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "message"
 			}
 		});
 		if (exist) {
-			$.alert("该名称已存在");
+			$.alert($.message("name-exist"));
 			return false;
 		}
 
@@ -123,7 +123,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "message"
 			str += "<td><input type='checkbox'></td>";
 			str += "<td class='index'></td>";
 			str += "<td class='name'></td>";
-			str += "<td><button class='btn btn-warning btn-small update'>修改</button><button class='btn btn-danger btn-small del'>删除</button></td>";
+			str += "<td><button class='btn btn-warning btn-small update'>" + $.message("mod") + "</button><button class='btn btn-danger btn-small del'>" + $.message("del") + "</button></td>";
 			str += "</tr>";
 
 			$.each(data.list || [], function(index, row) {

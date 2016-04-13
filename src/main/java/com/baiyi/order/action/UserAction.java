@@ -95,7 +95,7 @@ public class UserAction extends CommonsAction {
 		return SUCCESS;
 	}
 
-	public String login() {
+	public String logon() {
 		if (StringUtils.isBlank(name) || StringUtils.isBlank(password)) {
 			jsonData.put(result, Feedback.ERROR.toString());
 			return SUCCESS;
@@ -108,7 +108,6 @@ public class UserAction extends CommonsAction {
 			return SUCCESS;
 		}
 		session.put("user", user);
-		CommonsAction.loginId = user.getId();// TODO 记录用户
 		jsonData.put(result, Feedback.SUCCESS.toString());
 		return SUCCESS;
 	}

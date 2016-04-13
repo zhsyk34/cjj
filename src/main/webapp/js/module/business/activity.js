@@ -39,7 +39,7 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 			switch (pattern) {
 			case "count":
 				if (!validate.isNatural(count)) {
-					$.alert("请填写正确的停售数量");
+					$.alert($.message("activity-stopcount"));
 					return false;
 				}
 				params.begin = null;
@@ -47,11 +47,11 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 				break;
 			case "date":
 				if (validate.isEmpty(begin)) {
-					$.alert("开始日期不能为空");
+					$.alert($.message("activity-begin"));
 					return false;
 				}
 				if (validate.isEmpty(end)) {
-					$.alert("结束日期不能为空");
+					$.alert($.message("activity-end"));
 					return false;
 				}
 				params.count = 0;
@@ -60,48 +60,48 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 			break;
 		case "gift":
 			if (validate.isEmpty(begin)) {
-				$.alert("开始日期不能为空");
+				$.alert($.message("activity-begin"));
 				return false;
 			}
 			if (validate.isEmpty(end)) {
-				$.alert("结束日期不能为空");
+				$.alert($.message("activity-end"));
 				return false;
 			}
 			if (!validate.isNatural(count)) {
-				$.alert("请填写正确的赠送数量");
+				$.alert($.message("activity-giftcount"));
 				return false;
 			}
 			if (!validate.isNatural(unit)) {
-				$.alert("请填写正确的每份数量");
+				$.alert($.message("activity-unit"));
 				return false;
 			}
 			params.unit = unit;
 			break;
 		case "discount":
 			if (validate.isEmpty(begin)) {
-				$.alert("开始日期不能为空");
+				$.alert($.message("activity-begin"));
 				return false;
 			}
 			if (validate.isEmpty(end)) {
-				$.alert("结束日期不能为空");
+				$.alert($.message("activity-end"));
 				return false;
 			}
 			if (!validate.isNatural(count)) {
-				$.alert("请填写正确的促销数量");
+				$.alert($.message("activity-discountcount"));
 				return false;
 			}
 			var pattern = $("#pattern :radio:checked").val();
 			switch (pattern) {
 			case "discount":
 				if (!discount) {
-					$.alert("请填写正确的促销价格");
+					$.alert($.message("activity-price"));
 					return false;
 				}
 				params.discount = discount;
 				break;
 			case "percent":
 				if (!percent || percent < 1 || percent > 99) {
-					$.alert("请填写正确的促销折扣(1-99)");
+					$.alert($.message("activity-percent"));
 					return false;
 				}
 				params.percent = percent;
@@ -116,7 +116,7 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 		$("#editor").modal({
 			width : 400,
 			top : 100,
-			title : "停售设置",
+			title : $.message("install"),
 			before : function() {
 				return update();
 			},
@@ -154,7 +154,7 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 		});
 		$("#update-all").on("click", function() {
 			if (select().foodIds.length == 0) {
-				$.alert("请选择数据");
+				$.alert($.message("activity-datas"));
 				return false;
 			}
 			$("#editor").removeData("row");
@@ -255,7 +255,7 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 			params.foodIds = result.foodIds;
 			params.kitchenIds = result.kitchenIds;
 			if (params.foodIds.length == 0) {
-				$.alert("请选择数据");
+				$.alert($.message("activity-datas"));
 				return false;
 			}
 			params.used = 0;
@@ -266,7 +266,7 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 			params.foodIds = result.foodIds;
 			params.kitchenIds = result.kitchenIds;
 			if (params.foodIds.length == 0) {
-				$.alert("请选择数据");
+				$.alert($.message("activity-datas"));
 				return false;
 			}
 			params.used = 1;
@@ -354,13 +354,13 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 				break;
 			}
 			str += "<td class='used'></td>";
-			str += "<td><button class='btn btn-primary btn-small update'>设置</button></td>";
+			str += "<td><button class='btn btn-primary btn-small update'>" + $.message("install") + "</button></td>";
 			str += "<td class='delete'></td>";
 			str += "</tr>";
 
-			var enable = "<button class='btn btn-success btn-small enable'>启用</button>";
-			var disable = "<button class='btn btn-warning btn-small disable'>禁用</button>";
-			var revoke = "<button class='btn btn-danger btn-small revoke'>撤销</button>";
+			var enable = "<button class='btn btn-success btn-small enable'>" + $.message("enable") + "</button>";
+			var disable = "<button class='btn btn-warning btn-small disable'>" + $.message("disable") + "</button>";
+			var revoke = "<button class='btn btn-danger btn-small revoke'>" + $.message("revoke") + "</button>";
 
 			$.each(data.list || [], function(index, row) {
 				var tr = $(str).data("row", row);
@@ -369,8 +369,8 @@ require([ "jquery", "modal", "page", "datePicker", "checkctrl", "crud", "interce
 				tr.find(".kitchenNo").text(row.kitchenNo);
 				tr.find(".location").text(row.location);
 				tr.find(".foodName").text(row.foodName);
-				tr.find(".begin").text(row.begin ? "从 " + row.begin.replace("T", " ") : "");
-				tr.find(".end").text(row.end ? "到 " + row.end.replace("T", " ") : "");
+				tr.find(".begin").text(row.begin ? $.message("from") + row.begin.replace("T", " ") : "");
+				tr.find(".end").text(row.end ? $.message("to") + row.end.replace("T", " ") : "");
 				tr.find(".count").text(row.count || "");
 
 				tr.find(".delete").html(row.type == type.toUpperCase() ? revoke : "");

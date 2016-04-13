@@ -17,13 +17,13 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			}
 		});
 		$("#add").on("click", function() {
-			$("#editor").modal("title", "增加口味");
+			$("#editor").modal("title", $.message("add"));
 			$("#editor").removeData("row");
 			loadDialog();
 			$("#editor").modal("open");
 		});
 		$("table").on("click", ".update", function() {
-			$("#editor").modal("title", "修改口味");
+			$("#editor").modal("title", $.message("mod"));
 			var row = $(this).parents("tr").data("row");
 			$("#editor").data("row", row);
 			loadDialog();
@@ -52,12 +52,12 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 		var url = id ? "json/Taste_update" : "json/Taste_save";
 
 		if (validate.isEmpty(name)) {
-			$.alert("口味名称不能为空");
+			$.alert($.message("name-required"));
 			return false;
 		}
 
 		if (!validate.isPositive(price)) {
-			$.alert("请填写正确的费用");
+			$.alert($.message("cost-required"));
 			return false;
 		}
 
@@ -78,7 +78,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			}
 		});
 		if (exist) {
-			$.alert("该名称已存在");
+			$.alert($.message("name-exist"));
 			return false;
 		}
 
@@ -152,7 +152,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			str += "<td class='name'></td>";
 			str += "<td class='price'></td>";
 			str += "<td class='style'></td>";
-			str += "<td><button class='btn btn-warning btn-small update'>修改</button><button class='btn btn-danger btn-small del'>删除</button></td>";
+			str += "<td><button class='btn btn-warning btn-small update'>" + $.message("mod") + "</button><button class='btn btn-danger btn-small del'>" + $.message("del") + "</button></td>";
 			str += "</tr>";
 
 			$.each(data.list || [], function(index, row) {

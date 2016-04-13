@@ -57,7 +57,8 @@ require([ "jquery", "page", "datePicker", "crud", "intercept" ], function($, pag
 				str += "<td class='status'></td>";
 				str += "</tr>";
 
-				var online = "<span class='online'>连线中</span>", offline = "<span class='offline'>已离线</span>";
+				var online = "<span class='online'>" + $.message("online") + "</span>";
+				var offline = "<span class='offline'>" + $.message("offline") + "</span>";
 
 				$.each(data.list || [], function(index, row) {
 					var tr = $(str).data("row", row);

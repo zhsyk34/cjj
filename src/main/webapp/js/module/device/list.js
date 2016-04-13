@@ -23,10 +23,12 @@ require([ "jquery", "page", "crud", "intercept" ], function($, page, crud, inter
 			str += "<td class='location'></td>";
 			str += "<td class='date'></td>";
 			str += "<td class='status'></td>";
-			//str += "<td><button class='btn btn-primary btn-small'>查看</button></td>";
+			// str += "<td><button class='btn btn-primary
+			// btn-small'>查看</button></td>";
 			str += "</tr>";
 
-			var online = "<span class='online'>连线中</span>", offline = "<span class='offline'>已离线</span>";
+			var online = "<span class='online'>" + $.message("online") + "</span>";
+			var offline = "<span class='offline'>" + $.message("offline") + "</span>";
 
 			$.each(data.list || [], function(index, row) {
 				var tr = $(str).data("row", row);

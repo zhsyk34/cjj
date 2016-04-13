@@ -45,7 +45,7 @@
 		$("<td class='separator'></td>").appendTo(tr);
 
 		// pageNo
-		var pageNoStr = "<span>第</span>" + "<select class='pageNo'></select>" + "<span>页</span>";
+		var pageNoStr = "<span>" + $.message("page-nopre") + "</span>" + "<select class='pageNo'></select>" + "<span>" + $.message("page-nosuf") + "</span>";
 		$("<td></td>").append(pageNoStr).appendTo(tr);
 		$("<td class='separator'></td>").appendTo(tr);
 
@@ -55,11 +55,11 @@
 		$("<td class='separator'></td>").appendTo(tr);
 
 		// pageSize
-		var pageSizeStr = "<span>每页</span>" + "<input class='pageSize'>" + "<span>条记录</span>";
+		var pageSizeStr = "<span>" + $.message("page-sizepre") + "</span>" + "<input class='pageSize'>" + "<span>" + $.message("page-sizesuf") + "</span>";
 		$("<td></td>").append(pageSizeStr).appendTo(tr);
 
 		// dataCount
-		var dataCountStr = "<span>/共</span>" + "<span class='dataCount'></span>" + "<span>条记录</span>";
+		var dataCountStr = "<span>" + $.message("page-countpre") + "</span>" + "<span class='dataCount'></span>" + "<span>" + $.message("page-countsuf") + "</span>";
 		$("<td></td>").append(dataCountStr).appendTo(tr);
 
 		// commit with form

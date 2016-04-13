@@ -11,39 +11,39 @@ public class TypeAction extends CommonsAction {
 
 	public String save() {
 		if (typeService.exist(null, name)) {
-			jsonData.put("result", Feedback.EXIST.toString());
-			return null;
+			jsonData.put(result, Feedback.EXIST.toString());
+			return SUCCESS;
 		}
 		Type type = new Type();
 		type.setName(name);
 		type.setCreatetime(new Date());
 		type.setUserId(userId);
 		typeService.save(type);
-		jsonData.put("result", Feedback.CREATE.toString());
+		jsonData.put(result, Feedback.CREATE.toString());
 		return SUCCESS;
 	}
 
 	public String delete() {
 		if (typeService.relate(ids)) {
-			jsonData.put("result", Feedback.RELATE.toString());
-			return null;
+			jsonData.put(result, Feedback.RELATE.toString());
+			return SUCCESS;
 		}
 		typeService.delete(ids);
-		jsonData.put("result", Feedback.DELETE.toString());
+		jsonData.put(result, Feedback.DELETE.toString());
 		return SUCCESS;
 	}
 
 	public String update() {
 		if (typeService.exist(id, name)) {
-			jsonData.put("result", Feedback.EXIST.toString());
-			return null;
+			jsonData.put(result, Feedback.EXIST.toString());
+			return SUCCESS;
 		}
 		Type type = typeService.find(id);
 		type.setName(name);
 		type.setUpdatetime(new Date());
 		type.setUserId(userId);
 		typeService.update(type);
-		jsonData.put("result", Feedback.UPDATE.toString());
+		jsonData.put(result, Feedback.UPDATE.toString());
 		return SUCCESS;
 	}
 

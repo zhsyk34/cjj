@@ -59,13 +59,13 @@ require([ "jquery", "modal", "page", "slider", "spectrum", "checkctrl", "crud", 
 		}
 
 		$("#add").on("click", function() {
-			$("#editor").modal("title", "新增跑马灯");
+			$("#editor").modal("title", $.message("add"));
 			$("#editor").removeData("row");
 			loadDialog();
 			$("#editor").modal("open");
 		});
 		$("table").on("click", ".update", function() {
-			$("#editor").modal("title", "编辑跑马灯");
+			$("#editor").modal("title", $.message("mod"));
 			var row = $(this).parents("tr").data("row");
 			$("#editor").data("row", row);
 			loadDialog();
@@ -153,11 +153,11 @@ require([ "jquery", "modal", "page", "slider", "spectrum", "checkctrl", "crud", 
 		var params = getParam();
 
 		if (validate.isEmpty(params.title)) {
-			$.alert("标题不能为空");
+			$.alert($.message("title-required"));
 			return false;
 		}
 		if (validate.isEmpty(params.content)) {
-			$.alert("内容不能为空");
+			$.alert($.message("content-required"));
 			return false;
 		}
 
@@ -174,7 +174,7 @@ require([ "jquery", "modal", "page", "slider", "spectrum", "checkctrl", "crud", 
 			}
 		});
 		if (exist) {
-			$.alert("该标题已存在");
+			$.alert($.message("title-exist"));
 			return false;
 		}
 
@@ -241,7 +241,7 @@ require([ "jquery", "modal", "page", "slider", "spectrum", "checkctrl", "crud", 
 			str += "<td class='size'></td>";
 			str += "<td class='color'><div></div></td>";
 			str += "<td class='background'><div></div></td>";
-			str += "<td><button class='btn btn-warning btn-small update'>修改</button><button class='btn btn-danger btn-small del'>删除</button></td>";
+			str += "<td><button class='btn btn-warning btn-small update'>" + $.message("mod") + "</button><button class='btn btn-danger btn-small del'>" + $.message("del") + "</button></td>";
 			str += "</tr>";
 
 			$.each(data.list || [], function(index, row) {

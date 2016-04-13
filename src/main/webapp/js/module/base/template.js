@@ -25,13 +25,13 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "tool", "
 		});
 
 		$("#add").on("click", function() {
-			$("#editor").modal("title", "增加模板");
+			$("#editor").modal("title", $.message("add"));
 			$("#editor").removeData("row");
 			loadDialog();
 			$("#editor").modal("open");
 		});
 		$("#data").on("click", ".update", function() {
-			$("#editor").modal("title", "修改模板");
+			$("#editor").modal("title", $.message("mod"));
 			var row = $(this).parents("tr").data("row");
 			$("#editor").data("row", row);
 
@@ -127,7 +127,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "tool", "
 		var url = id ? "json/Template_update" : "json/Template_save";
 
 		if (validate.isEmpty(name)) {
-			$.alert("模板名称不能为空");
+			$.alert($.message("name-required"));
 			return false;
 		}
 
@@ -144,7 +144,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "tool", "
 			}
 		});
 		if (exist) {
-			$.alert("该名称已存在");
+			$.alert($.message("name-exist"));
 			return false;
 		}
 
@@ -158,7 +158,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "tool", "
 		// foods
 		var foods = $("#foodList").data("data");
 		if (foods.length == 0) {
-			$.alert("请选择餐点");
+			$.alert($.message("template-foods"));
 			return false;
 		}
 		params.foods = foods;
@@ -167,7 +167,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "tool", "
 		case "s01":
 			var logo = $("#logo").data("data");
 			if (logo.length == 0) {
-				$.alert("请选择Logo图片");
+				$.alert($.message("template-logo"));
 				return false;
 			}
 			params.logo = logo[0];
@@ -176,8 +176,8 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "tool", "
 			var rowcount = parseInt($("#rowcount").val());
 			var colcount = parseInt($("#colcount").val());
 
-			if (!validate.isNatural(rowcount) || !validate.isNatural(colcount)) {
-				$.alert("行数和列数必须为正整数");
+			if (!validate.isNatural(rowcount) || !validate.isNatural(colcount) || rowcount != colcount) {
+				$.alert($.message("template-size"));
 				return false;
 			}
 			params.rowcount = rowcount;
@@ -191,7 +191,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "tool", "
 		case "number":
 			var number = $("#number").data("data");
 			if (number.length == 0) {
-				$.alert("请选择取号图片");
+				$.alert($.message("template-number"));
 				return false;
 			}
 			params.number = number[0];
@@ -199,7 +199,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "tool", "
 		case "video":
 			var videos = $("#videoList").data("data");
 			if (videos.length == 0) {
-				$.alert("请选择视频");
+				$.alert($.message("template-video"));
 				return false;
 			}
 			params.videos = videos;
@@ -207,7 +207,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "tool", "
 		case "picture":
 			var interlude = parseInt($("#interlude").val());
 			if (!validate.isNatural(interlude)) {
-				$.alert("轮播时间必须为正整数");
+				$.alert($.message("template-interlude"));
 				return false;
 			}
 
@@ -215,7 +215,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "tool", "
 
 			var pictures = $("#pictureList").data("data");
 			if (pictures.length == 0) {
-				$.alert("请选择图片");
+				$.alert($.message("template-picture"));
 				return false;
 			}
 			params.interlude = interlude;
@@ -281,7 +281,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "tool", "
 			str += "<td class='index'></td>";
 			str += "<td class='name'></td>";
 			str += "<td class='type'></td>";
-			str += "<td><button class='btn btn-warning btn-small update'>修改</button><button class='btn btn-danger btn-small del'>删除</button></td>";
+			str += "<td><button class='btn btn-warning btn-small update'>" + $.message("mod") + "</button><button class='btn btn-danger btn-small del'>" + $.message("del") + "</button></td>";
 			str += "</tr>";
 
 			$.each(data.list || [], function(index, row) {
@@ -301,21 +301,21 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "tool", "
 		$("#material-dialog").modal({
 			zIndex : 2020,
 			width : 600,
-			title : "选择素材",
+			title : $.message("template-material"),
 			buttons : null,
 		});
 		// 1.2:food
 		$("#food-dialog").modal({
 			zIndex : 2021,
 			width : 800,
-			title : "选择餐点",
+			title : $.message("template-food"),
 			buttons : null,
 		});
 		// 1.3:marquee
 		$("#marquee-dialog").modal({
 			zIndex : 2022,
 			width : 700,
-			title : "选择跑马灯",
+			title : $.message("template-marquee"),
 			buttons : null,
 		});
 
@@ -384,7 +384,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "tool", "
 			str += "<td></td>";
 			str += "<td></td>";
 			str += "<td><img class='inline'></td>";
-			str += "<td><button class='btn btn-small btn-primary'>查看</button></td>";
+			str += "<td class='taste'></td>";
 			str += "</tr>";
 
 			$.ajax({
@@ -399,6 +399,12 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "tool", "
 						tr.find("td").eq(2).text(food.name);
 						tr.find("td").eq(3).text(food.price);
 						tr.find("img").attr("src", food.path);
+
+						var taste = [];
+						$.each(food.tasteList || [], function() {
+							taste.push(this.name);
+						});
+						tr.find(".taste").text(taste.join());
 						tbody.append(tr);
 					});
 					crud.page(data, loadFood, $("#food-page"));
@@ -431,7 +437,6 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "tool", "
 			str += "<td></td>";
 			str += "<td></td>";
 			str += "<td><img class='inline'></td>";
-			str += "<td><button class='btn btn-small btn-primary'>查看</button></td>";
 			str += "</tr>";
 
 			$.ajax({
@@ -578,9 +583,5 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "tool", "
 
 			loadData();
 		});
-	}
-
-	function checkType(target) {// TODO
-		var result = {};
 	}
 });

@@ -2,18 +2,23 @@ $.ajaxSetup({
 	cache : false,
 	traditional : true,
 	type : "POST",
-	complete : function(XMLHttpRequest, textStatus) {
-		var data = XMLHttpRequest.responseText;
-		console.log(data)
-		if (/^{.*}$/.test(data)) {
-			data = eval("(" + data + ")");
-			console.log("json", data);
-		} else {
-			console.log("normal", data);
-		}
-
-		if (data.result == "offline") {// TODO
-			window.parent.location.href = "login.jsp";
-		}
+	complete : function(xhr, status) {
+		var data = xhr.getResponseHeader("sessionstatus");
+		data == "timeout" && relogon();
 	}
 });
+
+sessionstatus || relogon();
+
+function relogon() {
+	var top = getTopWinow();
+	confirm("您尚未登录或者登录超时,请重新登录...") && (top.location.href = basePath + "jsp/logon.jsp");
+
+	function getTopWinow() {
+		var w = window;
+		while (w != w.parent) {
+			w = w.parent;
+		}
+		return w;
+	}
+}

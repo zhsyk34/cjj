@@ -46,7 +46,7 @@ require([ "jquery", "modal", "page", "form", "checkctrl", "crud", "intercept", "
 		var name = $.trim($("#name").val());
 
 		if (validate.isEmpty(name)) {
-			$.alert("素材名称不能为空");
+			$.alert($.message("name-required"));
 			return false;
 		}
 
@@ -66,7 +66,7 @@ require([ "jquery", "modal", "page", "form", "checkctrl", "crud", "intercept", "
 			}
 		});
 		if (exist) {
-			$.alert("该名称已存在");
+			$.alert($.message("name-exist"));
 			return false;
 		}
 		crud.merge("json/Material_update", params, find);
@@ -76,7 +76,7 @@ require([ "jquery", "modal", "page", "form", "checkctrl", "crud", "intercept", "
 		// update
 		$("#editor").modal({
 			width : 320,
-			title : "修改素材",
+			title : $.message("mod"),
 			top : 100,
 			before : function() {
 				return update();
@@ -92,7 +92,7 @@ require([ "jquery", "modal", "page", "form", "checkctrl", "crud", "intercept", "
 		// upload
 		$("#upload").modal({
 			width : 600,
-			title : "上传素材",
+			title : $.message("material-upload"),
 			top : 100,
 			before : function() {
 				return upload();
@@ -111,10 +111,10 @@ require([ "jquery", "modal", "page", "form", "checkctrl", "crud", "intercept", "
 		});
 		$("#append").on("click", function() {
 			var tr = "<tr class='follow'>";
-			tr += "<td><label class='btn btn-default btn-small file'>浏览...<input type='file' name='upload'></label><span class='path-info inline'></span></td>";
+			tr += "<td><label class='btn btn-default btn-small file'>" + $.message("browse") + "...<input type='file' name='upload'></label><span class='path-info inline'></span></td>";
 			tr += "<td><input class='text' name='nameList'></td>";
-			tr += "<th><button class='btn btn-info btn-small clean' type='button'>重置</button>";
-			tr += "<button class='btn btn-danger btn-small remove' type='button'>删除</button>";
+			tr += "<th><button class='btn btn-info btn-small clean' type='button'>" + $.message("reset") + "</button>";
+			tr += "<button class='btn btn-danger btn-small remove' type='button'>" + $.message("del") + "</button>";
 			tr += "</th></tr>";
 			$("#upload tbody").append(tr);
 		});
@@ -154,11 +154,11 @@ require([ "jquery", "modal", "page", "form", "checkctrl", "crud", "intercept", "
 			var file = files.eq(i);
 			var path = file.val();
 			if (validate.isEmpty(path)) {
-				$.alert("请选择上传文件");
+				$.alert($.message("material-file"));
 				return false;
 			}
 			if (!imageType.test(path) && !videoType.test(path)) {
-				$.alert("不支持的文件格式...");
+				$.alert($.message("material-unsupported"));
 				return false;
 			}
 		}
@@ -169,7 +169,7 @@ require([ "jquery", "modal", "page", "form", "checkctrl", "crud", "intercept", "
 		for (var i = 0, len = names.length; i < len; i++) {
 			var name = $.trim(names.eq(i).val());
 			if (validate.isEmpty(name)) {
-				$.alert("素材名称不能为空！");
+				$.alert($.message("name-required"));
 				return false;
 			}
 			nameList.push(name);
@@ -190,20 +190,18 @@ require([ "jquery", "modal", "page", "form", "checkctrl", "crud", "intercept", "
 			}
 		});
 		if (exist) {
-			$.alert("素材名称  " + existName + " 已存在");
+			$.alert($.message("material-name") + " [" + existName + "] " + $.message("exist"));
 			return false;
 		}
 
 		$("#upload form").ajaxSubmit({
 			async : false,
 			success : function(data) {
+				find();
 				if (data.result == "upload") {
-					find();
-					$.alert("上传成功");
-				}
-				if (data.result == "error") {
-					find();
-					$.alert("出错了");
+					$.alert($.message("crud-upload"));
+				} else if (data.result == "error") {
+					$.alert($.message("crud-error"));
 				}
 			}
 		});
@@ -270,9 +268,9 @@ require([ "jquery", "modal", "page", "form", "checkctrl", "crud", "intercept", "
 			str += "<h4></h4>";
 			str += "<img>";
 			str += "<div class='operation'>";
-			str += "<label class='inline'><input type='checkbox'>选择</label>";
-			str += "<button class='btn btn-small btn-warning update'>修改</button>";
-			str += "<button class='btn btn-small btn-danger del'>删除</button>";
+			str += "<label class='inline'><input type='checkbox'>" + $.message("select") + "</label>";
+			str += "<button class='btn btn-small btn-warning update'>" + $.message("mod") + "</button>";
+			str += "<button class='btn btn-small btn-danger del'>" + $.message("del") + "</button>";
 			str += "</div>";
 			str += "</div>";
 

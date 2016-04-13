@@ -1,4 +1,4 @@
-require([ "jquery", "modal", "crud", "intercept", "validate" ], function($, modal, crud, intercept, validate) {
+require([ "jquery", "modal", "crud", "intercept", "message", "validate" ], function($, modal, crud, intercept, message, validate) {
 
 	find();
 	select();
@@ -32,7 +32,7 @@ require([ "jquery", "modal", "crud", "intercept", "validate" ], function($, moda
 			var privateKey = $("#privateKey").val();
 
 			if (validate.isEmpty(title) || validate.isEmpty(appId) || validate.isEmpty(partner)) {
-				$.alert("请完整填写支付配置信息");
+				$.alert($.message("payset-must"));
 				return false;
 			}
 			var params = {
@@ -46,7 +46,7 @@ require([ "jquery", "modal", "crud", "intercept", "validate" ], function($, moda
 			}
 			if (!id) {
 				if (validate.isEmpty(privateKey)) {
-					$.alert("请完整填写支付配置信息");
+					$.alert($.message("payset-must"));
 					return false;
 				}
 				switch (name) {
@@ -54,7 +54,7 @@ require([ "jquery", "modal", "crud", "intercept", "validate" ], function($, moda
 					break;
 				case "alipay":
 					if (validate.isEmpty(publicKey)) {
-						$.alert("请完整填写支付配置信息");
+						$.alert($.message("payset-must"));
 						return false;
 					}
 					break;
@@ -73,6 +73,7 @@ require([ "jquery", "modal", "crud", "intercept", "validate" ], function($, moda
 				name : name
 			},
 			success : function(data) {
+				$("input,textarea").val("");
 				var pay = data.pay || {};
 
 				$("#id").val(pay.id);

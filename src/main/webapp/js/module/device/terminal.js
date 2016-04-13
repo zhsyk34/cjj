@@ -17,13 +17,13 @@ require([ "jquery", "modal", "page", "crud", "intercept", "validate" ], function
 			}
 		});
 		$("#add").on("click", function() {
-			$("#editor").modal("title", "增加终端");
+			$("#editor").modal("title", $.message("add"));
 			$("#editor").removeData("row");
 			loadDialog();
 			$("#editor").modal("open");
 		});
 		$("table").on("click", ".update", function() {
-			$("#editor").modal("title", "编辑终端");
+			$("#editor").modal("title", $.message("mod"));
 			var row = $(this).parents("tr").data("row");
 			$("#editor").data("row", row);
 			loadDialog();
@@ -52,11 +52,11 @@ require([ "jquery", "modal", "page", "crud", "intercept", "validate" ], function
 		var url = id ? "json/Terminal_update" : "json/Terminal_save";
 
 		if (validate.isEmpty(terminalNo)) {
-			$.alert("终端编号不能为空");
+			$.alert($.message("terminal-required"));
 			return false;
 		}
 		if (validate.isEmpty(location)) {
-			$.alert("终端位置不能为空");
+			$.alert($.message("terminal-location"));
 			return false;
 		}
 
@@ -77,7 +77,7 @@ require([ "jquery", "modal", "page", "crud", "intercept", "validate" ], function
 			}
 		});
 		if (exist) {
-			$.alert("终端编号已存在");
+			$.alert($.message("terminal-exist"));
 			return false;
 		}
 
@@ -145,7 +145,7 @@ require([ "jquery", "modal", "page", "crud", "intercept", "validate" ], function
 			$.each(data.list || [], function(index, row) {
 				var tr = $(str).data("row", row);
 				tr.find(".terminalNo").text(row.terminalNo);
-				tr.find(".type").text(row.type == "SHOP" ? "客户端" : "厨房端");
+				tr.find(".type").text(row.type == "SHOP" ? $.message("terminal-shop") : $.message("terminal-kitchen"));
 				tr.find(".location").text(row.location);
 
 				var color = version == row.version ? "green" : "red";

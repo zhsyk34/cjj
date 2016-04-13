@@ -17,13 +17,13 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			}
 		});
 		$("#add").on("click", function() {
-			$("#editor").modal("title", "增加用户");
+			$("#editor").modal("title", $.message("add"));
 			$("#editor").removeData("row");
 			loadDialog();
 			$("#editor").modal("open");
 		});
 		$("table").on("click", ".update", function() {
-			$("#editor").modal("title", "修改用户");
+			$("#editor").modal("title", $.message("mod"));
 			var row = $(this).parents("tr").data("row");
 			$("#editor").data("row", row);
 			loadDialog();
@@ -48,15 +48,15 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 		var url = id ? "json/User_update" : "json/User_save";
 
 		if (validate.isEmpty(name)) {
-			$.alert("用户名不能为空");
+			$.alert($.message("user-name"));
 			return false;
 		}
 		if (!id && validate.isEmpty(password)) {
-			$.alert("密码不能为空");
+			$.alert($.message("user-password"));
 			return false;
 		}
 		if (password != confirm) {
-			$.alert("两次输入的密码不一致,请重新确认");
+			$.alert($.message("user-confirm"));
 			return false;
 		}
 
@@ -75,7 +75,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			}
 		});
 		if (exist) {
-			$.alert("该用户名已存在");
+			$.alert($.message("user-exist"));
 			return false;
 		}
 
@@ -135,7 +135,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			str += "<td><input type='checkbox'></td>";
 			str += "<td class='index'></td>";
 			str += "<td class='name'></td>";
-			str += "<td><button class='btn btn-warning btn-small update'>修改</button><button class='btn btn-danger btn-small del'>删除</button></td>";
+			str += "<td><button class='btn btn-warning btn-small update'>" + $.message("mod") + "</button><button class='btn btn-danger btn-small del'>" + $.message("del") + "</button></td>";
 			str += "</tr>";
 
 			$.each(data.list, function(index, row) {
