@@ -5,14 +5,14 @@
 <link rel="stylesheet" href="css/lib/init.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/modal.css">
 <link rel="stylesheet" href="css/module/logon.css">
-<title><s:text name="logon-title" /></title>
+<title></title>
 </head>
 <body>
 	<div id="container">
 		<form>
-			<input id="name" placeholder="<s:text name='logon-name' />"> <input id="password" type="password" placeholder="<s:text name='logon-password' />">
+			<input id="name" placeholder=""> <input id="password" type="password" placeholder="">
 			<button id="logon" class="btn btn-primary" type="button">
-				<s:text name="logon-submit" />
+				logon
 			</button>
 		</form>
 	</div>

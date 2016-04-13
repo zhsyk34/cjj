@@ -27,7 +27,7 @@
 			</interceptor-stack>
 		</interceptors>
 		<!-- 启用 -->
-		<!-- <default-interceptor-ref name="control"></default-interceptor-ref> -->
+		<default-interceptor-ref name="control"></default-interceptor-ref>
 
 		<global-results>
 			<result name="logon">/jsp/logon.jsp</result>
