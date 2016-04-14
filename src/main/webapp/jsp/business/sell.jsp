@@ -6,21 +6,25 @@
 <link rel="stylesheet" href="js/lib/zhsy/css/modal.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/page.css">
 <link rel="stylesheet" href="css/module/order.css">
-<title>销售统计</title>
+<title><s:text name="index-sell" /></title>
 </head>
 <body>
 	<header>
-		<h3>销售统计</h3>
+		<h3>
+			<s:text name="index-sell" />
+		</h3>
 		<nav>
 			<div>
 				<div class="inline group">
-					<label class="addon" for="shop">客户端</label> <input class="text" id="shop">
+					<label class="addon" for="shop"><s:text name="sell-shop" /></label> <input class="text" id="shop">
 				</div>
 				<div class="inline group">
-					<label class="addon" for="kitchen">厨房端</label> <input class="text" id="kitchen">
+					<label class="addon" for="kitchen"><s:text name="sell-kitchen" /></label> <input class="text" id="kitchen">
 				</div>
 				<div class="inline">
-					<button class="btn btn-primary btn-small" id="find">查询</button>
+					<button class="btn btn-primary btn-small" id="find">
+						<s:text name="find" />
+					</button>
 				</div>
 				<div class="inline">
 					<!-- <button class="btn btn-success btn-small" id="export">导出</button> -->
@@ -28,53 +32,63 @@
 			</div>
 			<div>
 				<div class="inline group">
-					<label class="addon" for="begin">开始日期</label> <input class="text" id="begin" readonly>
+					<label class="addon" for="begin"><s:text name="sell-begin" /></label> <input class="text" id="begin" readonly>
 				</div>
 				<div class="inline group">
-					<label class="addon" for="end">结束日期</label> <input class="text" id="end" readonly>
+					<label class="addon" for="end"><s:text name="sell-end" /></label> <input class="text" id="end" readonly>
 				</div>
 				<div class="inline">
-					<button class="btn btn-primary btn-small" id="yesterday">昨日</button>
+					<button class="btn btn-primary btn-small" id="yesterday">
+						<s:text name="sell-yesterday" />
+					</button>
 				</div>
 				<div class="inline">
-					<button class="btn btn-primary btn-small" id="today">今日</button>
+					<button class="btn btn-primary btn-small" id="today">
+						<s:text name="sell-today" />
+					</button>
 				</div>
 				<div class="inline">
-					<button class="btn btn-info btn-small" id="preweek">上周</button>
+					<button class="btn btn-info btn-small" id="preweek">
+						<s:text name="sell-preweek" />
+					</button>
 				</div>
 				<div class="inline">
-					<button class="btn btn-info btn-small" id="week">本周</button>
+					<button class="btn btn-info btn-small" id="week">
+						<s:text name="sell-week" />
+					</button>
 				</div>
 				<div class="inline">
-					<button class="btn btn-warning btn-small" id="premonth">上月</button>
+					<button class="btn btn-warning btn-small" id="premonth">
+						<s:text name="sell-premonth" />
+					</button>
 				</div>
 				<div class="inline">
-					<button class="btn btn-warning btn-small" id="month">本月</button>
+					<button class="btn btn-warning btn-small" id="month">
+						<s:text name="sell-month" />
+					</button>
 				</div>
 			</div>
 		</nav>
 	</header>
 
-	<!-- data -->
 	<div class="main">
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th width="10%" rowspan="2">客户端</th>
-					<th width="10%" rowspan="2">厨房端</th>
-					<th width="50%" colspan="4">订单内容</th>
-					<th width="15%" rowspan="2">合计</th>
-					<th width="15%" rowspan="2">查看</th>
+					<th width="10%" rowspan="2"><s:text name="sell-shop" /></th>
+					<th width="10%" rowspan="2"><s:text name="sell-kitchen" /></th>
+					<th width="50%" colspan="4"><s:text name="sell-content" /></th>
+					<th width="15%" rowspan="2"><s:text name="sell-amount" /></th>
+					<!-- <th width="15%" rowspan="2"><s:text name="view" /></th> -->
 				</tr>
 				<tr>
-					<th width="10%">序号</th>
-					<th width="20%">餐点</th>
-					<th width="10%">数量</th>
-					<th width="10%">总价</th>
+					<th width="10%"><s:text name="index" /></th>
+					<th width="20%"><s:text name="sell-food" /></th>
+					<th width="10%"><s:text name="sell-count" /></th>
+					<th width="10%"><s:text name="sell-total" /></th>
 				</tr>
 			</thead>
-			<tbody id="data">
-			</tbody>
+			<tbody id="data"></tbody>
 		</table>
 	</div>
 

@@ -1,5 +1,7 @@
 package com.test;
 
+import java.util.Date;
+
 import javax.annotation.Resource;
 
 import org.junit.Test;
@@ -18,6 +20,7 @@ import com.baiyi.order.dao.TemplateDao;
 import com.baiyi.order.dao.TemplateFoodDao;
 import com.baiyi.order.dao.TemplateMarqueeDao;
 import com.baiyi.order.dao.TemplateMaterialDao;
+import com.baiyi.order.dao.TerminalDao;
 import com.baiyi.order.dao.TypeDao;
 import com.baiyi.order.model.Food;
 import com.baiyi.order.model.FoodStyle;
@@ -30,6 +33,7 @@ import com.baiyi.order.model.Template;
 import com.baiyi.order.model.TemplateFood;
 import com.baiyi.order.model.TemplateMarquee;
 import com.baiyi.order.model.TemplateMaterial;
+import com.baiyi.order.model.Terminal;
 import com.baiyi.order.model.Type;
 import com.baiyi.order.util.EnumList.Effect;
 import com.baiyi.order.util.EnumList.MarqueeDirectionEnum;
@@ -37,6 +41,8 @@ import com.baiyi.order.util.EnumList.MaterialTypeEnum;
 import com.baiyi.order.util.EnumList.TemplateContentEnum;
 import com.baiyi.order.util.EnumList.TemplateMaterialEnum;
 import com.baiyi.order.util.EnumList.TemplateTypeEnum;
+import com.baiyi.order.util.EnumList.TerminalTypeEnum;
+import com.baiyi.order.util.FormatUtil;
 import com.baiyi.order.util.RandomUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -67,6 +73,8 @@ public class InitTest {
 	private TemplateMaterialDao templateMaterialDao;
 	@Resource
 	private TemplateMarqueeDao templateMarqueeDao;
+	@Resource
+	private TerminalDao terminalDao;
 
 	@Test
 	public void init() {
@@ -90,7 +98,7 @@ public class InitTest {
 		int tastes = 15;
 		for (int i = 0; i < tastes; i++) {
 			Taste taste = new Taste();
-			taste.setPrice(RandomUtil.randomInteger(5, 35));
+			taste.setPrice(RandomUtil.randomInteger(3, 25));
 			int index = RandomUtil.randomInteger(1, styles.length - 1);
 			taste.setStyleId(index + 1);
 			taste.setName(styles[index] + (i + 1));
@@ -98,26 +106,26 @@ public class InitTest {
 		}
 
 		// material
-		int materials = 7;
+		int materials = 10;
 		for (int i = 1; i <= materials; i++) {
 			Material material = new Material();
 			material.setName("素材" + i);
-			material.setPath(RandomUtil.randomString(30));
+			material.setPath("20160304" + RandomUtil.randomString(30) + ".jpg");
 			material.setType(MaterialTypeEnum.values()[RandomUtil.randomInteger(0, 1)]);
 			materialDao.save(material);
 		}
 
 		// food
-		int foods = 8;
-		for (int i = 1; i < foods; i++) {
+		int foods = 9;
+		for (int i = 1; i <= foods; i++) {
 			Food food = new Food();
 			food.setName("food" + i);
-			food.setPrice(RandomUtil.randomInteger(15, 50));
+			food.setPrice(RandomUtil.randomInteger(10, 100));
 			food.setMaterialId(RandomUtil.randomInteger(1, materials));
 			food.setTypeId(RandomUtil.randomInteger(1, types.length));
 			foodDao.save(food);
 
-			for (int k = 1; k < styles.length + 1; k++) {
+			for (int k = 1; k <= styles.length;) {
 				FoodStyle fs = new FoodStyle();
 				fs.setFoodId(i);
 				fs.setStyleId(k);
@@ -125,7 +133,7 @@ public class InitTest {
 
 				k += RandomUtil.randomInteger(1, 3);
 			}
-			for (int k = 1; k < tastes; k++) {
+			for (int k = 1; k <= tastes;) {
 				FoodTaste ft = new FoodTaste();
 				ft.setFoodId(i);
 				ft.setTasteId(k);
@@ -150,9 +158,21 @@ public class InitTest {
 			marqueeDao.save(marquee);
 		}
 
+		// terminal
+		int terminals = 5;
+		for (int i = 1; i <= terminals; i++) {
+			Terminal terminal = new Terminal();
+			terminal.setTerminalNo("tno1000" + i);
+			terminal.setType(FormatUtil.getEnum(TerminalTypeEnum.class, RandomUtil.randomInteger(0, 1)));
+			terminal.setLocation("xm000" + i);
+			terminal.setCreatetime(new Date());
+			terminal.setUserId(1);
+			terminalDao.save(terminal);
+		}
+
 		//
 		int templates = 6;
-		for (int i = 1; i < templates; i++) {
+		for (int i = 1; i <= templates; i++) {
 			Template template = new Template();
 			template.setName("模板" + i);
 			template.setType(TemplateTypeEnum.values()[RandomUtil.randomInteger(0, 2)]);
@@ -163,45 +183,32 @@ public class InitTest {
 
 			templateDao.save(template);
 
-			for (int k = 1; k < foods;) {
+			for (int k = 1; k <= foods;) {
 				TemplateFood tf = new TemplateFood();
 				tf.setTemplateId(i);
 				tf.setFoodId(k);
-				k += RandomUtil.randomInteger(1, 2);
-
 				templateFoodDao.save(tf);
+
+				k += RandomUtil.randomInteger(1, 2);
 			}
-			for (int k = 1; k < marquees.length;) {
+			for (int k = 1; k <= marquees.length;) {
 				TemplateMarquee tm = new TemplateMarquee();
 				tm.setTemplateId(i);
 				tm.setMarqueeId(k);
+				templateMarqueeDao.save(tm);
 
 				k += RandomUtil.randomInteger(1, 2);
-
-				templateMarqueeDao.save(tm);
 			}
 
-			for (int k = 1; k < 8;) {
+			for (int k = 1; k <= materials;) {
 				TemplateMaterial tm = new TemplateMaterial();
 				tm.setTemplateId(i);
 				tm.setMaterialId(k);
+				tm.setType(TemplateMaterialEnum.values()[RandomUtil.randomInteger(0, 3)]);
+				templateMaterialDao.save(tm);
 
 				k += RandomUtil.randomInteger(1, 2);
-				tm.setType(TemplateMaterialEnum.values()[RandomUtil.randomInteger(0, 3)]);
-
-				templateMaterialDao.save(tm);
 			}
 		}
-
 	}
-
-	@Test
-	public void temp() {
-		Integer id = 155;
-		System.out.println(id.equals(155));
-		System.out.println(id == 155);
-
-		Integer.valueOf(2015);
-	}
-
 }

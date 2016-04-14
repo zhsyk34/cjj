@@ -20,6 +20,7 @@ import com.baiyi.order.model.Terminal;
 import com.baiyi.order.model.TerminalTemplate;
 import com.baiyi.order.service.TerminalService;
 import com.baiyi.order.util.EnumList.TemplateDownEnum;
+import com.baiyi.order.util.EnumList.TerminalTypeEnum;
 import com.baiyi.order.util.FormatUtil;
 import com.baiyi.order.util.RandomUtil;
 import com.baiyi.order.vo.ActivityVO;
@@ -144,16 +145,15 @@ public class TerminalTest {
 
 	@Test
 	public void save() {
-		// for (int i = 1; i < 5; i++) {
-		// Terminal terminal = new Terminal();
-		// terminal.setTerminalNo("tno1000" + i);
-		// terminal.setType(FormatUtil.getEnum(TerminalTypeEnum.class,
-		// RandomUtil.randomInteger(0, 1)));
-		// terminal.setLocation("xm00" + i);
-		// terminal.setCreatetime(new Date());
-		// terminal.setUserId(1);
-		// terminalDao.save(terminal);
-		// }
+		for (int i = 1; i < 5; i++) {
+			Terminal terminal = new Terminal();
+			terminal.setTerminalNo("tno1000" + i);
+			terminal.setType(FormatUtil.getEnum(TerminalTypeEnum.class, RandomUtil.randomInteger(0, 1)));
+			terminal.setLocation("xm00" + i);
+			terminal.setCreatetime(new Date());
+			terminal.setUserId(1);
+			terminalDao.save(terminal);
+		}
 
 		List<Terminal> list = terminalDao.findList();
 		List<Template> templates = templateDao.findList();

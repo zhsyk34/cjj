@@ -1,7 +1,6 @@
 package com.baiyi.order.action;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -21,8 +20,6 @@ public class ActivityAction extends CommonsAction {
 	public String update() {
 		ActivityTypeEnum typeEnum = FormatUtil.getEnum(ActivityTypeEnum.class, type);
 
-		System.out.println(Arrays.toString(foodIds));
-		System.out.println(Arrays.toString(kitchenIds));
 		if (typeEnum == null || ValidateUtil.isEmpty(foodIds) || ValidateUtil.isEmpty(kitchenIds) || foodIds.length != kitchenIds.length) {
 			jsonData.put(result, Feedback.ERROR.toString());
 			return SUCCESS;

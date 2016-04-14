@@ -104,7 +104,8 @@ require([ "jquery", "modal", "page", "datePicker", "crud", "intercept", "tool" ]
 			statistic += "<td class='count'></td>";
 			statistic += "<td class='total'></td>";
 			statistic += "<td class='money'></td>";
-			statistic += "<td class='view'><button class='btn btn-small btn-success'>查看</button></td>";
+			// statistic += "<td class='view'><button class='btn btn-small
+			// btn-success'>查看</button></td>";
 			statistic += "</tr>";
 
 			var first = "<tr>";
@@ -115,7 +116,8 @@ require([ "jquery", "modal", "page", "datePicker", "crud", "intercept", "tool" ]
 			first += "<td class='count'></td>";
 			first += "<td class='total'></td>";
 			first += "<td class='money'></td>";
-			first += "<td class='view'><button class='btn btn-small btn-success'>查看</button></td>";
+			// first += "<td class='view'><button class='btn btn-small
+			// btn-success'>查看</button></td>";
 			first += "</tr>";
 
 			var normal = "<tr>";
@@ -133,13 +135,13 @@ require([ "jquery", "modal", "page", "datePicker", "crud", "intercept", "tool" ]
 					if (index == 0) {
 						tr = $(statistic);
 						tr.find(".all,.money,.view").attr("rowspan", details.length);
-						tr.find(".all").text("合计");
+						tr.find(".all").text($.message("sell-amount"));
 						tr.find(".money").text(all.total);
 					} else {
 						tr = $(normal);
 					}
 					tr.find(".index").text(index + 1);
-					tr.find(".food").text(row.food);
+					tr.find(".food").text(row.name);
 					tr.find(".count").text(row.count);
 					tr.find(".total").text(row.total);
 					$("#data").append(tr);
@@ -160,7 +162,7 @@ require([ "jquery", "modal", "page", "datePicker", "crud", "intercept", "tool" ]
 						tr = $(normal);
 					}
 					tr.find(".index").text(index + 1);
-					tr.find(".food").text(row.food);
+					tr.find(".food").text(row.name);
 					tr.find(".count").text(row.count);
 					tr.find(".total").text(row.total);
 					$("#data").append(tr);

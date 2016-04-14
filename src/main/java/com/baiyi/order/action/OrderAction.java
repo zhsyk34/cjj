@@ -61,7 +61,7 @@ public class OrderAction extends CommonsAction {
 
 	public String delete() {
 		orderService.revoke(id);
-		jsonData.put("result", Feedback.DELETE.toString());
+		jsonData.put("result", Feedback.REVOKE.toString());
 		return SUCCESS;
 	}
 
@@ -99,8 +99,8 @@ public class OrderAction extends CommonsAction {
 		Date beginDate = FormatUtil.stringToDate(begin, null);
 		Date endDate = FormatUtil.stringToDate(end, null);
 		OrderStatus orderStatus = FormatUtil.getEnum(OrderStatus.class, status);
-		Boolean original = null;// TODO
-		// 0:终端,-1:后台
+		Boolean original = FormatUtil.intToBoolean(userId);// 是否原始订单(终端)
+
 		List<OrderInfoVO> list = orderService.findVOList(orderNo, shop, kitchen, beginDate, endDate, original, orderStatus, sort, order, pageNo, pageSize);
 		int count = orderService.count(orderNo, shop, kitchen, beginDate, endDate, original, orderStatus);
 		jsonData.put("list", list);

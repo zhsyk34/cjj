@@ -57,7 +57,7 @@ public class OrderDetailDaoImpl extends CommonsDaoImpl<OrderDetail> implements O
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> findTaste(Integer id) {
-		String queryString = "select orderDetailTaste.tasteName from OrderDetailTaste as orderDetailTaste where orderDetailTaste.orderDetailId = ?";
+		String queryString = "select orderDetailTaste.name from OrderDetailTaste as orderDetailTaste where orderDetailTaste.orderDetailId = ?";
 		return (List<String>) hibernateTemplate.find(queryString, id);
 	}
 

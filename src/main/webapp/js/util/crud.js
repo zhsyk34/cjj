@@ -14,7 +14,6 @@ define([ "jquery", "modal", "page", "message" ], function() {
 			(target || $("#page")).page(options);
 		},
 		merge : function(url, params, callback) {
-			console.log(url, params);
 			$.ajax({
 				url : url,
 				async : false,

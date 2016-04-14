@@ -52,15 +52,4 @@ public class HttpSend {
 		}
 		return result.toString();
 	}
-
-	public static void main(String[] args) {
-		try {
-			String s = sendRequest("http://user.hcmmems.com:8080/checkServer.do", "(M)DMC000001");
-			System.out.println(s);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
 }

@@ -5,21 +5,21 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 	remove();
 
 	function remove() {
-		var url = "json/Order_delete";
 		$("#data").on("click", ".del", function() {
 			var id = parseInt($(this).parents("tr").data("row").id);
+
 			$.confirm({
 				after : function() {
 					$.ajax({
-						url : url,
+						url : "json/Order_delete",
 						traditional : true,
 						async : false,
 						data : {
 							id : id
 						},
 						success : function(data) {
-							if (data.result == "delete") {
-								$.alert("订单已取消");
+							if (data.result == "revoke") {
+								$.alert($.message("crud-revoke"));
 							}
 							$("#page").page({
 								pageNo : 1
@@ -29,7 +29,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 					});
 				}
 			});
-			$.confirm("是否取消订单");
+			$.confirm($.message("order-delete"));
 		});
 	}
 
@@ -37,7 +37,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 		$("#editor").modal({
 			width : 1000,
 			top : 100,
-			title : "修改订单",
+			title : $.message("order-detail"),
 			before : function() {
 				return merge();
 			},
@@ -89,7 +89,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 				var clone = $("thead .detail");
 				$.each(row.detailList || [], function(index, detail) {
 					var tr = clone.clone();
-					tr.find(".food").val(detail.food);
+					tr.find(".food").val(detail.name);
 					tr.find(".price").val(detail.price);
 					tr.find(".count").val(detail.count);
 
@@ -135,7 +135,7 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			str += "<td></td>";
 			str += "<td></td>";
 			str += "<td><img class='inline'></td>";
-			str += "<td><button class='btn btn-small btn-primary'>查看</button></td>";
+			str += "<td><button class='btn btn-small btn-primary'>" + $.message("view") + "</button></td>";
 			str += "</tr>";
 
 			$.ajax({
@@ -291,8 +291,8 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 			str += "<td class='income'></td>";
 			str += "<td class='expense'></td>";
 			str += "<td class='createtime'></td>";
-			str += "<td class='content'><button class='btn btn-success btn-small show'>查看</button></td>";
-			str += "<td class='edit'><button class='btn btn-warning btn-small update'>修改</button><button class='btn btn-danger btn-small del'>撤销</button></td>";
+			str += "<td class='content'><button class='btn btn-success btn-small show'>" + $.message("view") + "</button></td>";
+			str += "<td class='edit'><button class='btn btn-warning btn-small update'>修改</button><button class='btn btn-danger btn-small del'>" + $.message("revoke") + "</button></td>";
 			str += "</tr>";
 
 			$.each(data.list || [], function(index, row) {
@@ -304,14 +304,14 @@ require([ "jquery", "modal", "page", "checkctrl", "crud", "intercept", "validate
 				tr.find(".kitchen").text(row.kitchen);
 				tr.find(".income").text(row.income);
 				tr.find(".expense").text(row.expense);
-				tr.find(".createtime").text(row.createtime.replace("T", " "));
+				tr.find(".createtime").text((row.createtime || "").replace("T", " "));
 
 				validate.equalsIgnoreCase(row.status, "nullify") && (tr.find(".del").hide());
 
 				$("#data").append(tr);
 			});
 			// TODO
-			$(".edit").hide();
+			$(".edit .update").hide();
 		}
 	}
 });

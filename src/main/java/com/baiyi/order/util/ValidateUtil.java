@@ -100,23 +100,4 @@ public class ValidateUtil {
 		return MaterialConvertEnum.UNKNOW;
 	}
 
-	// TODO
-	public static void checkChar(String str) {
-		Pattern digit = Pattern.compile("[0-9]+");
-		Pattern character = Pattern.compile("[A-Za-z]+");
-
-		if (digit.matcher(str).matches()) {
-		}
-
-		if (character.matcher(str).matches()) {
-		}
-	}
-
-	// TODO DEL
-	public static void main(String[] args) {
-		String s = "郵政VISA 888_百貨美食街影片_ok.wmv";
-		String s2 = "2.wmv";
-		System.out.println(checkType(s));
-		System.out.println(checkType(s2));
-	}
 }

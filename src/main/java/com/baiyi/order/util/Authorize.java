@@ -14,12 +14,14 @@ public class Authorize implements Runnable {
 
 	public void run() {
 		while (true) {
-			WebContext.empower = StringUtils.isNotBlank(WebContext.serverid) && confirm();
-			System.out.println("====server confirm ");
+			// WebContext.empower = StringUtils.isNotBlank(WebContext.serverid)
+			// && confirm();
 			if (StringUtils.isNotBlank(WebContext.serverid)) {
-				System.out.println(confirm() ? "success====" : "error3====");
+				WebContext.empower = confirm();
+				System.out.println(WebContext.empower ? "===confirm success===" : "===confirm fail===");
 			} else {
-				System.out.println("error2====");
+				WebContext.empower = false;
+				System.out.println("===confirm error===");
 			}
 			try {
 				Thread.sleep(30 * 60 * 1000);
@@ -53,7 +55,6 @@ public class Authorize implements Runnable {
 			try {
 				serverid = config.getString("serverid");
 				String maxCount = config.getString("maxCount");
-				System.out.println(maxCount);
 				if (StringUtils.isNotBlank(maxCount)) {
 					count = DESPlus.decrypt(maxCount);// 加密过
 				}

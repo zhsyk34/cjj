@@ -6,37 +6,43 @@
 <link rel="stylesheet" href="js/lib/zhsy/css/modal.css">
 <link rel="stylesheet" href="js/lib/zhsy/css/page.css">
 <link rel="stylesheet" href="css/module/order.css">
-<title>订单明细</title>
+<title><s:text name="index-order" /></title>
 </head>
 <body>
 	<header>
-		<h3>订单明细</h3>
+		<h3>
+			<s:text name="index-order" />
+		</h3>
 		<nav>
 			<div>
 				<div class="inline group">
-					<label class="addon" for="search-orderNo">订单编号</label><input class="text" id="search-orderNo">
+					<label class="addon" for="search-orderNo"><s:text name="order-number" /></label><input class="text" id="search-orderNo">
 				</div>
 				<div class="inline group">
-					<label class="addon" for="search-shop">客户端</label> <input class="text" id="search-shop">
+					<label class="addon" for="search-shop"><s:text name="order-shop" /></label> <input class="text" id="search-shop">
 				</div>
 				<div class="inline group">
-					<label class="addon" for="search-kitchen">厨房端</label> <input class="text" id="search-kitchen">
+					<label class="addon" for="search-kitchen"><s:text name="order-kitchen" /></label> <input class="text" id="search-kitchen">
 				</div>
 				<div class="inline">
-					<button class="btn btn-primary btn-small" id="find">查询</button>
+					<button class="btn btn-primary btn-small" id="find">
+						<s:text name="find" />
+					</button>
 				</div>
 			</div>
 			<div>
 				<div class="inline group">
-					<label class="addon">订单来源</label>
+					<label class="addon"><s:text name="order-from" /></label>
 					<div class="text">
-						<label><input type="radio" name="from" value="" checked>全部</label> <label><input type="radio" name="from" value="0">终端</label> <label><input type="radio" name="from" value="-1">后台</label>
+						<label><input type="radio" name="from" value="" checked> <s:text name="all" /></label> 
+						<label><input type="radio" name="from" value="1"> <s:text name="order-terminal" /></label> 
+						<label><input type="radio" name="from" value="0"> <s:text name="order-backend" /></label>
 					</div>
 				</div>
 				<div class="inline group">
-					<label class="addon">订单状态</label>
+					<label class="addon"><s:text name="order-status" /></label>
 					<div class="text">
-						<label><input type="radio" name="status" value="all" checked>全部</label> <label><input type="radio" name="status" value="normal">正常</label> <label><input type="radio" name="status" value="nullify">取消</label>
+						<label><input type="radio" name="status" value="all" checked> <s:text name="all" /></label> <label><input type="radio" name="status" value="normal"> <s:text name="order-normal" /></label> <label><input type="radio" name="status" value="nullify"> <s:text name="order-nullify" /></label>
 					</div>
 				</div>
 			</div>
@@ -48,20 +54,19 @@
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th width="6%">序号</th>
-					<th width="10%">编号</th>
-					<th width="10%">客户端</th>
-					<th width="10%">厨房端</th>
-					<th width="8%">总价</th>
-					<th width="8%">收取</th>
-					<th width="8%">找零</th>
-					<th width="15%">时间</th>
-					<th width="10%">明细</th>
-					<!-- <th width="15%">编辑</th> -->
+					<th width="6%"><s:text name="index" /></th>
+					<th width="10%"><s:text name="order-number" /></th>
+					<th width="10%"><s:text name="order-shop" /></th>
+					<th width="10%"><s:text name="order-kitchen" /></th>
+					<th width="8%"><s:text name="order-total" /></th>
+					<th width="8%"><s:text name="order-income" /></th>
+					<th width="8%"><s:text name="order-expense" /></th>
+					<th width="15%"><s:text name="order-time" /></th>
+					<th width="10%"><s:text name="order-detail" /></th>
+					<th width="15%"><s:text name="edit" /></th>
 				</tr>
 			</thead>
-			<tbody id="data">
-			</tbody>
+			<tbody id="data"></tbody>
 		</table>
 	</div>
 
@@ -74,28 +79,28 @@
 		<nav>
 			<div>
 				<div class="inline group">
-					<label class="addon">订单编号</label>
+					<label class="addon"><s:text name="order-number" /></label>
 					<div class="text" id="orderNo"></div>
 				</div>
 				<div class="inline group">
-					<label class="addon">客户端</label>
+					<label class="addon"><s:text name="order-shop" /></label>
 					<div class="text" id="shop"></div>
 				</div>
 				<div class="inline group">
-					<label class="addon">厨房端</label>
+					<label class="addon"><s:text name="order-kitchen" /></label>
 					<div class="text" id="kitchen"></div>
 				</div>
 			</div>
 
 			<div class="money">
 				<div class="inline group">
-					<label class="addon" for="total">总价</label> <input class="text" id="total">
+					<label class="addon" for="total"><s:text name="order-total" /></label> <input class="text" id="total">
 				</div>
 				<div class="inline group">
-					<label class="addon" for="income">收取</label> <input class="text" id="income">
+					<label class="addon" for="income"><s:text name="order-income" /></label> <input class="text" id="income">
 				</div>
 				<div class="inline group">
-					<label class="addon" for="expense">找零</label> <input class="text" id="expense">
+					<label class="addon" for="expense"><s:text name="order-expense" /></label> <input class="text" id="expense">
 				</div>
 				<button class="btn btn-success btn-small" id="add">添加</button>
 			</div>
@@ -105,31 +110,32 @@
 			<table class="table table-edit table-hover">
 				<thead>
 					<tr class="detail">
-						<th>订单明细</th>
+						<th><s:text name="order-detail" /></th>
 						<td>
 							<div class="inline group">
-								<label class="addon">餐点</label> <input class="text food">
+								<label class="addon"><s:text name="order-food" /></label> <input class="text food">
 							</div> <!-- <button class="btn btn-small btn-primary">查询</button>
 							-->
 
 							<div class="inline group">
-								<label class="addon">调味</label> <input class="text taste">
+								<label class="addon"><s:text name="order-taste" /></label> <input class="text taste">
 							</div> <!-- 
 							<button class="btn btn-small btn-primary">选择</button>
 							 -->
 
 							<div class="inline group">
-								<label class="addon">价格</label><input class="text price">
+								<label class="addon"><s:text name="order-price" /></label><input class="text price">
 							</div>
 							<div class="inline group">
-								<label class="addon">数量</label><input class="text count">
+								<label class="addon"><s:text name="order-count" /></label><input class="text count">
 							</div>
-							<button class="btn btn-small btn-danger cancel">删除</button>
+							<button class="btn btn-small btn-danger cancel">
+								<s:text name="del" />
+							</button>
 						</td>
 					</tr>
 				</thead>
-				<tbody id="details">
-				</tbody>
+				<tbody id="details"></tbody>
 			</table>
 		</div>
 	</div>

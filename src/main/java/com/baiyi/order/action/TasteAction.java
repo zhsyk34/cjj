@@ -38,7 +38,6 @@ public class TasteAction extends CommonsAction {
 	}
 
 	public String update() {
-		System.out.println(id);
 		if (tasteService.exist(id, name)) {
 			jsonData.put("result", Feedback.EXIST.toString());
 			return SUCCESS;

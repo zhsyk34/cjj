@@ -98,7 +98,7 @@ public class MaterialServiceImpl implements MaterialService {
 	}
 
 	@Override
-	public boolean relate(Integer id) {// TODO check
+	public boolean relate(Integer id) {
 		Food food = foodDao.findByMaterial(id);
 		List<TemplateMaterial> list = templateMaterialDao.findList(null, null, id);
 		return food != null || CollectionUtils.isNotEmpty(list);

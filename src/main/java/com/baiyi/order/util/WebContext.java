@@ -1,7 +1,6 @@
 package com.baiyi.order.util;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +10,6 @@ import javax.servlet.ServletContext;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
@@ -25,7 +23,7 @@ import com.baiyi.order.vo.Record;
 @Component
 public class WebContext implements ServletContextAware, InitializingBean {
 
-	/* 托管对象 */
+	/* DI */
 	@Resource
 	private UserService userService;
 	@Resource
@@ -73,33 +71,26 @@ public class WebContext implements ServletContextAware, InitializingBean {
 		// webRootPath
 		if (servletContext != null) {
 			webRootPath = servletContext.getRealPath("/");
-			System.out.println("webRootPath: " + webRootPath);
 		}
 
 		// classRootPath = rootPath + "WEB-INF" + File.separator + "classes";
 		classRootPath = this.getClass().getClassLoader().getResource("").getFile();
-		System.out.println("classRootPath: " + classRootPath);
-		try {
-			version = FileUtils.readFileToString(new File(classRootPath, "version.txt"));
-			serverid = FileUtils.readFileToString(new File(classRootPath, "serverid.txt"));
-			servletContext.setAttribute("version", version);
-			servletContext.setAttribute("serverid", serverid);
-			System.out.printf("version: %s, server: %s", version, serverid);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		// empower
-		Thread authorize = new Thread(new Authorize());
-		authorize.start();
+		System.out.println("webRootPath: " + webRootPath + " ,classRootPath: " + classRootPath);
 
 		// read prop
 		Configuration config = new PropertiesConfiguration("config.properties");
 		mirror = config.getString("mirror");
+		version = config.getString("version");
+		serverid = config.getString("serverid");
+		servletContext.setAttribute("version", version);
+		servletContext.setAttribute("serverid", serverid);
 		System.out.println("mirror: " + mirror);
+		System.out.println("version: " + version);
+		System.out.println("serverid: " + serverid);
 
-		// empower = HttpSend.sendRequest(mirror, serverid);
-		// FileUtils.writeStringToFile(file, data);
+		// empower
+		Thread authorize = new Thread(new Authorize());
+		authorize.start();
 
 		// base user
 		User user = userService.find("root");

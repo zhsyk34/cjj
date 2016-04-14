@@ -190,17 +190,4 @@ public class VideoConvertUtil {
 			e.printStackTrace();
 		}
 	}
-
-	// TODO TEST
-	public static void main(String[] args) throws Exception {
-		FFMPEG = "E:\\zhsy\\workspace\\order\\src\\main\\webapp\\tool\\convert\\ffmpeg.exe";
-		MENCODER = "E:\\zhsy\\workspace\\order\\src\\main\\webapp\\tool\\convert\\mencoder.exe";
-		System.out.println(FFMPEG);
-		String src = "E:\\test.VOB";
-		System.out.println("main begin");
-
-		convert(src);
-
-		System.out.println("main end");
-	}
 }
